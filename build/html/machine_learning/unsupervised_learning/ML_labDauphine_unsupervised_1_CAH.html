@@ -1,0 +1,1857 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clustering: HAC &mdash; website RTD 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Welcome to website RTD’s documentation!" href="../../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            website RTD
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Notebooks:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Clustering: HAC</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#Reminder:-The-Euclidean-distance">Reminder: The Euclidean distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Single-linkage-clustering---Step-by-step-Explanation">Single linkage clustering - Step-by-step Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#The-complexity">The complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#⚠️-Limitations-in-High-Dimensional-Spaces">⚠️ Limitations in High-Dimensional Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#Ward-Linkage-clustering---Step-by-Step-Explanation">Ward Linkage clustering - Step-by-Step Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#HAC-from-scratch">HAC from scratch</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Data">Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initialization">Initialization</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Matrix-of-distance">Matrix of distance</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#HAC-with-Python-packages">HAC with Python packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#HAC-using-Single-linkage-method">HAC using Single linkage method</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Evolution-of-the-aggregation-criterion">Evolution of the aggregation criterion</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Build-the-clustering">Build the clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Dendrogram-with-the-obtained-partitioning-and-clustering">Dendrogram with the obtained partitioning and clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix">Evaluating Cluster Quality Against Ground Truth Labels with the Confusion Matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#HAC-using-Ward's-Method">HAC using Ward’s Method</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Choice-of-a-partition-into-3-classes">Choice of a partition into 3 classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id1">Dendrogram with the obtained partitioning and clustering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Confusion-Matrix">Confusion Matrix</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#HAC-on-iris-data">HAC on iris data</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">website RTD</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Clustering: HAC</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/machine_learning/unsupervised_learning/ML_labDauphine_unsupervised_1_CAH.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Clustering:-HAC">
+<h1>Clustering: HAC<a class="headerlink" href="#Clustering:-HAC" title="Link to this heading"></a></h1>
+<p>Hierarchical Agglomerative Clustering (HAC) / Classification Ascendante Hiérarchique (CAH)</p>
+<p><strong>Presentation of the algorithm used in this notebook is Hierarchical Clustering (CAH) on a small dataset.</strong></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The packages</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">dendrogram</span>
+</pre></div>
+</div>
+</div>
+<section id="Reminder:-The-Euclidean-distance">
+<h2>Reminder: The Euclidean distance<a class="headerlink" href="#Reminder:-The-Euclidean-distance" title="Link to this heading"></a></h2>
+<p>In <strong>2D</strong> the <strong>Euclidean distance</strong> between two points <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> of respective coordinates <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> and <span class="math notranslate nohighlight">\((x_j, y_j)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\text{distance}_{euclidean}(i,j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}\]</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)))</span>
+
+<span class="c1"># Verification:</span>
+<span class="p">((</span><span class="mi">8</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="mi">5</span> <span class="o">-</span> <span class="mi">7</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mf">0.5</span><span class="o">==</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">a</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+6.324555320336759
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+np.True_
+</pre></div></div>
+</div>
+<p>We need to introduce <strong>For loop</strong> to calculate the euclidean distance of all the points of the clusters.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+
+<span class="n">cluster_1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cluster_1: </span><span class="se">\n</span><span class="si">{</span><span class="n">cluster_1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="n">cluster_2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">c</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;cluster_2: </span><span class="se">\n</span><span class="si">{</span><span class="n">cluster_2</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">cluster_1</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">cluster_2</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distance between </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2"> and </span><span class="si">{</span><span class="n">j</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">i</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">j</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+cluster_1:
+[[8 5]
+ [2 7]]
+cluster_2:
+[[3 6]]
+Distance between [8 5] and [3 6]: 5.0990195135927845
+Distance between [2 7] and [3 6]: 1.4142135623730951
+</pre></div></div>
+</div>
+<p>The <strong>single linkage cluster distance</strong> between two clusters <span class="math notranslate nohighlight">\(cluster_1\)</span> and <span class="math notranslate nohighlight">\(cluster_2\)</span> in <strong>2D</strong> is definied as:</p>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(\text{for i cluster}_1\)</span></div>
+<div class="line"><span class="math notranslate nohighlight">\(\text{for j in cluster}_2\)</span></div>
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[min(\text{distance}_{euclidean}(i,j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2})\]</div>
+</div></blockquote>
+<p><strong>Find the minimum distance between two clusters.</strong></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cluster_distance</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39;Using the euclidean distance to calculate the distance between two clusters.&#39;&#39;&#39;</span>
+    <span class="n">min_dist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c1</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">c2</span><span class="p">:</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">dy</span> <span class="o">=</span> <span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">j</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="p">(</span><span class="n">dx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mf">0.5</span>
+            <span class="k">if</span> <span class="n">dist</span> <span class="o">&lt;</span> <span class="n">min_dist</span><span class="p">:</span>
+                <span class="n">min_dist</span> <span class="o">=</span> <span class="n">dist</span>
+    <span class="k">return</span> <span class="n">min_dist</span>
+
+
+<span class="n">cluster_distance</span><span class="p">(</span><span class="n">cluster_1</span><span class="p">,</span> <span class="n">cluster_2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+np.float64(1.4142135623730951)
+</pre></div></div>
+</div>
+</section>
+<section id="Single-linkage-clustering---Step-by-step-Explanation">
+<h2>Single linkage clustering - Step-by-step Explanation<a class="headerlink" href="#Single-linkage-clustering---Step-by-step-Explanation" title="Link to this heading"></a></h2>
+<p>We will focus on <strong>single linkage</strong> (<em>saut minimum</em>) explanation based on proximity criteria:</p>
+<p><span class="math notranslate nohighlight">\(\delta_{SL}(C_k, C_l) = \min\limits_{\substack{x_i \in C_k \\ x_j \in C_l}} \delta(x_i, x_j)\)</span></p>
+<div class="line-block">
+<div class="line">The explanations on <strong>complete linkage</strong> (<em>diamètre</em>) and <strong>average linkage</strong> (<em>moyenne</em>) are similar.</div>
+<div class="line">Only the proximity criteria changes as follow respectively:</div>
+</div>
+<p><span class="math notranslate nohighlight">\(\delta_{SL}(C_k, C_l) = \max\limits_{\substack{x_i \in C_k \\ x_j \in C_l}} \delta(x_i, x_j)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\delta_{AL}(C_k, C_l) = \dfrac{1}{|C_k|\times|C_l|}\sum\limits_{\substack{x\in C_k, x_j \in C_l}}\delta(x_i, x_j)\)</span>.</p>
+<p>We will use a dataset of 5 points with 2D coordinates to explain the HAC single linkage step-by-step. | Five 2D points | Coordinates | | —– | ———– | | A | (1, 1) | | B | (2, 1) | | C | (4, 3) | | D | (5, 4) | | E | (3, 4) |</p>
+<ul class="simple">
+<li><p><strong>Step 1: Initialization</strong></p></li>
+</ul>
+<p>Each point is a cluster :</p>
+<div class="line-block">
+<div class="line">C1 = {A}</div>
+<div class="line">C2 = {B}</div>
+<div class="line">C3 = {C}</div>
+<div class="line">C4 = {D}</div>
+<div class="line">C5 = {E}</div>
+</div>
+<ul class="simple">
+<li><p><strong>Step 2: distances calculation</strong></p></li>
+</ul>
+<p>The matrix of Euclidean distances</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>{A}</p></th>
+<th class="head"><p>{B}</p></th>
+<th class="head"><p>{C}</p></th>
+<th class="head"><p>{D}</p></th>
+<th class="head"><p>{E}</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>{A}</p></td>
+<td><p>0</p></td>
+<td><p>1.0</p></td>
+<td><p>3.6</p></td>
+<td><p>5.0</p></td>
+<td><p>3.6</p></td>
+</tr>
+<tr class="row-odd"><td><p>{B}</p></td>
+<td><p>1.0</p></td>
+<td><p>0</p></td>
+<td><p>2.8</p></td>
+<td><p>4.2</p></td>
+<td><p>3.2</p></td>
+</tr>
+<tr class="row-even"><td><p>{C}</p></td>
+<td><p>3.6</p></td>
+<td><p>2.8</p></td>
+<td><p>0</p></td>
+<td><p>1.4</p></td>
+<td><p>1.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>{D}</p></td>
+<td><p>5.0</p></td>
+<td><p>4.2</p></td>
+<td><p>1.4</p></td>
+<td><p>0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-even"><td><p>{E}</p></td>
+<td><p>3.6</p></td>
+<td><p>3.2</p></td>
+<td><p>1.4</p></td>
+<td><p>2.0</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p><strong>Step 3 Merge with single linkage</strong></p></li>
+</ul>
+<p>Minimale distance :</p>
+<p>=&gt; A – B = 1.0</p>
+<p>Merge : C1 + C2 → C1’ = {A, B}</p>
+<p>New clusters :</p>
+<div class="line-block">
+<div class="line">C1’ = {A, B}</div>
+<div class="line">C3 = {C}</div>
+<div class="line">C4 = {D}</div>
+<div class="line">C5 = {E}</div>
+</div>
+<ul class="simple">
+<li><p><strong>Step 4: update the distances and merge</strong></p></li>
+</ul>
+<p>We update the distances:</p>
+<div class="line-block">
+<div class="line">{AB} – {C} :</div>
+<div class="line">= min(dist(A–C), dist(B–C))</div>
+<div class="line">= min(3.6, 2.8)</div>
+<div class="line">= 2.8</div>
+</div>
+<div class="line-block">
+<div class="line">{AB} – {D} :</div>
+<div class="line">= min(dist(A–D), dist(B–D))</div>
+<div class="line">= min(5.0, 4.2)</div>
+<div class="line">= 4.2</div>
+</div>
+<div class="line-block">
+<div class="line">{AB} – {E} :</div>
+<div class="line">= min(dist(A–E), dist(B–E))</div>
+<div class="line">= min(3.6, 3.2)</div>
+<div class="line">= 3.2</div>
+</div>
+<p>The matrix of Euclidean distances</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>{AB}</p></th>
+<th class="head"><p>{C}</p></th>
+<th class="head"><p>{D}</p></th>
+<th class="head"><p>{E}</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>{AB}</p></td>
+<td><p>0</p></td>
+<td><p>2.8</p></td>
+<td><p>4.2</p></td>
+<td><p>3.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>{C}</p></td>
+<td><p>2.8</p></td>
+<td><p>0</p></td>
+<td><p>1.4</p></td>
+<td><p>1.4</p></td>
+</tr>
+<tr class="row-even"><td><p>{D}</p></td>
+<td><p>4.2</p></td>
+<td><p>1.4</p></td>
+<td><p>0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>{E}</p></td>
+<td><p>3.2</p></td>
+<td><p>1.4</p></td>
+<td><p>2.0</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">Two choices for the merge are possible: {C}+{D} or {C}+{E} as they both have the minimum distance = 1.4.</div>
+<div class="line">We randomly choose to merge {C}+{D}.</div>
+<div class="line">We have 3 clusters {AB}, {CD} and {E}.</div>
+</div>
+<p>We update the distances:</p>
+<div class="line-block">
+<div class="line">{CD} – {AB} :</div>
+<div class="line">= min(dist(C–AB), dist(D–AB))</div>
+<div class="line">= min(2.8, 4.2)</div>
+<div class="line">= 2.8</div>
+</div>
+<div class="line-block">
+<div class="line">{CD} – {E} :</div>
+<div class="line">= min(dist(C–E), dist(D–E))</div>
+<div class="line">= min(1.4, 2.0)</div>
+<div class="line">= 1.4</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>{AB}</p></th>
+<th class="head"><p>{CD}</p></th>
+<th class="head"><p>{E}</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>{AB}</p></td>
+<td><p>0</p></td>
+<td><p>2.8</p></td>
+<td><p>3.2</p></td>
+</tr>
+<tr class="row-odd"><td><p>{CD}</p></td>
+<td><p>2.8</p></td>
+<td><p>0</p></td>
+<td><p>1.4</p></td>
+</tr>
+<tr class="row-even"><td><p>{E}</p></td>
+<td><p>3.2</p></td>
+<td><p>1.4</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">We merge {CD} and {E}.</div>
+<div class="line">We have now two clusters: {AB} and {CDE}.</div>
+</div>
+<p>We update the distances:</p>
+<div class="line-block">
+<div class="line">{CDE} – {AB} :</div>
+<div class="line">min(dist(A–C), A–D, A–E, B–C, B–D, B–E)</div>
+<div class="line">= min(3.6, 5.0, 3.6, 2.8, 4.2, 3.2)</div>
+<div class="line">= 2.8</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>{AB}</p></th>
+<th class="head"><p>{CDE}</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>{AB}</p></td>
+<td><p>0</p></td>
+<td><p>2.8</p></td>
+</tr>
+<tr class="row-odd"><td><p>{CDE}</p></td>
+<td><p>2.8</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>We merge {AB} and {CDE} at 2.8 of distance from each other. 📉 Summary of the merges</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Merge</p></th>
+<th class="head"><p>Distance</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>A + B</p></td>
+<td><p>1.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>C + D</p></td>
+<td><p>1.4</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>{CD}+ E</p></td>
+<td><p>1.4</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>{AB} + {CDE}</p></td>
+<td><p>2.8</p></td>
+</tr>
+</tbody>
+</table>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">print_simple_dendrogram</span><span class="p">():</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A   B        C   D   E&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;|   |        |   |   |&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\\</span><span class="s2"> /         </span><span class="se">\\</span><span class="s2"> /    |      &lt;- 1.0 et 1.4&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  AB          CD     |&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;          _____|_____/      &lt;- 1.4&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         |           |&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         |          CDE&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;         </span><span class="se">\\</span><span class="s2">___________/      &lt;- 2.8 (final merge)&quot;</span><span class="p">)</span>
+
+<span class="n">print_simple_dendrogram</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+A   B        C   D   E
+|   |        |   |   |
+ \ /         \ /    |      &lt;- 1.0 et 1.4
+  AB          CD     |
+          _____|_____/      &lt;- 1.4
+         |           |
+         |          CDE
+         \___________/      &lt;- 2.8 (final merge)
+</pre></div></div>
+</div>
+</section>
+<section id="The-complexity">
+<h2>The complexity<a class="headerlink" href="#The-complexity" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line">At first, the calculation of the matrix of distances which represent <span class="math notranslate nohighlight">\(n \times n = n^2\)</span> calculations</div>
+<div class="line">But we don’t need to calculate the diagonal so we can substract of it <span class="math notranslate nohighlight">\(n\)</span> calculations.</div>
+<div class="line">As we also only need to calculate the top of the matrix (matrix) to deduct the bottom, we can divide the calculations number by 2.</div>
+</div>
+<p>As a result, at initialization, the number of distances calculation is: <span class="math notranslate nohighlight">\((n^2 -n)/2 = n(n-1)/2\)</span>.</p>
+<div class="line-block">
+<div class="line">After the first merge we have <span class="math notranslate nohighlight">\(n-1\)</span> clusters so we will calculate <span class="math notranslate nohighlight">\((n-1)(n-2)/2\)</span> distances (we have use the previous formula).</div>
+<div class="line">And <span class="math notranslate nohighlight">\((n-2)(n-3)/2\)</span> at the next step and so on …</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step (merge)</p></th>
+<th class="head"><p>Remaining clusters</p></th>
+<th class="head"><p>Distances comparisions</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>0 (initial)</p></td>
+<td><p>n clusters</p></td>
+<td><p>n(n−1)/2</p></td>
+</tr>
+<tr class="row-odd"><td><p>1</p></td>
+<td><p>n−1 clusters</p></td>
+<td><p>(n−1)(n−2)/2</p></td>
+</tr>
+<tr class="row-even"><td><p>2</p></td>
+<td><p>n−2 clusters</p></td>
+<td><p>(n−2)(n−3)/2</p></td>
+</tr>
+<tr class="row-odd"><td><p>…</p></td>
+<td><p>…</p></td>
+<td><p>…</p></td>
+</tr>
+<tr class="row-even"><td><p>n−2</p></td>
+<td><p>2 clusters</p></td>
+<td><p>1</p></td>
+</tr>
+</tbody>
+</table>
+<p>The total sum of the costs is:</p>
+<p><span class="math notranslate nohighlight">\(\sum_{k=2}^{n}\dfrac{k(k-1)}{2} = \sum_{k=2}^{n}O(k^2) \approx{O(n^3)}\)</span></p>
+<p>The naive HAC algorithm has cubic time complexity <span class="math notranslate nohighlight">\((O(n^3))\)</span>, due to repeated distance calculations at each step.</p>
+<div class="line-block">
+<div class="line">In contrast, optimized algorithms (e.g., SLINK for single linkage) use data structures that reuse previous computations,</div>
+<div class="line">reducing the time complexity to <span class="math notranslate nohighlight">\(O(n^2)\)</span> or <span class="math notranslate nohighlight">\(O(n^2 log n)\)</span> depending on the linkage method.</div>
+</div>
+</section>
+<section id="⚠️-Limitations-in-High-Dimensional-Spaces">
+<h2>⚠️ Limitations in High-Dimensional Spaces<a class="headerlink" href="#⚠️-Limitations-in-High-Dimensional-Spaces" title="Link to this heading"></a></h2>
+<div class="line-block">
+<div class="line">Hierarchical Agglomerative Clustering (HAC) is not well suited for high-dimensional datasets.</div>
+<div class="line">The computational cost (typically <span class="math notranslate nohighlight">\(O(n^2)\)</span> or worse) becomes prohibitive as the number of points grows.</div>
+<div class="line">In high-dimensional spaces, the curse of dimensionality affects distance metrics — distances between points tend to become similar, making clustering less meaningful.</div>
+<div class="line">Moreover, HAC requires storing and updating a full distance matrix of size <span class="math notranslate nohighlight">\(O(n^2)\)</span>, which leads to memory inefficiencies.</div>
+<div class="line">As a result, HAC is better used for small to moderately sized datasets with well-separated clusters in low-dimensional spaces.</div>
+</div>
+</section>
+<section id="Ward-Linkage-clustering---Step-by-Step-Explanation">
+<h2>Ward Linkage clustering - Step-by-Step Explanation<a class="headerlink" href="#Ward-Linkage-clustering---Step-by-Step-Explanation" title="Link to this heading"></a></h2>
+<p>We will use the same 5 points with 2D coordinates.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Five 2D points</p></th>
+<th class="head"><p>Coordinates</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>(1, 1)</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>(2, 1)</p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>(4, 3)</p></td>
+</tr>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>(5, 4)</p></td>
+</tr>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>(3, 4)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Step 1: Initialization Each point starts as its own cluster:</p>
+<p>C1 = {A} C2 = {B} C3 = {C} C4 = {D} C5 = {E}</p>
+<p><strong>Step 2: Compute the initial distances (Ward linkage).</strong></p>
+<p>With Ward’s method, we look at the increase in within-cluster variance that would result from merging two clusters.</p>
+<div class="line-block">
+<div class="line">For singleton clusters (with one point), this step reduces to calculating squared Euclidean distances between the points,</div>
+<div class="line">as it corresponds to the increase in within-cluster inertia (variance).</div>
+</div>
+<p>Let’s compute the squared Euclidean distances between all points:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>A</p></th>
+<th class="head"><p>B</p></th>
+<th class="head"><p>C</p></th>
+<th class="head"><p>D</p></th>
+<th class="head"><p>E</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>0</p></td>
+<td><p>1.0</p></td>
+<td><p>13.0</p></td>
+<td><p>25.0</p></td>
+<td><p>13.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>1.0</p></td>
+<td><p>0</p></td>
+<td><p>8.0</p></td>
+<td><p>18.0</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>C</p></td>
+<td><p>13.0</p></td>
+<td><p>8.0</p></td>
+<td><p>0</p></td>
+<td><p>2.0</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>D</p></td>
+<td><p>25.0</p></td>
+<td><p>18.0</p></td>
+<td><p>2.0</p></td>
+<td><p>0</p></td>
+<td><p>4.0</p></td>
+</tr>
+<tr class="row-even"><td><p>E</p></td>
+<td><p>13.0</p></td>
+<td><p>10.0</p></td>
+<td><p>2.0</p></td>
+<td><p>4.0</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<div class="line-block">
+<div class="line">🧮 These are squared Euclidean distances:</div>
+<div class="line">For instance, dist²(A, C) = (1−4)² + (1−3)² = 9 + 4 = 13.</div>
+</div>
+<p>Step 3: First merge (min increase in variance) Smallest squared distance: C – D = 2.0</p>
+<p>➡️ Merge C3 + C4 → C3′ = {C, D}</p>
+<p>We now have:</p>
+<p>C1 = {A} C2 = {B} C3′ = {C, D} C5 = {E} Step 4: Update distances using Ward criterion For Ward’s method, merging clusters means computing the increase in total within-cluster variance (inertia):</p>
+<p>Let’s calculate the increase in variance (Δ) when merging {C, D} with other clusters.</p>
+<p>We use the formula for Ward linkage:</p>
+<div class="line-block">
+<div class="line">Δ(Ci, Cj) = (|Ci| × |Cj|) / (|Ci| + |Cj|) × ||μi − μj||². Let’s compute the centroid μ of {C, D}:</div>
+<div class="line">μ_CD = ((4 + 5)/2, (3 + 4)/2) = (4.5, 3.5)</div>
+</div>
+<p>Then compute Δ({C,D}, E):</p>
+<div class="line-block">
+<div class="line">μ_E = (3, 4). ||μ_CD – μ_E||² = (4.5 − 3)² + (3.5 − 4)² = 2.25 + 0.25 = 2.5</div>
+<div class="line">Δ = (2×1)/(2+1) × 2.5 = 0.67 × 2.5 = 1.67</div>
+<div class="line">Similarly, compute Δ({C,D}, B):</div>
+</div>
+<div class="line-block">
+<div class="line">μ_B = (2,1)</div>
+<div class="line">||μ_CD – μ_B||² = (2.5)² + (2.5)² = 6.25 + 6.25 = 12.5</div>
+<div class="line">Δ = (2×1)/3 × 12.5 = 8.33</div>
+<div class="line">And Δ({C,D}, A):</div>
+</div>
+<div class="line-block">
+<div class="line">μ_A = (1,1)</div>
+<div class="line">||μ_CD – μ_A||² = (3.5)² + (2.5)² = 12.25 + 6.25 = 18.5</div>
+<div class="line">Δ = 2/3 × 18.5 = 12.33</div>
+<div class="line">So the updated distance mtrix (increase in variance) is:</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>{A}</p></th>
+<th class="head"><p>{B}</p></th>
+<th class="head"><p>{CD}</p></th>
+<th class="head"><p>{E}</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>{A}</p></td>
+<td><p>0</p></td>
+<td><p>1.0</p></td>
+<td><p>12.33</p></td>
+<td><p>13.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>{B}</p></td>
+<td><p>1.0</p></td>
+<td><p>0</p></td>
+<td><p>8.33</p></td>
+<td><p>10.0</p></td>
+</tr>
+<tr class="row-even"><td><p>{CD}</p></td>
+<td><p>12.33</p></td>
+<td><p>8.33</p></td>
+<td><p>0</p></td>
+<td><p>1.67</p></td>
+</tr>
+<tr class="row-odd"><td><p>{E}</p></td>
+<td><p>13.0</p></td>
+<td><p>10.0</p></td>
+<td><p>1.67</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Step 5: Merge {CD} and E (minimum increase = 1.67). ➡️ C3′′ = {C, D, E}</p>
+<p>New clusters:</p>
+<div class="line-block">
+<div class="line">C1 = {A}</div>
+<div class="line">C2 = {B}</div>
+<div class="line">C3′′ = {C, D, E}</div>
+</div>
+<div class="line-block">
+<div class="line">Step 6: Update distances again</div>
+<div class="line">Compute Δ({CDE}, A):</div>
+</div>
+<div class="line-block">
+<div class="line">μ_CDE = ((4+5+3)/3, (3+4+4)/3) = (4, 3.67)</div>
+<div class="line">μ_A = (1,1)</div>
+<div class="line">||μ_CDE – μ_A||² = (3)² + (2.67)² ≈ 9 + 7.11 = 16.11</div>
+<div class="line">Δ = (3×1)/4 × 16.11 = 0.75 × 16.11 = 12.08</div>
+<div class="line">Δ({CDE}, B):</div>
+</div>
+<div class="line-block">
+<div class="line">μ_B = (2,1)</div>
+<div class="line">||μ_CDE – μ_B||² = (2)² + (2.67)² = 4 + 7.11 = 11.11</div>
+<div class="line">Δ = 0.75 × 11.11 = 8.33</div>
+</div>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>{A}</p></th>
+<th class="head"><p>{B}</p></th>
+<th class="head"><p>{CDE}</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>{A}</p></td>
+<td><p>0</p></td>
+<td><p>1.0</p></td>
+<td><p>12.08</p></td>
+</tr>
+<tr class="row-odd"><td><p>{B}</p></td>
+<td><p>1.0</p></td>
+<td><p>0</p></td>
+<td><p>8.33</p></td>
+</tr>
+<tr class="row-even"><td><p>{CDE}</p></td>
+<td><p>12.08</p></td>
+<td><p>8.33</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>➡️ Merge {B} and {CDE} → C4 = {B, C, D, E}</p>
+<p>Step 7: Final merge: {A} + {BCDE} μ_BCDE = mean of points B, C, D, E = ((2+4+5+3)/4, (1+3+4+4)/4) = (3.5, 3.0) μ_A = (1,1)</p>
+<p>||μ – μ||² = (2.5)² + (2.0)² = 6.25 + 4 = 10.25 Δ = (4×1)/5 × 10.25 = 0.8 × 10.25 = 8.2</p>
+<p>📉 Summary of Merges (Ward method)</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Step</p></th>
+<th class="head"><p>Merge</p></th>
+<th class="head"><p>Increase in variance (Δ)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>C + D</p></td>
+<td><p>2.0</p></td>
+</tr>
+<tr class="row-odd"><td><p>2</p></td>
+<td><p>{CD} + E</p></td>
+<td><p>1.67</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>{CDE} + B</p></td>
+<td><p>8.33</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>{BCDE} + A</p></td>
+<td><p>8.2</p></td>
+</tr>
+</tbody>
+</table>
+<p>Note: the final step merged at slightly lower cost than the previous due to rounding approximations.</p>
+</section>
+<section id="HAC-from-scratch">
+<h2>HAC from scratch<a class="headerlink" href="#HAC-from-scratch" title="Link to this heading"></a></h2>
+<section id="Data">
+<h3>Data<a class="headerlink" href="#Data" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Dictionnaire of the points with labels</span>
+<span class="n">points</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;A&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+    <span class="s2">&quot;B&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]),</span>
+    <span class="s2">&quot;C&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span>
+    <span class="s2">&quot;D&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span>
+    <span class="s2">&quot;E&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="p">}</span>
+<span class="n">points</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+{&#39;A&#39;: array([1, 1]),
+ &#39;B&#39;: array([2, 1]),
+ &#39;C&#39;: array([4, 3]),
+ &#39;D&#39;: array([5, 4]),
+ &#39;E&#39;: array([3, 4])}
+</pre></div></div>
+</div>
+</section>
+<section id="Initialization">
+<h3>Initialization<a class="headerlink" href="#Initialization" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the clusters:</span>
+<span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="sa">f</span><span class="s2">&quot;C</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">:</span> <span class="p">{</span><span class="n">label</span><span class="p">}</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">label</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">keys</span><span class="p">())}</span>
+
+<span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">labels</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;A&#39;, &#39;B&#39;, &#39;C&#39;, &#39;D&#39;, &#39;E&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Convert to array for easier indexing</span>
+<span class="n">labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">points</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">points</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[1 1]
+ [2 1]
+ [4 3]
+ [5 4]
+ [3 4]]
+</pre></div></div>
+</div>
+</section>
+<section id="Matrix-of-distance">
+<h3>Matrix of distance<a class="headerlink" href="#Matrix-of-distance" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+
+<span class="c1"># Initialize the matrix of distances (n x n)</span>
+<span class="n">dist_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">))</span>
+
+<span class="c1"># Calculate the euclidean distances between all the points</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+            <span class="n">pi</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+            <span class="n">pj</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="n">j</span><span class="p">]]</span>
+            <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">pi</span> <span class="o">-</span> <span class="n">pj</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+            <span class="n">dist_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">dist</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Distance matrix (symmetric):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;   &quot;</span><span class="p">,</span> <span class="s2">&quot;  &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">labels</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dist_matrix</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">row</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Distance matrix (symmetric):
+    A  B  C  D  E
+A [0.         1.         3.60555128 5.         3.60555128]
+B [1.         0.         2.82842712 4.24264069 3.16227766]
+C [3.60555128 2.82842712 0.         1.41421356 1.41421356]
+D [5.         4.24264069 1.41421356 0.         2.        ]
+E [3.60555128 3.16227766 1.41421356 2.         0.        ]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">euclidean</span>
+
+<span class="c1"># Step 0: Initialization — Each point is its own cluster</span>
+<span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))}</span>
+<span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cluster_distance</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+    <span class="c1"># Single linkage: min distance between any point in cluster 1 and any point in cluster 2</span>
+    <span class="c1"># we use Euclidean distance</span>
+    <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c1</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">c2</span><span class="p">)</span>
+
+<span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+    <span class="c1"># Find the two closest clusters</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="p">[(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">cluster_distance</span><span class="p">(</span><span class="n">clusters</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">clusters</span><span class="p">[</span><span class="n">j</span><span class="p">]))</span>
+             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">clusters</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">clusters</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">]</span>
+    <span class="n">i_min</span><span class="p">,</span> <span class="n">j_min</span><span class="p">,</span> <span class="n">dist_min</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="c1"># Explanation step-by-step</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Step </span><span class="si">{</span><span class="n">step</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;&gt; Merge clusters: </span><span class="si">{</span><span class="n">clusters</span><span class="p">[</span><span class="n">i_min</span><span class="p">]</span><span class="si">}</span><span class="s2"> + </span><span class="si">{</span><span class="n">clusters</span><span class="p">[</span><span class="n">j_min</span><span class="p">]</span><span class="si">}</span><span class="s2"> at distance </span><span class="si">{</span><span class="n">dist_min</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Save history for plotting later</span>
+    <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dist_min</span><span class="p">)</span>
+
+    <span class="c1"># Merge clusters</span>
+    <span class="n">new_cluster</span> <span class="o">=</span> <span class="n">clusters</span><span class="p">[</span><span class="n">i_min</span><span class="p">]</span> <span class="o">+</span> <span class="n">clusters</span><span class="p">[</span><span class="n">j_min</span><span class="p">]</span>
+    <span class="n">new_index</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">clusters</span><span class="p">[</span><span class="n">new_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_cluster</span>
+    <span class="k">del</span> <span class="n">clusters</span><span class="p">[</span><span class="n">i_min</span><span class="p">]</span>
+    <span class="k">del</span> <span class="n">clusters</span><span class="p">[</span><span class="n">j_min</span><span class="p">]</span>
+
+    <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># === PLOT DISTANCE EVOLUTION ===</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">history</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span> <span class="n">history</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Evolution of Merge Distances (Single Linkage)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Merge Step&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Distance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># === STANDARD LINKAGE &amp; DENDROGRAM ===</span>
+
+<span class="n">Z</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;single&#39;</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+<span class="n">dendrogram</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dendrogram (Single Linkage)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Data points&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Distance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&gt; Step 1
+&gt; Merge clusters: [0] + [1] at distance 1.00
+&gt; Step 2
+&gt; Merge clusters: [2] + [3] at distance 1.41
+&gt; Step 3
+&gt; Merge clusters: [4] + [2, 3] at distance 1.41
+&gt; Step 4
+&gt; Merge clusters: [0, 1] + [4, 2, 3] at distance 2.83
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_33_1.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_33_1.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_33_2.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_33_2.png" />
+</div>
+</div>
+</section>
+</section>
+<section id="HAC-with-Python-packages">
+<h2>HAC with Python packages<a class="headerlink" href="#HAC-with-Python-packages" title="Link to this heading"></a></h2>
+<p>In this notebook we will build classes with spherical and equal variances.</p>
+<div class="line-block">
+<div class="line">Note1:</div>
+<div class="line">Hierarchical Agglomerative Clustering (HAC) or simply Hierarchical Clustering in english.</div>
+<div class="line">Clustering: the goal is to group data according to a coherent structure.</div>
+<div class="line">Agglomerative (bottom-up) or “Ascendante” in French because we move up the hierarchy by gradually merging clusters.</div>
+<div class="line">We start from the bottom (each point alone) and move upwards (clusters get bigger and bigger).</div>
+</div>
+<div class="line-block">
+<div class="line">Note2:</div>
+<div class="line">The complexity of agglomerative hierarchical methods ranges from <span class="math notranslate nohighlight">\(O(n^2)\)</span> to <span class="math notranslate nohighlight">\(O(n^3)\)</span>,</div>
+<div class="line">whereas the complexity of an exact divisive method would be <span class="math notranslate nohighlight">\(O(2^n)\)</span>. The storage complexity for the dissimilarity matrix is <span class="math notranslate nohighlight">\(O(n^2)\)</span>.</div>
+<div class="line">For this reason, hierarchical clustering is generally not well suited for large-scale data.</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## HAC using Scipy</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># R code:</span>
+<span class="c1"># cluster.colors &lt;- brewer.pal(8,&quot;Dark2&quot;)</span>
+<span class="c1"># blobs &lt;- read.table(file=&quot;Data/blobs.txt&quot;, header=F, sep=&quot;,&quot;) ggplot(blobs, aes(x=V1, y=V2)) + geom_point()</span>
+
+<span class="c1"># Install and import necessary libraries</span>
+<span class="c1"># !pip install pandas matplotlib seaborn palettable</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">palettable.colorbrewer.qualitative</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dark2_8</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define the cluster colors using the Dark2 palette</span>
+<span class="n">cluster_colors</span> <span class="o">=</span> <span class="n">Dark2_8</span><span class="o">.</span><span class="n">hex_colors</span>
+
+<span class="c1"># Read the data from &#39;blobs.txt&#39; into a pandas DataFrame</span>
+<span class="c1"># The file has no header and is comma-separated</span>
+<span class="n">path_name</span> <span class="o">=</span> <span class="s1">&#39;/Users/davidtbo/Library/Mobile Documents/com~apple~CloudDocs/data/external&#39;</span>
+<span class="n">blobs</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filepath_or_buffer</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path_name</span><span class="p">,</span><span class="s1">&#39;blobs.txt&#39;</span><span class="p">),</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+<span class="c1"># Create a scatter plot using seaborn</span>
+<span class="c1"># V1 (first column) is mapped to the x-axis, V2 (second column) is mapped to the y-axis</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Display the plot</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_37_0.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_37_0.png" />
+</div>
+</div>
+</section>
+<section id="HAC-using-Single-linkage-method">
+<h2>HAC using Single linkage method<a class="headerlink" href="#HAC-using-Single-linkage-method" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># R code:</span>
+<span class="c1"># dend &lt;- hclust(dist(blobs[,1:2], method=&quot;euclidean&quot;), method=&quot;single&quot;)</span>
+
+<span class="c1"># Minimum jump clustering</span>
+<span class="c1"># Hierarchical clustering using the minimum jump method</span>
+<span class="c1"># Calculates the Euclidean distance between data points (first two columns of &#39;blobs&#39;)</span>
+<span class="c1"># Performs hierarchical clustering using the single linkage method (&#39;minimum jump&#39;)</span>
+
+<span class="c1"># 1) On calcule les distances euclidienne entre les points de données (premières deux colonnes de &#39;blobs&#39;)</span>
+<span class="c1"># 2) On effectue le clustering hiérarchique en utilisant la méthode de Single linkage (minimum jump)</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssd</span>
+
+<span class="c1"># Calculate the pairwise euclidean distance (matrix)</span>
+
+<span class="n">dist_matrix</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+
+<span class="c1"># Perform single linkage hierarchical clustering (see the course: ML_coursDauphine_unsupervised_1_CAH_Kmeans.pdf)</span>
+
+<span class="c1"># dend = sch.linkage(dist_matrix, method=&#39;single&#39;)</span>
+<span class="c1"># dend = sch.linkage(dist_matrix, method=&#39;complete&#39;)</span>
+<span class="n">dend</span> <span class="o">=</span> <span class="n">sch</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">dist_matrix</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;average&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the dendrogram</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">sch</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">dend</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Dendrogram (Minimum Jump Clustering)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Sample Index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_39_0.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_39_0.png" />
+</div>
+</div>
+<section id="Evolution-of-the-aggregation-criterion">
+<h3>Evolution of the aggregation criterion<a class="headerlink" href="#Evolution-of-the-aggregation-criterion" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># prompt: plot(dend$height, type=&quot;b&quot;)</span>
+
+<span class="c1"># Plot the evolution of the aggregation criterion</span>
+<span class="c1"># (montre l&#39;évolution des distances de fusion)</span>
+<span class="c1"># The idea is to use the &quot;break&quot; (elbow, jump) in the aggregation distance curve:</span>
+<span class="c1"># At first, the distances are small (merging of nearby clusters).</span>
+<span class="c1"># When we start forcing the merger of very distant clusters, the distance suddenly increases.</span>
+<span class="c1"># The goal is to cut the dendrogram just before this big jump, which gives a more &quot;natural&quot; number of clusters.</span>
+<span class="c1"># dend[:, 2] contains the linkage distances (aggregation criterion)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dend</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="c1"># Use marker=&#39;o&#39; for points and linestyle=&#39;-&#39; for lines</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Step&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Aggregation Criterion&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Evolution of Aggregation Criterion&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_41_0.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_41_0.png" />
+</div>
+</div>
+<p>Before the “big” jump to 2.70, there are 3 jumps:</p>
+<ol class="arabic simple">
+<li><p>&lt; 1.00 small merging of points very close</p></li>
+<li><p>1.00 -&gt; 1.35 first jump (merging of small clusters)</p></li>
+<li><p>1.35 -&gt; 1.60 second jump (merging of clusters)</p></li>
+<li><p>1.60 -&gt; 2.70 “big” jump (merging of groups very far from each others, the minimal euclidean distance between these far clusters s’envole:)</p></li>
+</ol>
+<div class="line-block">
+<div class="line">Like we do not consider the “big” jump, there are three clusters.</div>
+<div class="line">=&gt; Choice of a partition into 3 classes</div>
+</div>
+</section>
+<section id="Build-the-clustering">
+<h3>Build the clustering<a class="headerlink" href="#Build-the-clustering" title="Link to this heading"></a></h3>
+<p>Now the we know K (the number of clusters), we can use the <code class="docutils literal notranslate"><span class="pre">fcluster</span></code> function to extract the clusters from the hierarchical clustering result.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">fcluster</span>
+
+<span class="c1"># Cut the dendrogram to get 3 clusters</span>
+
+<span class="n">clusters</span> <span class="o">=</span> <span class="n">fcluster</span><span class="p">(</span><span class="n">dend</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;maxclust&#39;</span><span class="p">)</span>
+
+<span class="c1"># To get a summary similar to `summary(as.factor(clusters))` in R,</span>
+<span class="c1"># we can use pandas value_counts.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cluster distribution:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">())</span>
+
+<span class="c1"># The `order_clusters_as_data = F` in R&#39;s `cutree` affects how the clusters are</span>
+<span class="c1"># ordered in the returned vector. By default, `fcluster` returns the cluster</span>
+<span class="c1"># assignments in the order of the original data points. This behavior is similar</span>
+<span class="c1"># to `order_clusters_as_data = TRUE` in R.</span>
+<span class="c1"># If you needed the clusters ordered based on the dendrogram leaves order (which is less common</span>
+<span class="c1"># when just getting flat clusters), you would need to reorder the original data</span>
+<span class="c1"># based on the dendrogram&#39;s leaf order before calling fcluster or reorder</span>
+<span class="c1"># the resulting cluster array. However, for summarizing the cluster distribution,</span>
+<span class="c1"># the order doesn&#39;t matter, and the default behavior of `fcluster` is usually what&#39;s desired</span>
+<span class="c1"># for assigning cluster labels back to the original data points.</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Cluster distribution:
+1    500
+2    500
+3    500
+Name: count, dtype: int64
+</pre></div></div>
+</div>
+</section>
+<section id="Dendrogram-with-the-obtained-partitioning-and-clustering">
+<h3>Dendrogram with the obtained partitioning and clustering<a class="headerlink" href="#Dendrogram-with-the-obtained-partitioning-and-clustering" title="Link to this heading"></a></h3>
+<p>The following code performs a visual evaluation of hierarchical clustering results by displaying two plots side-by-side:</p>
+<ul class="simple">
+<li><p>Dendrogram: Shows the hierarchical clustering tree structure.</p></li>
+<li><p>Scatter plot: Displays the original data points colored by their assigned cluster.</p></li>
+</ul>
+<div class="line-block">
+<div class="line">Note:</div>
+<div class="line">In R, the dendrogram branches are colored by cluster using color_branches, but this feature is not directly replicated in Python due to complexity.</div>
+<div class="line">Instead, the Python code uses scipy to plot the dendrogram and colors the scatter plot points according to cluster assignments.</div>
+<div class="line">This side-by-side visualization helps to visually assess how well the clusters correspond to the data structure.</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># R code:</span>
+<span class="c1"># dend &lt;- color_branches(as.dendrogram(dend), clusters=clusters, col=cluster.colors[1:3])</span>
+<span class="c1"># clusters &lt;- cutree(dend, 3, order_clusters_as_data = T)</span>
+<span class="c1"># plot.list &lt;-list(ggplot(as.ggdend(dend)),ggplot(blobs, aes(V1,V2)) + geom_point(col=cluster.colors[clusters], size=0.2))</span>
+<span class="c1"># ggmatrix(plot.list, nrow=1, ncol=2, showXAxisPlotLabels = F, showYAxisPlotLabels = F, xAxisLabels=c(&quot;dendrogram&quot;, &quot;scatter plot&quot;)) + theme_bw()</span>
+
+<span class="c1"># !pip install plotnine mizani</span>
+<span class="c1"># Importing necessary libraries</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span> <span class="c1"># Assuming blobs is a pandas DataFrame and clusters is a pandas Series or numpy array</span>
+
+<span class="c1"># Assuming &#39;dend&#39; is the linkage matrix from sch.linkage</span>
+<span class="c1"># Assuming &#39;blobs&#39; is a pandas DataFrame with the original data</span>
+<span class="c1"># Assuming &#39;clusters&#39; is a numpy array or pandas Series containing the cluster assignments (1, 2, or 3)</span>
+
+<span class="c1"># Create a figure and a set of subplots</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="c1"># Plot the dendrogram in the first subplot</span>
+<span class="c1"># We don&#39;t directly color branches based on fcluster results here as it&#39;s complex with scipy</span>
+<span class="n">sch</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">dend</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Dendrogram&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Sample Index&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
+
+<span class="c1"># Define colors for the scatter plot based on the number of clusters</span>
+<span class="c1"># Using a colormap and mapping cluster labels to colors</span>
+<span class="n">num_clusters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">clusters</span><span class="p">))</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">colormaps</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;Dark2&#39;</span><span class="p">)</span> <span class="c1"># Using the recommended method to get a colormap</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="n">cmap</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_clusters</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_clusters</span><span class="p">)]</span> <span class="k">if</span> <span class="n">num_clusters</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">[</span><span class="n">cmap</span><span class="p">(</span><span class="mi">0</span><span class="p">)]</span>
+
+<span class="c1"># Plot the scatter plot with colored points based on cluster assignments in the second subplot</span>
+<span class="c1"># Need to map cluster labels (1, 2, 3, ...) to colormap indices (0, 1, 2, ...)</span>
+<span class="c1"># Assuming clusters are 1-indexed, subtract 1 for 0-indexed colormap access</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="p">[</span><span class="n">colors</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Scatter Plot with Clusters&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># Use actual column names if available, or generic &#39;V1&#39;</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="c1"># Use actual column names if available, or generic &#39;V2&#39;</span>
+
+
+<span class="c1"># Adjust layout to prevent overlap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># Display the plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Note: The R code&#39;s `color_branches` functionality which colors the dendrogram branches</span>
+<span class="c1"># based on the flat clustering result is not directly replicated here as it requires</span>
+<span class="c1"># significant manipulation of the dendrogram plotting output which is beyond</span>
+<span class="c1"># a simple conversion. The focus is on displaying the dendrogram and the</span>
+<span class="c1"># clustered data side-by-side.</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_48_0.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_48_0.png" />
+</div>
+</div>
+</section>
+<section id="Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix">
+<h3>Evaluating Cluster Quality Against Ground Truth Labels with the Confusion Matrix<a class="headerlink" href="#Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix" title="Link to this heading"></a></h3>
+<div class="line-block">
+<div class="line">The purpose is to check whether the clusters correspond well to the original categories,</div>
+<div class="line">in order to evaluate the quality of the clustering against a ‘ground truth’ or known label.</div>
+<div class="line">This is a common analysis step after clustering to better understand the meaning of the detected groups.”</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># R code:</span>
+<span class="c1"># table(clusters, blobs$V3)</span>
+
+<span class="c1"># Assuming &#39;clusters&#39; is a numpy array or pandas Series</span>
+<span class="c1"># Assuming &#39;blobs&#39; is a pandas DataFrame and V3 refers to the 3rd column (index 2)</span>
+
+<span class="c1"># To perform the equivalent of R&#39;s `table(clusters, blobs$V3)`</span>
+<span class="c1"># we can use pandas `crosstab` function.</span>
+<span class="c1"># `crosstab` computes a frequency table of two (or more) factors.</span>
+<span class="c1"># The first argument `index` corresponds to the first factor (clusters)</span>
+<span class="c1"># The second argument `columns` corresponds to the second factor (blobs[&#39;V3&#39;])</span>
+
+<span class="c1"># Ensure that the lengths of &#39;clusters&#39; and &#39;blobs&#39; are compatible.</span>
+<span class="c1"># The number of cluster assignments should match the number of rows in blobs.</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Frequency table of clusters vs. original category (blobs column V3):&quot;</span><span class="p">)</span>
+    <span class="c1"># Use blobs.iloc[:, 2] to access the third column (V3)</span>
+    <span class="n">contingency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">contingency_table</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: The number of cluster assignments does not match the number of data points in blobs.&quot;</span><span class="p">)</span>
+<br/><br/></pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Frequency table of clusters vs. original category (blobs column V3):
+2        0    1    2
+row_0
+1      500    0    0
+2        0    0  500
+3        0  500    0
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="HAC-using-Ward's-Method">
+<h2>HAC using Ward’s Method<a class="headerlink" href="#HAC-using-Ward's-Method" title="Link to this heading"></a></h2>
+<p>The Ward’s method regoups two clusters that minimize the percentage of loss of variance inter-groups (Between Sum of Square) after aggregation:</p>
+<p>After the aggregations of two clusters, the BSS always decrease.</p>
+<ul class="simple">
+<li><p>BSS general formula with the Euclidean distance is given by:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[BSS = \sum_{k=1}^K|C_k|||w_k - \bar{X}||^2\]</div>
+<ul class="simple">
+<li><p>BSS before regrouping A and B is given by:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[BBS_{(A,B)} = \sum_{k=1, k \neq A, B}^K |C_k|\times ||w_k - \bar{X}||^2 + C_A|\times ||w_A - \bar{X}||^2 + C_B|\times ||w_B - \bar{X}||^2\]</div>
+<ul class="simple">
+<li><p>BSS after regrouping A and B is given by:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[BBS_{(AB)} = \sum_{k=1, k \neq A, B}^K |C_k|\times ||w_k - \bar{X}||^2 + (C_A| + |C_B|) \times ||w_{AB} - \bar{X}||^2\]</div>
+<p>At each step Ward’s method minimize: <span class="math notranslate nohighlight">\(BBS_{(A,B)} - BBS_{(AB)}\)</span></p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># R code:</span>
+<span class="c1"># dend &lt;- hclust(dist(blobs[,1:2], method=&quot;euclidean&quot;), method=&quot;ward.D2&quot;)</span>
+
+<span class="c1"># Perform Ward&#39;s method hierarchical clustering</span>
+<span class="c1"># Calculates the Euclidean distance between data points (first two columns of &#39;blobs&#39;)</span>
+<span class="c1"># Performs hierarchical clustering using Ward&#39;s method</span>
+<span class="c1"># `blobs.iloc[:, 0:2]` selects the first two columns of the DataFrame &#39;blobs&#39;</span>
+<span class="c1"># `metric=&#39;euclidean&#39;` specifies the distance metric as Euclidean</span>
+<span class="c1"># `method=&#39;ward&#39;` specifies Ward&#39;s linkage method</span>
+
+
+<span class="c1"># Calculate the pairwise euclidean distance (matrix)</span>
+
+<span class="n">dist_matrix</span> <span class="o">=</span> <span class="n">ssd</span><span class="o">.</span><span class="n">pdist</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">metric</span><span class="o">=</span><span class="s1">&#39;euclidean&#39;</span><span class="p">)</span>
+
+<span class="n">dend_ward</span> <span class="o">=</span> <span class="n">sch</span><span class="o">.</span><span class="n">linkage</span><span class="p">(</span><span class="n">dist_matrix</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ward&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the dendrogram for Ward&#39;s method</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">sch</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">dend_ward</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Dendrogram (Ward</span><span class="se">\&#39;</span><span class="s1">s Method)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Sample Index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Plot the evolution of the aggregation criterion for Ward&#39;s method</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dend_ward</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Step&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Aggregation Criterion (Ward&#39;s)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Evolution of Aggregation Criterion (Ward&#39;s Method)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_54_0.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_54_0.png" />
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_54_1.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_54_1.png" />
+</div>
+</div>
+<section id="Choice-of-a-partition-into-3-classes">
+<h3>Choice of a partition into 3 classes<a class="headerlink" href="#Choice-of-a-partition-into-3-classes" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># prompt: clusters &lt;- cutree(dend, 3, order_clusters_as_data = F)</span>
+<span class="c1"># summary(as.factor(clusters))</span>
+
+<span class="c1"># Based on the dendrogram and the evolution of the aggregation criterion plot for Ward&#39;s method,</span>
+<span class="c1"># visually identify the point where the increase in the criterion is largest.</span>
+<span class="c1"># The comment &quot;Choix d’un découpage à 3 classes&quot; suggests that visually,</span>
+<span class="c1"># there is a large jump in the criterion for Ward&#39;s method that would lead to choosing 3 classes.</span>
+
+<span class="c1"># The equivalent R code `cutree(dend, 3, order_clusters_as_data = F)` for Ward&#39;s method</span>
+<span class="c1"># using scipy&#39;s `fcluster` function.</span>
+<span class="c1"># Cut the dendrogram `dend_ward` to get 3 clusters.</span>
+<span class="n">clusters_ward</span> <span class="o">=</span> <span class="n">fcluster</span><span class="p">(</span><span class="n">dend_ward</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s1">&#39;maxclust&#39;</span><span class="p">)</span>
+
+<span class="c1"># To get a summary similar to `summary(as.factor(clusters))` in R for Ward&#39;s method,</span>
+<span class="c1"># use pandas value_counts.</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cluster distribution (Ward&#39;s Method):&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">clusters_ward</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">sort_index</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Cluster distribution (Ward&#39;s Method):
+1    500
+2    500
+3    500
+Name: count, dtype: int64
+</pre></div></div>
+</div>
+</section>
+<section id="id1">
+<h3>Dendrogram with the obtained partitioning and clustering<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install plotnine mizani</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine</span><span class="w"> </span><span class="kn">import</span> <span class="n">ggplot</span><span class="p">,</span> <span class="n">aes</span><span class="p">,</span> <span class="n">geom_point</span><span class="p">,</span> <span class="n">theme_bw</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mizani.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">percent_format</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine.guides</span><span class="w"> </span><span class="kn">import</span> <span class="n">guide_legend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine.scales</span><span class="w"> </span><span class="kn">import</span> <span class="n">scale_x_continuous</span><span class="p">,</span> <span class="n">scale_y_continuous</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine.labels</span><span class="w"> </span><span class="kn">import</span> <span class="n">labs</span>
+
+<span class="c1"># Import `ggmatrix` if needed, though a simple subplot approach is used below</span>
+<span class="c1"># !pip install ggmatrix # Install if you want to use ggmatrix (less common in Python plotnine context)</span>
+<span class="c1"># from ggmatrix import ggmatrix # Import if installed</span>
+
+<span class="c1"># Import necessary libraries for plotting the dendrogram using matplotlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Assuming &#39;dend&#39; is the linkage matrix from sch.linkage (from the single linkage method)</span>
+<span class="c1"># Assuming &#39;clusters&#39; is a numpy array or pandas Series containing the cluster assignments (1, 2, or 3) from single linkage</span>
+<span class="c1"># Assuming &#39;blobs&#39; is a pandas DataFrame with the original data</span>
+
+<span class="c1"># Define colors for the scatter plot based on the number of clusters</span>
+<span class="c1"># Using the cluster_colors defined earlier (Dark2_8 palette)</span>
+<span class="c1"># Ensure the number of colors is sufficient for the number of clusters</span>
+<span class="n">num_clusters</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">clusters</span><span class="p">))</span>
+<span class="k">if</span> <span class="n">num_clusters</span> <span class="o">&gt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_colors</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Warning: Not enough colors defined for </span><span class="si">{</span><span class="n">num_clusters</span><span class="si">}</span><span class="s2"> clusters. Using repeated colors.&quot;</span><span class="p">)</span>
+    <span class="n">colors_for_scatter</span> <span class="o">=</span> <span class="p">[</span><span class="n">cluster_colors</span><span class="p">[</span><span class="n">c</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">cluster_colors</span><span class="p">)]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="c1"># Map cluster labels (1, 2, 3, ...) to the defined colors (index 0, 1, 2, ...)</span>
+    <span class="n">colors_for_scatter</span> <span class="o">=</span> <span class="p">[</span><span class="n">cluster_colors</span><span class="p">[</span><span class="n">c</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">clusters</span><span class="p">]</span>
+
+
+<span class="c1"># Create a figure and a set of subplots side-by-side</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span> <span class="c1"># Adjust figsize as needed</span>
+
+<span class="c1"># Plot the dendrogram in the first subplot using matplotlib</span>
+<span class="c1"># To color branches by flat clusters, this requires more advanced manipulation of the dendrogram object,</span>
+<span class="c1"># which is not as straightforward as in R&#39;s `color_branches`. A common approach in matplotlib</span>
+<span class="c1"># is to draw the dendrogram first and then potentially add colored lines/patches afterwards,</span>
+<span class="c1"># or use the `color_threshold` argument if cutting by distance, but not directly by maxclust.</span>
+<span class="c1"># For simplicity here, we plot the standard dendrogram.</span>
+<span class="n">sch</span><span class="o">.</span><span class="n">dendrogram</span><span class="p">(</span><span class="n">dend</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Dendrogram&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Sample Index&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Distance&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot the scatter plot with colored points based on cluster assignments in the second subplot using matplotlib</span>
+<span class="c1"># Use the colors_for_scatter list generated based on cluster assignments</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">colors_for_scatter</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="c1"># Adjust size &#39;s&#39; as needed</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Scatter Plot with Clusters&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">blobs</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="c1"># Adjust layout to prevent overlap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+<span class="c1"># Display the plots</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Note: Directly replicating `ggmatrix` and `as.ggdend` from R in Python using plotnine</span>
+<span class="c1"># and matplotlib is complex. The approach above uses matplotlib for both plots within</span>
+<span class="c1"># a single figure&#39;s subplots, providing a similar side-by-side visualization.</span>
+<span class="c1"># If you specifically need plotnine for the scatter plot, you would create a plotnine</span>
+<span class="c1"># object for the scatter plot and display it separately or attempt to combine it</span>
+<span class="c1"># using more advanced methods or libraries that support combining matplotlib and plotnine plots.</span>
+<span class="c1"># The matplotlib approach for both is generally more direct when showing the dendrogram alongside.</span>
+
+<span class="c1"># If you want to use plotnine for the scatter plot:</span>
+<span class="c1"># scatter_plot = (</span>
+<span class="c1">#     ggplot(blobs, aes(x=blobs.columns[0], y=blobs.columns[1], color=clusters.astype(str))) # Use string for discrete color</span>
+<span class="c1">#     + geom_point(size=0.2)</span>
+<span class="c1">#     + labs(x=&quot;V1&quot;, y=&quot;V2&quot;, color=&quot;Cluster&quot;)</span>
+<span class="c1">#     + theme_bw()</span>
+<span class="c1"># )</span>
+
+<span class="c1"># And then display the matplotlib dendrogram and the plotnine scatter plot.</span>
+<span class="c1"># Combining them into a single figure as `ggmatrix` does in R is not a standard</span>
+<span class="c1"># feature of plotnine/matplotlib without significant custom code or using a</span>
+<span class="c1"># specialized library if one exists. The matplotlib subplot approach shown above</span>
+<span class="c1"># is the most common way to achieve side-by-side plots in Python.</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_58_0.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_58_0.png" />
+</div>
+</div>
+</section>
+<section id="Confusion-Matrix">
+<h3>Confusion Matrix<a class="headerlink" href="#Confusion-Matrix" title="Link to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># prompt: table(clusters, blobs$V3)</span>
+
+<span class="c1"># The R code `table(clusters, blobs$V3)` creates a contingency table</span>
+<span class="c1"># showing the counts of observations for each combination of `clusters`</span>
+<span class="c1"># and the values in the third column of `blobs` (indexed as 2 in pandas).</span>
+
+<span class="c1"># This was already implemented in the preceding code block.</span>
+<span class="c1"># To reiterate the code for clarity:</span>
+
+<span class="c1"># Ensure that the lengths of &#39;clusters&#39; and &#39;blobs&#39; are compatible.</span>
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">clusters</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Frequency table of clusters vs. original category (blobs column V3):&quot;</span><span class="p">)</span>
+    <span class="c1"># Use blobs.iloc[:, 2] to access the third column (V3)</span>
+    <span class="n">contingency_table</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">blobs</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">contingency_table</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error: The number of cluster assignments does not match the number of data points in blobs.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Frequency table of clusters vs. original category (blobs column V3):
+2        0    1    2
+row_0
+1      500    0    0
+2        0    0  500
+3        0  500    0
+</pre></div></div>
+</div>
+<p>Exercise:</p>
+<div class="line-block">
+<div class="line">Test the different hierarchical classification methods on the other simulated datasets (“aniso.txt”, “aggregation.txt”, “different_density.txt”, “noisy_moons.txt”).</div>
+<div class="line">In each case, perform clustering on the first two columns (data coordinates), and compare with the true number of classes.</div>
+</div>
+</section>
+</section>
+<section id="HAC-on-iris-data">
+<h2>HAC on iris data<a class="headerlink" href="#HAC-on-iris-data" title="Link to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Load the IRIS dataset</span>
+<span class="c1"># head(iris) equivalent in pandas</span>
+<span class="n">iris</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">load_dataset</span><span class="p">(</span><span class="s1">&#39;iris&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+
+<span class="c1"># Normalization (zero mean, unit variance)</span>
+<span class="c1"># Equivalent to iris.norm &lt;- data.frame(sapply(iris[,1:4], scale)) in R</span>
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+<span class="n">iris_norm_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">iris</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+<span class="n">iris_norm</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">iris_norm_data</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">iris</span><span class="o">.</span><span class="n">columns</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">])</span>
+
+<span class="c1"># Add the &#39;Species&#39; column back to the normalized dataframe</span>
+<span class="c1"># Equivalent to iris.norm$Species &lt;- iris$Species</span>
+<span class="n">iris_norm</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span>
+
+<span class="c1"># Scatter plot matrices and distribution of classes by variable</span>
+<span class="c1"># Equivalent to ggpairs(iris, columns=1:4, aes(color=Species)) using seaborn&#39;s pairplot</span>
+<span class="c1"># Note: ggpairs from R&#39;s GGally is more comprehensive, pairplot is a common alternative in Python</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">iris</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;species&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Scatter plot matrix and distribution of classes by variable for IRIS dataset&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span> <span class="c1"># Add a title</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+   sepal_length  sepal_width  petal_length  petal_width species
+0           5.1          3.5           1.4          0.2  setosa
+1           4.9          3.0           1.4          0.2  setosa
+2           4.7          3.2           1.3          0.2  setosa
+3           4.6          3.1           1.5          0.2  setosa
+4           5.0          3.6           1.4          0.2  setosa
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_63_1.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_63_1.png" />
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">dendrogram</span><span class="p">,</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">cut_tree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Hierarchical Classification with Ward&#39;s method</span>
+<span class="c1"># Equivalent to dend &lt;- hclust(dist(iris.norm[,1:4], method=&quot;euclidean&quot;), method=&quot;ward.D2&quot;) in R</span>
+<span class="n">linked</span> <span class="o">=</span> <span class="n">linkage</span><span class="p">(</span><span class="n">iris_norm</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">:</span><span class="mi">4</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;ward&#39;</span><span class="p">)</span>
+
+<span class="c1"># Dendrogram</span>
+<span class="c1"># Equivalent to plot(dend) in R</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">dendrogram</span><span class="p">(</span><span class="n">linked</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dendrogram of IRIS dataset&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Data points&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Distance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Evolution of the aggregation criterion</span>
+<span class="c1"># Equivalent to plot(dend$height, type=&quot;b&quot;) in R</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">linked</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Evolution of the aggregation criterion&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Number of merges&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Distance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+
+<span class="c1"># Choosing a cut at 5 classes</span>
+<span class="c1"># Equivalent to clusters &lt;- cutree(dend, 5, order_clusters_as_data = F) in R</span>
+<span class="c1"># Note: cutree in scipy does not have an equivalent to order_clusters_as_data = F,</span>
+<span class="c1"># the clusters are assigned in the order of the original data.</span>
+<span class="n">clusters</span> <span class="o">=</span> <span class="n">cut_tree</span><span class="p">(</span><span class="n">linked</span><span class="p">,</span> <span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+
+<span class="c1"># Summary of the number of elements in each cluster</span>
+<span class="c1"># Equivalent to summary(as.factor(clusters)) in R</span>
+<span class="n">unique_clusters</span><span class="p">,</span> <span class="n">counts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">clusters</span><span class="p">,</span> <span class="n">return_counts</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cluster distribution:&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">cluster_id</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">unique_clusters</span><span class="p">,</span> <span class="n">counts</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cluster </span><span class="si">{</span><span class="n">cluster_id</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">count</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Dendrogram with the partitioning and obtained clustering</span>
+<span class="c1"># Equivalent to dend &lt;- color_branches(as.dendrogram(dend), clusters=clusters, col=cluster.colors[1:5]) in R</span>
+<span class="c1"># and the subsequent plotting code.</span>
+<span class="c1"># Coloring branches in matplotlib dendrogram is more involved than in R&#39;s dendextend.</span>
+<span class="c1"># We&#39;ll replot the dendrogram and potentially add labels/colors manually if needed.</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">dendrogram</span><span class="p">(</span>
+    <span class="n">linked</span><span class="p">,</span>
+    <span class="n">leaf_rotation</span><span class="o">=</span><span class="mf">90.</span><span class="p">,</span>
+    <span class="n">leaf_font_size</span><span class="o">=</span><span class="mf">8.</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">clusters</span> <span class="c1"># Using cluster labels as leaf labels for visualization</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Dendrogram of IRIS dataset with 5 Clusters&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Data points (colored by cluster)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Distance&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Scatter plot with clustering results</span>
+<span class="c1"># Equivalent to ggplot(iris, aes(Petal.Length, Petal.Width)) + geom_point(col=cluster.colors[clusters], size=1))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">scatter</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="s1">&#39;petal_length&#39;</span><span class="p">],</span> <span class="n">iris</span><span class="p">[</span><span class="s1">&#39;petal_width&#39;</span><span class="p">],</span> <span class="n">c</span><span class="o">=</span><span class="n">clusters</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;viridis&#39;</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Petal Length vs Petal Width colored by Cluster&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Petal Length&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Petal Width&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">scatter</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Cluster ID&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c1"># Creating a combined plot (Equivalent to ggmatrix part)</span>
+<span class="c1"># This requires more custom plotting. We&#39;ll show the two plots separately as direct equivalent of ggmatrix isn&#39;t straightforward in basic matplotlib/seaborn.</span>
+
+<span class="c1"># Confusion matrix</span>
+<span class="c1"># Equivalent to table(clusters, iris$Species) in R</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="c1"># Need to map the species names to numerical labels to compare with cluster IDs</span>
+<span class="n">species_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">species</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())}</span>
+<span class="n">true_labels</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">species_map</span><span class="p">)</span>
+
+<span class="n">conf_matrix</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">true_labels</span><span class="p">,</span> <span class="n">clusters</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Confusion Matrix (True Species vs Clusters):&quot;</span><span class="p">)</span>
+<span class="n">conf_matrix</span>
+
+<span class="c1"># For a more detailed comparison, you might want to see how each cluster relates to the original species.</span>
+<span class="c1"># Note that cluster IDs from cut_tree are arbitrary and don&#39;t necessarily correspond to the original species labels.</span>
+<span class="c1"># You would typically assign cluster labels to the majority species in each cluster for interpretation.</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_0.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_0.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_1.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_1.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Cluster distribution:
+Cluster 0: 29
+Cluster 1: 20
+Cluster 2: 30
+Cluster 3: 45
+Cluster 4: 26
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_3.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_3.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_4.png" src="../../_images/machine_learning_unsupervised_learning_ML_labDauphine_unsupervised_1_CAH_64_4.png" />
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+Confusion Matrix (True Species vs Clusters):
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([[29, 20,  1,  0,  0],
+       [ 0,  0, 27, 23,  0],
+       [ 0,  0,  2, 22, 26],
+       [ 0,  0,  0,  0,  0],
+       [ 0,  0,  0,  0,  0]])
+</pre></div></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../../index.html" class="btn btn-neutral float-left" title="Welcome to website RTD’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
