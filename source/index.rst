@@ -8,6 +8,8 @@ Welcome to this Machine Learning documentation!
    :maxdepth: 2
    :caption: Notebooks:
 
+   machine_learing/index
+   machine_learning/unsupervised_learning/ML_labDauphine_unsupervised_1_CAH
    machine_learning/unsupervised_learning/ML_labDauphine_unsupervised_1_CAH.ipynb
 
 Indices and tables
