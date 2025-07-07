@@ -10,7 +10,6 @@ release = '0.1'
 
 # Sphinx extensions
 extensions = [
-    'myst_parser',
     'nbsphinx',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
