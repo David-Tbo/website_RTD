@@ -23,7 +23,7 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="prev" title="Welcome to this Machine Learning documentation!" href="../../index.html" /> 
+    <link rel="prev" title="Unsupervised learning" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,64 +45,26 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Notebooks:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Clustering: HAC</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Reminder:-The-Euclidean-distance">Reminder: The Euclidean distance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Single-linkage-clustering---Step-by-step-Explanation">Single linkage clustering - Step-by-step Explanation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#The-complexity">The complexity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#⚠️-Limitations-in-High-Dimensional-Spaces">⚠️ Limitations in High-Dimensional Spaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Ward-Linkage-clustering---Step-by-Step-Explanation">Ward Linkage clustering - Step-by-Step Explanation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-from-scratch">HAC from scratch</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Data">Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Initialization">Initialization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Matrix-of-distance">Matrix of distance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../probabilities/index.html">Probabilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Machine Leanring</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Unsupervised learning</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Clustering: HAC</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Reminder:-The-Euclidean-distance">Reminder: The Euclidean distance</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Single-linkage-clustering---Step-by-step-Explanation">Single linkage clustering - Step-by-step Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#The-complexity">The complexity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#⚠️-Limitations-in-High-Dimensional-Spaces">⚠️ Limitations in High-Dimensional Spaces</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Ward-Linkage-clustering---Step-by-Step-Explanation">Ward Linkage clustering - Step-by-Step Explanation</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#HAC-from-scratch">HAC from scratch</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#HAC-with-Python-packages">HAC with Python packages</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#HAC-using-Single-linkage-method">HAC using Single linkage method</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#HAC-using-Ward's-Method">HAC using Ward’s Method</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#HAC-on-iris-data">HAC on iris data</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-with-Python-packages">HAC with Python packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-using-Single-linkage-method">HAC using Single linkage method</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Evolution-of-the-aggregation-criterion">Evolution of the aggregation criterion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Build-the-clustering">Build the clustering</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Dendrogram-with-the-obtained-partitioning-and-clustering">Dendrogram with the obtained partitioning and clustering</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix">Evaluating Cluster Quality Against Ground Truth Labels with the Confusion Matrix</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-using-Ward's-Method">HAC using Ward’s Method</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Choice-of-a-partition-into-3-classes">Choice of a partition into 3 classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Dendrogram with the obtained partitioning and clustering</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Confusion-Matrix">Confusion Matrix</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-on-iris-data">HAC on iris data</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Clustering: HAC</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#Reminder:-The-Euclidean-distance">Reminder: The Euclidean distance</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Single-linkage-clustering---Step-by-step-Explanation">Single linkage clustering - Step-by-step Explanation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#The-complexity">The complexity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#⚠️-Limitations-in-High-Dimensional-Spaces">⚠️ Limitations in High-Dimensional Spaces</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#Ward-Linkage-clustering---Step-by-Step-Explanation">Ward Linkage clustering - Step-by-Step Explanation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-from-scratch">HAC from scratch</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Data">Data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Initialization">Initialization</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Matrix-of-distance">Matrix of distance</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-with-Python-packages">HAC with Python packages</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-using-Single-linkage-method">HAC using Single linkage method</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Evolution-of-the-aggregation-criterion">Evolution of the aggregation criterion</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Build-the-clustering">Build the clustering</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Dendrogram-with-the-obtained-partitioning-and-clustering">Dendrogram with the obtained partitioning and clustering</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix">Evaluating Cluster Quality Against Ground Truth Labels with the Confusion Matrix</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-using-Ward's-Method">HAC using Ward’s Method</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Choice-of-a-partition-into-3-classes">Choice of a partition into 3 classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id1">Dendrogram with the obtained partitioning and clustering</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Confusion-Matrix">Confusion Matrix</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="#HAC-on-iris-data">HAC on iris data</a></li>
 </ul>
 </li>
 </ul>
@@ -121,6 +83,8 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Machine Leanring</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Unsupervised learning</a></li>
       <li class="breadcrumb-item active">Clustering: HAC</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../_sources/machine_learning/unsupervised_learning/ML_labDauphine_unsupervised_1_CAH.ipynb.txt" rel="nofollow"> View page source</a>
@@ -1857,7 +1821,7 @@ array([[29, 20,  1,  0,  0],
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../../index.html" class="btn btn-neutral float-left" title="Welcome to this Machine Learning documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="Unsupervised learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

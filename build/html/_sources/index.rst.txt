@@ -6,11 +6,11 @@ Welcome to this Machine Learning documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Notebooks:
+   :caption: Contents:
 
-   machine_learing/index
-   machine_learning/unsupervised_learning/ML_labDauphine_unsupervised_1_CAH
-   machine_learning/unsupervised_learning/ML_labDauphine_unsupervised_1_CAH.ipynb
+   probabilities/index
+   statistics/index
+   machine_learning/index
 
 Indices and tables
 ==================
