@@ -4,7 +4,7 @@ import sys
 sys.path.insert(0, os.path.abspath('.'))
 
 # Project information
-project = 'website RTD'
+project = 'website Machine Learning'
 author = 'David TBO'
 release = '0.1'
 

@@ -1,10 +1,8 @@
-.. website RTD documentation master file, created by
+.. website Machine Learning documentation master file, created by
    sphinx-quickstart on Sun Jul  6 23:33:51 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
 
-Welcome to website RTD's documentation!
-=======================================
+Welcome to this Machine Learning documentation!
+===============================================
 
 .. toctree::
    :maxdepth: 2
