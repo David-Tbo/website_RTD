@@ -8,9 +8,9 @@ Welcome to website RTD's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :caption: Notebooks:
 
-
+   machine_learning/unsupervised_learning/ML_labDauphine_unsupervised_1_CAH.ipynb
 
 Indices and tables
 ==================
