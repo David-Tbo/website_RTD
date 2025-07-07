@@ -1,14 +1,35 @@
-# Configuration file for the Sphinx documentation builder.
+import os
+import sys
 
+sys.path.insert(0, os.path.abspath('.'))
+
+# Project information
 project = 'website RTD'
-copyright = '2025, David-Tbo'
-author = 'David-Tbo'
-release = '1.0'
+author = 'David TBO'
+release = '0.1'
 
-extensions = []
+# Sphinx extensions
+extensions = [
+    'myst_parser',
+    'nbsphinx',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+]
 
+# Paths to the templates and files to exclude
 templates_path = ['_templates']
-exclude_patterns = []
+exclude_patterns = ['_build', '**.ipynb_checkpoints']
 
+# HTML
 html_theme = 'sphinx_rtd_theme'
-html_static_path = ['_static']
+
+# nbsphinx configuration
+nbsphinx_execute = 'never'
+nbsphinx_allow_errors = True
+
+# Markdown supports and Notebooks
+source_suffix = {
+    '.rst': 'restructuredtext',
+    '.md': 'markdown',
+}
