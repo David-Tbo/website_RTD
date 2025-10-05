@@ -312,7 +312,7 @@
     "For any type of predictor $X_1$, the odds ratio for a one-unit increase is:  \n",
     "$$\\text{Odds Ratio} = \\frac{\\text{Odds}(Y=1 | X_1 = x+1)}{\\text{Odds}(Y=1 | X_1 = x)} = \\exp(\\beta_1)$$\n",
     "\n",
-    "📌 \n",
+    "📌 **Note:**  \n",
     "**$\\exp(\\beta_1​)$ compares the odds of $Y=1$ between $X_1=1$ and $X_1=0$, controlling for all other variables in the model (all others features constant).**\n",
     "\n",
     "* **Case: $X_1$ is Binary**\n",
