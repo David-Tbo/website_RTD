@@ -482,53 +482,33 @@
 </div>
 </div>
 <p>The inputs:</p>
-<p>:math:<code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">\begin{pmatrix}</span>&#160;&#160;&#160; <span class="pre">x_{1,1}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{1,k}</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">x_{2,1}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{2,k}</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{i,j}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">x_{n,1}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{n,k}</span> <span class="pre">\end{pmatrix}</span></code></p>
-<p>,</p>
-<p>:math:<code class="docutils literal notranslate"><span class="pre">w</span> <span class="pre">=</span> <span class="pre">\begin{pmatrix}</span>&#160;&#160;&#160; <span class="pre">w_1</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">w_2</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">\ldots</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">w_k</span> <span class="pre">\end{pmatrix}</span></code></p>
-<p>,</p>
-<p>:math:<code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">\text{constant}</span></code></p>
-<p>The inputs:</p>
 <p><span class="math notranslate nohighlight">\(X=\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}\)</span> , <span class="math notranslate nohighlight">\(w=\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix}\)</span> , <span class="math notranslate nohighlight">\(b = constant\)</span></p>
 <p>The linear model:</p>
-<p><span class="math notranslate nohighlight">\(X.w + b\)</span></p>
-<p><span class="math notranslate nohighlight">\(=\)</span> $</p>
-<p>$ . $</p>
-<p>$</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(b\)</span></p></li>
-</ul>
-<p>:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>=
-begin{pmatrix}</p>
-<blockquote>
-<div><p>x_{1,1}w_1 + &amp; ldots &amp; + x_{1,k}w_k + b \
-x_{2,1}w_1 + &amp; ldots &amp; + x_{2,k}w_k + b \
-ldots     &amp;   ldots &amp;   ldots \
-x_{n,1}w_1 + &amp; ldots &amp; + x_{n,k}w_k + b</p>
-</div></blockquote>
-<p>end{pmatrix}`</p>
+<div class="math notranslate nohighlight">
+\[X.w + b\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}.\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix} + b\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix} x_{1,1}w_1 + &amp; \ldots &amp; + x_{1,k}w_k + b \\ x_{2,1}w_1 + &amp; \ldots &amp; + x_{2,k}w_k + b \\ \ldots &amp; \ldots &amp;   \ldots \\ x_{n,1}w_1 + &amp; \ldots &amp; + x_{n,k}w_k + b \end{pmatrix}\end{split}\]</div>
 <p>The model prediction (output) is given by:</p>
-<p><span class="math notranslate nohighlight">\(sigmoid(X.w+b) = \frac{1}{1 + \exp(-X.w+b)}= \hat{p} = h_\omega(X)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{sigmoid}(X.w+b) = \frac{1}{1 + \exp(-X.w+b)}= \hat{p} = h_\omega(X)\]</div>
 <p>The updates of the weights and bias are given by:</p>
-<p><span class="math notranslate nohighlight">\(\omega_j = \omega_j - \frac{\alpha}{n} \sum[h_\omega(x_i) - y_i ] x_{i,j}\)</span></p>
-<p><span class="math notranslate nohighlight">\(b = b - \frac{\alpha}{n} \sum[h_\omega(x_i) - y_i ]\)</span></p>
+<div class="math notranslate nohighlight">
+\[\omega_j = \omega_j - \frac{\alpha}{n} \sum[h_\omega(x_i) - y_i ] x_{i,j}\]</div>
+<div class="math notranslate nohighlight">
+\[b = b - \frac{\alpha}{n} \sum[h_\omega(x_i) - y_i ]\]</div>
 <p>For <span class="math notranslate nohighlight">\(\omega\)</span> using linear algebra formula:</p>
-<p><span class="math notranslate nohighlight">\(\omega = X^t.(\hat{p} - y)\)</span></p>
-<p><span class="math notranslate nohighlight">\(=\)</span> $</p>
-<p>$ . $</p>
-<p>$</p>
+<div class="math notranslate nohighlight">
+\[\omega = X^t.(\hat{p} - y)\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,n} \\ x_{2,1} &amp; \ldots &amp; x_{2,n} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{k,1} &amp; \ldots &amp; x_{k,n} \end{pmatrix}.\begin{pmatrix} \hat{p_1} - y_1 \\ \hat{p_2} - y_2 \\ \ldots \\ \hat{p_n} - y_n \end{pmatrix}\end{split}\]</div>
 <p>For <span class="math notranslate nohighlight">\(b\)</span> using linear algebra formula:</p>
-<p><span class="math notranslate nohighlight">\(b = \sum(\hat{p} - y)\)</span></p>
-<p>:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>= sum
-begin{pmatrix}</p>
-<blockquote>
-<div><p>hat{p_1} - y_1 \
-hat{p_2} - y_2 \
-ldots \
-hat{p_n} - y_n</p>
-</div></blockquote>
-<p>end{pmatrix}`</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}b = \sum(\hat{p} - y) = \sum\begin{pmatrix} \hat{p_1} - y_1 \\ \hat{p_2} - y_2 \\ \ldots \\ \hat{p_n} - y_n \end{pmatrix}\end{split}\]</div>
 <p>The weights and bias are given by:</p>
-<p><span class="math notranslate nohighlight">\(sigmoid(X.w+b) = \frac{1}{1 + \exp(-X.w+b)}= \hat{p}\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{sigmoid}(X.w+b) = \frac{1}{1 + \exp(-X.w+b)}= \hat{p}\]</div>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
