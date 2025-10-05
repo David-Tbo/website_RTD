@@ -212,7 +212,10 @@
 <div class="line">The intercept <span class="math notranslate nohighlight">\(\beta_0\)</span>​ represents the <strong>log-odds of the outcome :math:`Y=1` when all predictors are equal to zero</strong>.</div>
 <div class="line"><span class="math notranslate nohighlight">\(\beta_0\)</span>​ defines the <strong>baseline probability</strong> of the outcome when all predictors are zero.</div>
 </div>
-<p>⚠️ <strong>Caveat</strong>: This interpretation of <span class="math notranslate nohighlight">\(\beta_0\)</span> is often not meaningful if some predictors cannot logically be zero (e.g., age=0, blood pressure). In such cases, <span class="math notranslate nohighlight">\(\beta_0\)</span>​ is primarily a mathematical component of the model and is rarely interpreted in isolation.</p>
+<div class="line-block">
+<div class="line">⚠️ <strong>Caveat</strong>:</div>
+<div class="line">This interpretation of <span class="math notranslate nohighlight">\(\beta_0\)</span> is often not meaningful if some predictors cannot logically be zero (e.g., age=0, blood pressure). In such cases, <span class="math notranslate nohighlight">\(\beta_0\)</span>​ is primarily a mathematical component of the model and is rarely interpreted in isolation.</div>
+</div>
 <ul class="simple">
 <li><p><strong>Odds for the baseline group:</strong></p></li>
 </ul>
@@ -479,16 +482,13 @@
 </div>
 </div>
 <p>The inputs:</p>
-<p>:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>X=
-begin{pmatrix}</p>
-<blockquote>
-<div><p>x_{1,1} &amp; ldots &amp; x_{1,k} \
-x_{2,1} &amp; ldots &amp; x_{2,k} \
-ldots &amp; x_{i,j} &amp; ldots \
-x_{n,1} &amp; ldots &amp; x_{n,k}</p>
-</div></blockquote>
-<p>end{pmatrix}` , $ w=</p>
-<p>$ , <span class="math notranslate nohighlight">\(b = constant\)</span></p>
+<p>:math:<code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">=</span> <span class="pre">\begin{pmatrix}</span>&#160;&#160;&#160; <span class="pre">x_{1,1}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{1,k}</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">x_{2,1}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{2,k}</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{i,j}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">x_{n,1}</span> <span class="pre">&amp;</span> <span class="pre">\ldots</span> <span class="pre">&amp;</span> <span class="pre">x_{n,k}</span> <span class="pre">\end{pmatrix}</span></code></p>
+<p>,</p>
+<p>:math:<code class="docutils literal notranslate"><span class="pre">w</span> <span class="pre">=</span> <span class="pre">\begin{pmatrix}</span>&#160;&#160;&#160; <span class="pre">w_1</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">w_2</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">\ldots</span> <span class="pre">\\</span>&#160;&#160;&#160; <span class="pre">w_k</span> <span class="pre">\end{pmatrix}</span></code></p>
+<p>,</p>
+<p>:math:<code class="docutils literal notranslate"><span class="pre">b</span> <span class="pre">=</span> <span class="pre">\text{constant}</span></code></p>
+<p>The inputs:</p>
+<p><span class="math notranslate nohighlight">\(X=\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}\)</span> , <span class="math notranslate nohighlight">\(w=\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix}\)</span> , <span class="math notranslate nohighlight">\(b = constant\)</span></p>
 <p>The linear model:</p>
 <p><span class="math notranslate nohighlight">\(X.w + b\)</span></p>
 <p><span class="math notranslate nohighlight">\(=\)</span> $</p>
@@ -497,7 +497,7 @@ x_{n,1} &amp; ldots &amp; x_{n,k}</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(b\)</span></p></li>
 </ul>
-<p>:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>=
+<p>:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>=
 begin{pmatrix}</p>
 <blockquote>
 <div><p>x_{1,1}w_1 + &amp; ldots &amp; + x_{1,k}w_k + b \
@@ -518,7 +518,7 @@ x_{n,1}w_1 + &amp; ldots &amp; + x_{n,k}w_k + b</p>
 <p>$</p>
 <p>For <span class="math notranslate nohighlight">\(b\)</span> using linear algebra formula:</p>
 <p><span class="math notranslate nohighlight">\(b = \sum(\hat{p} - y)\)</span></p>
-<p>:math:<a href="#id5"><span class="problematic" id="id6">`</span></a>= sum
+<p>:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>= sum
 begin{pmatrix}</p>
 <blockquote>
 <div><p>hat{p_1} - y_1 \
