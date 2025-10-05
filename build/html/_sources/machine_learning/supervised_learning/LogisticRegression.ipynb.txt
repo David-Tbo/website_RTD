@@ -739,11 +739,7 @@
    "source": [
     "The inputs:\n",
     "\n",
-    "$X=\\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}$\n",
-    ",\n",
-    "$w=\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix}$\n",
-    ",\n",
-    "$b = constant$"
+    "$$X=\\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}, w=\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix}, b = \\text{constant}$$"
    ]
   },
   {
@@ -752,21 +748,7 @@
    "source": [
     "The linear model:\n",
     "\n",
-    "$$X.w + b$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "$$\\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}.\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix} + b$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "$$\\begin{pmatrix} x_{1,1}w_1 + & \\ldots & + x_{1,k}w_k + b \\\\ x_{2,1}w_1 + & \\ldots & + x_{2,k}w_k + b \\\\ \\ldots & \\ldots &   \\ldots \\\\ x_{n,1}w_1 + & \\ldots & + x_{n,k}w_k + b \\end{pmatrix}$$"
+    "$$X.w + b = \\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}.\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix} + b = \\begin{pmatrix} x_{1,1}w_1 + & \\ldots & + x_{1,k}w_k + b \\\\ x_{2,1}w_1 + & \\ldots & + x_{2,k}w_k + b \\\\ \\ldots & \\ldots &   \\ldots \\\\ x_{n,1}w_1 + & \\ldots & + x_{n,k}w_k + b \\end{pmatrix}$$"
    ]
   },
   {
@@ -795,9 +777,7 @@
    "source": [
     "For $\\omega$ using linear algebra formula:\n",
     "\n",
-    "$$\\omega = X^t.(\\hat{p} - y)$$\n",
-    "\n",
-    "$$\\begin{pmatrix} x_{1,1} & \\ldots & x_{1,n} \\\\ x_{2,1} & \\ldots & x_{2,n} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{k,1} & \\ldots & x_{k,n} \\end{pmatrix}.\\begin{pmatrix} \\hat{p_1} - y_1 \\\\ \\hat{p_2} - y_2 \\\\ \\ldots \\\\ \\hat{p_n} - y_n \\end{pmatrix}$$"
+    "$$\\omega = X^t.(\\hat{p} - y) = \\begin{pmatrix} x_{1,1} & \\ldots & x_{1,n} \\\\ x_{2,1} & \\ldots & x_{2,n} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{k,1} & \\ldots & x_{k,n} \\end{pmatrix}.\\begin{pmatrix} \\hat{p_1} - y_1 \\\\ \\hat{p_2} - y_2 \\\\ \\ldots \\\\ \\hat{p_n} - y_n \\end{pmatrix}$$"
    ]
   },
   {

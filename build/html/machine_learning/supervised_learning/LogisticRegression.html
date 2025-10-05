@@ -482,14 +482,11 @@
 </div>
 </div>
 <p>The inputs:</p>
-<p><span class="math notranslate nohighlight">\(X=\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}\)</span> , <span class="math notranslate nohighlight">\(w=\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix}\)</span> , <span class="math notranslate nohighlight">\(b = constant\)</span></p>
+<div class="math notranslate nohighlight">
+\[\begin{split}X=\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}, w=\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix}, b = \text{constant}\end{split}\]</div>
 <p>The linear model:</p>
 <div class="math notranslate nohighlight">
-\[X.w + b\]</div>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}.\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix} + b\end{split}\]</div>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{pmatrix} x_{1,1}w_1 + &amp; \ldots &amp; + x_{1,k}w_k + b \\ x_{2,1}w_1 + &amp; \ldots &amp; + x_{2,k}w_k + b \\ \ldots &amp; \ldots &amp;   \ldots \\ x_{n,1}w_1 + &amp; \ldots &amp; + x_{n,k}w_k + b \end{pmatrix}\end{split}\]</div>
+\[\begin{split}X.w + b = \begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}.\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix} + b = \begin{pmatrix} x_{1,1}w_1 + &amp; \ldots &amp; + x_{1,k}w_k + b \\ x_{2,1}w_1 + &amp; \ldots &amp; + x_{2,k}w_k + b \\ \ldots &amp; \ldots &amp;   \ldots \\ x_{n,1}w_1 + &amp; \ldots &amp; + x_{n,k}w_k + b \end{pmatrix}\end{split}\]</div>
 <p>The model prediction (output) is given by:</p>
 <div class="math notranslate nohighlight">
 \[\text{sigmoid}(X.w+b) = \frac{1}{1 + \exp(-X.w+b)}= \hat{p} = h_\omega(X)\]</div>
@@ -500,9 +497,7 @@
 \[b = b - \frac{\alpha}{n} \sum[h_\omega(x_i) - y_i ]\]</div>
 <p>For <span class="math notranslate nohighlight">\(\omega\)</span> using linear algebra formula:</p>
 <div class="math notranslate nohighlight">
-\[\omega = X^t.(\hat{p} - y)\]</div>
-<div class="math notranslate nohighlight">
-\[\begin{split}\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,n} \\ x_{2,1} &amp; \ldots &amp; x_{2,n} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{k,1} &amp; \ldots &amp; x_{k,n} \end{pmatrix}.\begin{pmatrix} \hat{p_1} - y_1 \\ \hat{p_2} - y_2 \\ \ldots \\ \hat{p_n} - y_n \end{pmatrix}\end{split}\]</div>
+\[\begin{split}\omega = X^t.(\hat{p} - y) = \begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,n} \\ x_{2,1} &amp; \ldots &amp; x_{2,n} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{k,1} &amp; \ldots &amp; x_{k,n} \end{pmatrix}.\begin{pmatrix} \hat{p_1} - y_1 \\ \hat{p_2} - y_2 \\ \ldots \\ \hat{p_n} - y_n \end{pmatrix}\end{split}\]</div>
 <p>For <span class="math notranslate nohighlight">\(b\)</span> using linear algebra formula:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}b = \sum(\hat{p} - y) = \sum\begin{pmatrix} \hat{p_1} - y_1 \\ \hat{p_2} - y_2 \\ \ldots \\ \hat{p_n} - y_n \end{pmatrix}\end{split}\]</div>
