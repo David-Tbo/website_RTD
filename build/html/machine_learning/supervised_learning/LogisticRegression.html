@@ -1,0 +1,1094 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The logistic regression &mdash; website Machine Learning 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="prev" title="Supervised learning" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            website Machine Learning
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../probabilities/index.html">Probabilities</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Machine Leanring</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../unsupervised_learning/index.html">Unsupervised learning</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Supervised learning</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">The logistic regression</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#The-model">The model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#The-linear-LOGIT-model">The linear LOGIT model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Key-Assumptions-for-Generalizability-of-the-logit-model">Key Assumptions for Generalizability of the logit model</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Coefficients-interpretation">Coefficients interpretation</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#The-cost-function-to-minimize">The cost function to minimize</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Convexité">Convexité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#How-the-Log-Loss-was-determined-?">How the Log-Loss was determined ?</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Computation-of-the-gradient-of-the-cost-function">Computation of the gradient of the cost function</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#The-Algorithm-steps">The Algorithm steps</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#Training">Training</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Given-a-data-point">Given a data point</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Testing">Testing</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#The-Newton-Raphson-algorithm">The Newton-Raphson algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Coefficients-significativity">Coefficients significativity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Model-quality-mesure-(Deviance)">Model quality mesure (Deviance)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">website Machine Learning</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Machine Leanring</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Supervised learning</a></li>
+      <li class="breadcrumb-item active">The logistic regression</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/machine_learning/supervised_learning/LogisticRegression.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="The-logistic-regression">
+<h1>The logistic regression<a class="headerlink" href="#The-logistic-regression" title="Permalink to this heading"></a></h1>
+<section id="Introduction">
+<h2>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this heading"></a></h2>
+<p>The Logistic regression applies to cases where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(Y\)</span> is a random qualitative variable with 2 categories (a binary variable by convention, <span class="math notranslate nohighlight">\(Y = 0\)</span> if the event does not occur, and <span class="math notranslate nohighlight">\(Y = 1\)</span> if it does),</p></li>
+<li><p><span class="math notranslate nohighlight">\(X_1,\ldots,X_k\)</span> are non-random qualitative or quantitative variables (<span class="math notranslate nohighlight">\(K\)</span> explanatory variables in total).</p></li>
+<li><p><span class="math notranslate nohighlight">\((Y, X_1,\ldots,X_k)\)</span> represent the population variables, from which a sample of <span class="math notranslate nohighlight">\(n\)</span> individuals <span class="math notranslate nohighlight">\((i)\)</span> is drawn, and <span class="math notranslate nohighlight">\((y, x_i)\)</span> is the vector of observed realizations of <span class="math notranslate nohighlight">\((Y_i, X_i)\)</span> for each individual in the sample.</p></li>
+</ul>
+<p>Unlike simple linear regression, logistic regression estimates <strong>the probability</strong> of an event occurring, rather than predicting a specific numerical value.</p>
+</section>
+<section id="The-model">
+<h2>The model<a class="headerlink" href="#The-model" title="Permalink to this heading"></a></h2>
+<p>The variable <span class="math notranslate nohighlight">\(Y_i\)</span> follow a Bernoulli distribution with parameter <span class="math notranslate nohighlight">\(p_i\)</span> representing the probability that <span class="math notranslate nohighlight">\(Y_i=1\)</span>.</p>
+<div class="math notranslate nohighlight">
+\[Y_i \sim B(p_i)\]</div>
+<div class="math notranslate nohighlight">
+\[P(Y_i=1) = p_i \quad, \quad P(Y_i = 0) = 1 - p_i\]</div>
+<p>which is equivalent to:</p>
+<div class="math notranslate nohighlight">
+\[P(Y_i = k) = {p_i}^k(1 - p_i)^{1-k} \quad \text{for k} \in \{0, 1\}\]</div>
+</section>
+<section id="The-linear-LOGIT-model">
+<h2>The linear LOGIT model<a class="headerlink" href="#The-linear-LOGIT-model" title="Permalink to this heading"></a></h2>
+<p>To ensure that the expected value of <span class="math notranslate nohighlight">\(Y, E(Y)\)</span>, only takes values between 0 and 1, we use the logistic function:</p>
+<div class="math notranslate nohighlight">
+\[f(x) = \dfrac{\text{exp(x)}}{1 + \text{exp(x)}} = p\]</div>
+<p>or similarly:</p>
+<div class="math notranslate nohighlight">
+\[f(x) = \dfrac{1}{1 + \text{exp(-x)}} = p\]</div>
+<p>This guarantees that <span class="math notranslate nohighlight">\(0 &lt; f(x) &lt; 1\)</span>, so <span class="math notranslate nohighlight">\(E[Y]\)</span> can represent a valid probability.</p>
+<p>The logit function is used to transform a probability <span class="math notranslate nohighlight">\(p\)</span> into an <strong>unrestricted real value</strong>:</p>
+<p><span class="math notranslate nohighlight">\(\quad \text{Notations:} \quad X = (1,X_1, \ldots, X_k) \quad \text{and} \quad \beta = (\beta_0,\beta_1, \ldots, \beta_k)\)</span></p>
+<div class="math notranslate nohighlight">
+\[\text{logit}(p) = \text{log}(\dfrac{p}{1 - p})\]</div>
+<div class="math notranslate nohighlight">
+\[\text{logit}(p) = \beta .X\]</div>
+<div class="math notranslate nohighlight">
+\[\text{logit}(p) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_k X_k\]</div>
+<div class="math notranslate nohighlight">
+\[\text{log}\left( \dfrac{p}{1-p} \right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_k X_k\]</div>
+<div class="math notranslate nohighlight">
+\[p = \frac{1}{1 + \exp(-\beta .X)}\]</div>
+<p>Demonstration:</p>
+<p>$p(x) = <span class="math">\dfrac{1}{1 + \exp(-\beta x)}</span> $</p>
+<p>$:nbsphinx-math:<cite>underset{inverse}</cite> <span class="math">\iff `:nbsphinx-math:</span>dfrac{1}{p}` = 1 + <span class="math">\exp`(-:nbsphinx-math:</span>beta <a href="#id1"><span class="problematic" id="id2">`</span></a>x) $</p>
+<p>$:nbsphinx-math:<cite>iff `:nbsphinx-math:</cite>dfrac{1}{p}` - 1 = <span class="math">\exp`(-:nbsphinx-math:</span>beta <a href="#id3"><span class="problematic" id="id4">`</span></a>x) $</p>
+<p>$:nbsphinx-math:<cite>iff `:nbsphinx-math:</cite>dfrac{1}{p}` - <span class="math">\dfrac{p}{p}</span> = <span class="math">\exp`(-:nbsphinx-math:</span>beta <a href="#id5"><span class="problematic" id="id6">`</span></a>x) $</p>
+<p>$:nbsphinx-math:<cite>iff `:nbsphinx-math:</cite>dfrac{1-p}{p}` = <span class="math">\exp`(-:nbsphinx-math:</span>beta <a href="#id7"><span class="problematic" id="id8">`</span></a>x) $</p>
+<p>$:nbsphinx-math:<cite>iff `:nbsphinx-math:</cite>log`(<span class="math">\dfrac{1-p}{p}</span>) = -:nbsphinx-math:<a href="#id9"><span class="problematic" id="id10">`</span></a>beta <a href="#id11"><span class="problematic" id="id12">`</span></a>x $</p>
+<p><span class="math notranslate nohighlight">\(\iff \log(\dfrac{p}{1-p}) = \beta x\)</span></p>
+<p>To simplify the writing we have put $ p $ rather than $ p(x)$</p>
+</section>
+<section id="Key-Assumptions-for-Generalizability-of-the-logit-model">
+<h2>Key Assumptions for Generalizability of the logit model<a class="headerlink" href="#Key-Assumptions-for-Generalizability-of-the-logit-model" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Linearity of Log-Odds:</strong> The relationship between each continuous predictor and the log-odds of <span class="math notranslate nohighlight">\(Y=1\)</span> is linear. If this assumption is violated (e.g., non-linear effects), the interpretation of <span class="math notranslate nohighlight">\(\beta_1\)</span>​ may not hold.</p></li>
+<li><p><strong>No Multicollinearity:</strong> Predictors should not be highly correlated, as this can distort the interpretation of individual coefficients.</p></li>
+<li><p><strong>Additivity:</strong> The effect of each predictor on the log-odds is additive. There should be no significant interaction effects unless explicitly modeled.</p></li>
+<li><p><strong>Independence of Observations:</strong> The model assumes that observations are independent of each other.</p></li>
+</ul>
+</section>
+<section id="Coefficients-interpretation">
+<h2>Coefficients interpretation<a class="headerlink" href="#Coefficients-interpretation" title="Permalink to this heading"></a></h2>
+<p><strong>The Odds</strong></p>
+<p>The odds are defined by:</p>
+<div class="math notranslate nohighlight">
+\[\text{Odds} = \dfrac{p}{1-p}\]</div>
+<p><span class="math notranslate nohighlight">\(\text{Where} \quad p = P(target=1|X)\)</span></p>
+<blockquote>
+<div><p><em>If a student has a 3 in 4 chance of passing and a 1 in 4 chance of failing, their odds are ‘3 to 1’:</em> <span class="math notranslate nohighlight">\(\text{Odds} = \dfrac{3/4}{1/4}=3\)</span></p>
+</div></blockquote>
+<ul>
+<li><p><strong>Notation:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Odds}(Y=1|X=0)=\dfrac{P(Y=1|X=0)}{1-P(Y=1|X=0)}\]</div>
+</li>
+</ul>
+<section id="The-Odds-Ratio">
+<h3><strong>The Odds Ratio</strong><a class="headerlink" href="#The-Odds-Ratio" title="Permalink to this heading"></a></h3>
+<p>The odds ratio comparing the <strong>probability of :math:`target=1`</strong> between individuals with value <span class="math notranslate nohighlight">\(X\)</span> and those without it.</p>
+<div class="math notranslate nohighlight">
+\[\text{Odds Ratio} = \dfrac{\text{Odds}(Y=1|X=1)}{\text{Odds}(Y=1|X=0)}\]</div>
+<div class="math notranslate nohighlight">
+\[\text{Odds Ratio} = \dfrac{P(Y_i=1 | X=1)}{1 - P(Y_i=1 | X=1)} / \dfrac{P(Y_i=1 | X=0)}{1 - P(Y_i=1 | X=0)}\]</div>
+<p>We know that logit is given by:</p>
+<div class="math notranslate nohighlight">
+\[\text{logit}(p) = \text{log}(\dfrac{p}{1-p}) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_k x_{ik}\]</div>
+</section>
+<section id="Interpreting-:math:`beta_0`​-the-Intercept">
+<h3><strong>Interpreting :math:`beta_0`​ the Intercept</strong><a class="headerlink" href="#Interpreting-:math:`beta_0`​-the-Intercept" title="Permalink to this heading"></a></h3>
+<div class="line-block">
+<div class="line">The intercept <span class="math notranslate nohighlight">\(\beta_0\)</span>​ represents the <strong>log-odds of the outcome :math:`Y=1` when all predictors are equal to zero</strong>.</div>
+<div class="line"><span class="math notranslate nohighlight">\(\beta_0\)</span>​ defines the <strong>baseline probability</strong> of the outcome when all predictors are zero.</div>
+</div>
+<p>⚠️ <strong>Caveat</strong>: This interpretation of <span class="math notranslate nohighlight">\(\beta_0\)</span> is often not meaningful if some predictors cannot logically be zero (e.g., age=0, blood pressure). In such cases, <span class="math notranslate nohighlight">\(\beta_0\)</span>​ is primarily a mathematical component of the model and is rarely interpreted in isolation.</p>
+<ul class="simple">
+<li><p><strong>Odds for the baseline group:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Odds}(Y=1∣X_1=0)=\exp⁡(\beta_0)\]</div>
+<ul>
+<li><p><strong>Probability for the baseline group:</strong></p>
+<div class="math notranslate nohighlight">
+\[P(Y=1∣X_1=0)=\dfrac{\exp⁡(\beta_0)}{1 + \exp(\beta_0)}\]</div>
+</li>
+</ul>
+<blockquote>
+<div><p>If <span class="math notranslate nohighlight">\(X_1\)</span>​ is “smoking status” (<span class="math notranslate nohighlight">\(0\)</span> = non-smoker, <span class="math notranslate nohighlight">\(1\)</span> = smoker), then</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_0\)</span>​ gives the <strong>log-odds</strong> of the outcome for non-smokers</p></li>
+<li><p><span class="math notranslate nohighlight">\(\exp(\beta_0)\)</span> gives the <strong>odds</strong> of the outcome for non-smokers.</p></li>
+</ul>
+<p>If <span class="math notranslate nohighlight">\(\beta_0 = -1\)</span>, then:</p>
+<div class="math notranslate nohighlight">
+\[\exp(\beta_0) = \exp(-1) \approx 0.37\]</div>
+<div class="math notranslate nohighlight">
+\[P(Y=1∣X_1=0)= \dfrac{0.37}{1 + 0.37} \approx 0.27\]</div>
+<div class="line-block">
+<div class="line">27% of non-smokers are predicted to have the outcome (e.g., lung cancer), assuming no other predictors.</div>
+<div class="line">It is the observed proportion of lung cancer for non-smokers.</div>
+</div>
+</div></blockquote>
+</section>
+<section id="Interpreting-:math:`beta_1`​-the-Slope">
+<h3><strong>Interpreting :math:`beta_1`​ the Slope</strong><a class="headerlink" href="#Interpreting-:math:`beta_1`​-the-Slope" title="Permalink to this heading"></a></h3>
+<div class="line-block">
+<div class="line">In a model with multiple predictors, each <span class="math notranslate nohighlight">\(\beta_i\)</span>​ (and its corresponding odds ratio <span class="math notranslate nohighlight">\(\exp(\beta_i)\)</span> represents the effect of that predictor on the log-odds of <span class="math notranslate nohighlight">\(Y=1\)</span>, holding all other predictors constant.</div>
+<div class="line">This is the key assumption of multivariable regression: ceteris paribus (all else being equal).</div>
+</div>
+<p>The coefficient <span class="math notranslate nohighlight">\(\beta_1\)</span>​ represents the <strong>change in the log-odds of</strong> <span class="math notranslate nohighlight">\(Y=1\)</span> for a <strong>one-unit change</strong> in <span class="math notranslate nohighlight">\(X_1\)</span>​. The odds ratio <span class="math notranslate nohighlight">\(\exp(\beta_1)\)</span>​ quantifies how the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> change with <span class="math notranslate nohighlight">\(X_1\)</span>​.</p>
+<p><strong>General Formula for Odds Ratio</strong></p>
+<div class="line-block">
+<div class="line">For any type of predictor <span class="math notranslate nohighlight">\(X_1\)</span>, the odds ratio for a one-unit increase is:</div>
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\text{Odds Ratio} = \frac{\text{Odds}(Y=1 | X_1 = x+1)}{\text{Odds}(Y=1 | X_1 = x)} = \exp(\beta_1)\]</div>
+</div></blockquote>
+<p>📌 <strong>:math:`exp(beta_1​)` compares the odds of :math:`Y=1` between :math:`X_1=1` and :math:`X_1=0`, controlling for all other variables in the model (all others features constant).</strong></p>
+<ul>
+<li><p class="rubric" id="case-x-1-is-binary"><strong>Case: :math:`X_1` is Binary</strong></p>
+</li>
+</ul>
+<p>For a binary predictor <span class="math notranslate nohighlight">\(X_1\)</span>​ (e.g., <span class="math notranslate nohighlight">\(0\)</span> = non-smoker, <span class="math notranslate nohighlight">\(1\)</span> = smoker), the odds ratio <span class="math notranslate nohighlight">\(\exp(\beta_1)\)</span>​ compares the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> between the two groups.</p>
+<ul class="simple">
+<li><p><strong>Logistic regression equation:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\log\left(\dfrac{P(Y=1 | X_1)}{1 - P(Y=1 | X_1)}\right) = \beta_0 + \beta_1 1_{\{X_1 = 1\}}​\]</div>
+<ul>
+<li><p><strong>Odds ratio:</strong></p>
+<div class="math notranslate nohighlight">
+\[\text{Odds Ratio} = \dfrac{P(Y=1 | X_1=1)}{1 - P(Y=1 | X_1=1)} / \dfrac{P(Y=1 | X_1=0)}{1 - P(Y=1 | X_1=0)} = \exp(\beta_1)\]</div>
+</li>
+</ul>
+<p><strong>Interpretation:</strong></p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\exp(\beta_1) = 1\)</span>: No effect of the feature <span class="math notranslate nohighlight">\(X_1\)</span>​ on the odds of <span class="math notranslate nohighlight">\(Y=1\)</span>.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\exp(\beta_1)&gt;1\)</span>: The odds of <span class="math notranslate nohighlight">\(Y=1\)</span> are higher when <span class="math notranslate nohighlight">\(X_1​=1\)</span>. The feature <span class="math notranslate nohighlight">\(X_1\)</span>​ is <strong>positively associated</strong> with the outcome.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(\exp(\beta_1) &lt; 1\)</span>: The odds of <span class="math notranslate nohighlight">\(Y=1\)</span> are lower when <span class="math notranslate nohighlight">\(X_1​=1\)</span>. The feature <span class="math notranslate nohighlight">\(X_1\)</span>​ is <strong>negatively associated</strong> with the outcome.</p></li>
+</ul>
+<blockquote>
+<div><div class="line-block">
+<div class="line"><strong>Example:</strong></div>
+<div class="line"><strong>If :math:`beta_1 = 0.7 rightarrow exp(beta_1) approx 2.01`. The odds of lung cancer for smokers :math:`(X_1=1)` are twice as high as for non-smokers :math:`(X_1=0)`.</strong></div>
+</div>
+</div></blockquote>
+<ul>
+<li><p class="rubric" id="case-x-1-is-categorical"><strong>Case: :math:`X_1` is Categorical</strong></p>
+</li>
+</ul>
+<p>For a categorical predictor <span class="math notranslate nohighlight">\(X_1\)</span> with more than two levels (e.g., color = red, green, blue), you use <strong>dummy variables</strong>.</p>
+<ul class="simple">
+<li><p><strong>The logistic regression model becomes:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0 + \beta_{green}1_{\{X_1 = \text{green}\}} + \beta_{blue}1_{\{X_1 = \text{blue}\}}\]</div>
+<ul class="simple">
+<li><p><strong>Reference Category (“red”):</strong> When <span class="math notranslate nohighlight">\(1_{\{X_1 = \text{green}\}}=0\)</span> and <span class="math notranslate nohighlight">\(1_{\{X_1 = \text{blue}\}}=0\)</span>, the log-odds are:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0\]</div>
+<p><strong>Interpretation:</strong> This means <span class="math notranslate nohighlight">\(\beta_0\)</span>​ represents the log-odds of <span class="math notranslate nohighlight">\(Y=1\)</span> for the reference category (“red”).</p>
+<ul class="simple">
+<li><p><strong>Category (“green”):</strong> When <span class="math notranslate nohighlight">\(1_{\{X_1 = \text{green}\}}=1\)</span> and <span class="math notranslate nohighlight">\(1_{\{X_1 = \text{blue}\}}=0\)</span>, the log-odds are:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0 + \beta_{green}\]</div>
+<ul class="simple">
+<li><p><strong>Category (“blue”):</strong> When <span class="math notranslate nohighlight">\(1_{\{X_1 = \text{green}\}}=0\)</span> and <span class="math notranslate nohighlight">\(1_{\{X_1 = \text{blue}\}}=1\)</span>, the log-odds are:</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0 + \beta_{blue}\]</div>
+<p>The <strong>odds ratio for “blue” relative to the reference “red”</strong> is:</p>
+<div class="math notranslate nohighlight">
+\[\exp(\beta_{blue}) = \dfrac{\text{Odds}(Y=1 | \text{blue})}{\text{Odds}(Y=1 | \text{red})}\]</div>
+<p>The same way, <span class="math notranslate nohighlight">\(\exp(\beta_{\text{green}})\)</span>​ compares the odds for “green” vs. the “red” reference.</p>
+<blockquote>
+<div><p><strong>Interpretation:</strong></p>
+<p><strong>If :math:`exp(beta_{text{green}})​=1.5`, the odds of :math:`Y=1` are :math:`1.5` times higher for “green” compared to “red”.</strong></p>
+</div></blockquote>
+<ul>
+<li><p class="rubric" id="case-x-1-is-quantitative"><strong>Case: :math:`X_1` is Quantitative</strong></p>
+</li>
+</ul>
+<p>For a continuous predictor <span class="math notranslate nohighlight">\(X_1\)</span> (e.g., age, blood pressure), the odds ratio <span class="math notranslate nohighlight">\(\exp(\beta_1)\)</span>​ represents the multiplicative change in the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> for a one-unit increase in <span class="math notranslate nohighlight">\(X_1\)</span>​.</p>
+<ul class="simple">
+<li><p><strong>Logistic regression equation:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\log\left(\dfrac{P(Y=1 | X_1)}{1 - P(Y=1 | X_1)}\right) = \beta_0 + \beta_1 X_1​\]</div>
+<ul class="simple">
+<li><p><strong>Odds ratio for a one-unit increase:</strong></p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[\text{Odds Ratio} = \frac{\text{Odds}(Y=1 | X_1 = x+1)}{\text{Odds}(Y=1 | X_1 = x)} = \exp(\beta_1)​\]</div>
+<p><strong>In short</strong>: <span class="math notranslate nohighlight">\(\beta_1\)</span>​ captures the <strong>constant log-odds</strong> change per unit increase in <span class="math notranslate nohighlight">\(X_1\)</span>, so <span class="math notranslate nohighlight">\(\exp(\beta_1)\)</span>​ is the <strong>odds ratio</strong> for that one-unit change.</p>
+<p>This holds regardless of the starting value of <span class="math notranslate nohighlight">\(X_1\)</span>​ because the model assumes a constant multiplicative effect on the odds (a key assumption of logistic regression).</p>
+<blockquote>
+<div><p><strong>Interpretation:</strong></p>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\beta_1=0.095 \rightarrow \exp(\beta_1)=1.1\)</span>, the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> increase by 10% for each one-unit increase in <span class="math notranslate nohighlight">\(X_1\)</span>​.</p></li>
+<li><p>If <span class="math notranslate nohighlight">\(X_1\)</span>​ is “years of smoking” and <span class="math notranslate nohighlight">\(\beta_1 = 0.7 \rightarrow  \exp(\beta_1) \approx 2.01\)</span>. For each additional year of smoking, the odds of lung cancer double. .</p></li>
+</ul>
+</div></blockquote>
+<p><strong>Summary</strong></p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type of <span class="math notranslate nohighlight">\(X_1\)</span></p></th>
+<th class="head"><p>Interpretation of <span class="math notranslate nohighlight">\(\exp(\beta_1)\)</span></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Binary</p></td>
+<td><p>Compares odds of <span class="math notranslate nohighlight">\(Y=1\)</span> between <span class="math notranslate nohighlight">\(X_1=1\)</span> and <span class="math notranslate nohighlight">\(X_1=0\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p>Categorical</p></td>
+<td><p>Compares odds of <span class="math notranslate nohighlight">\(Y=1\)</span> for a given category relative to the reference.</p></td>
+</tr>
+<tr class="row-even"><td><p>Quantitative</p></td>
+<td><p>Multiplicative change in odds of <span class="math notranslate nohighlight">\(Y=1\)</span> for a one-unit increase in <span class="math notranslate nohighlight">\(X_1\)</span></p></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+</section>
+<section id="The-cost-function-to-minimize">
+<h1>The cost function to minimize<a class="headerlink" href="#The-cost-function-to-minimize" title="Permalink to this heading"></a></h1>
+<div class="line-block">
+<div class="line">La fonction de coût de la régression logistique, également appelée fonction de perte logistique ou <strong>log loss</strong>, est une mesure de l’erreur de prédiction d’un modèle de régression logistique.</div>
+<div class="line">Elle permet d’évaluer la qualité de l’ajustement du modèle aux données d’entraînement et est utilisée pour optimiser les paramètres du modèle pendant l’apprentissage.</div>
+</div>
+<p>La fonction de coût de la régression logistique est définie comme suit :</p>
+<p><span class="math notranslate nohighlight">\(J(θ) = -1/n * \sum(Cost(h_\theta(x_i), y_i)\)</span></p>
+<p><span class="math notranslate nohighlight">\(J(θ) = -1/n * \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\)</span></p>
+<p>où :</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(n\)</span> est le nombre d’exemples dans l’ensemble d’entraînement;</p></li>
+<li><p><span class="math notranslate nohighlight">\(y_i\)</span> est la valeur réelle de la variable dépendante (0 ou 1) pour l’exemple <span class="math notranslate nohighlight">\(i\)</span>;</p></li>
+<li><p><span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> est la prédiction du modèle de régression logistique pour l’exemple <span class="math notranslate nohighlight">\(i\)</span>, en fonction des paramètres <span class="math notranslate nohighlight">\(\theta\)</span> et des variables explicatives <span class="math notranslate nohighlight">\(x_i\)</span>;</p></li>
+</ul>
+<p><span class="math notranslate nohighlight">\(log\)</span> désigne le logarithme naturel.</p>
+<section id="Convexité">
+<h2>Convexité<a class="headerlink" href="#Convexité" title="Permalink to this heading"></a></h2>
+<p>La convexité est une propriété importante en optimisation, car elle garantit qu’un minimum local est également un minimum global. Cela signifie qu’il est plus facile de trouver la solution optimale lors de l’utilisation de méthodes d’optimisation telles que la descente de gradient.</p>
+<p>Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives.</p>
+<p>La convexité est une propriété importante en optimisation, car elle garantit qu’un minimum local est également un minimum global. Cela signifie qu’il est plus facile de trouver la solution optimale lors de l’utilisation de méthodes d’optimisation telles que la descente de gradient.</p>
+<p>Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives.</p>
+<p>La convexité d’une fonction garantit qu’un point stationnaire (c’est-à-dire un point où la dérivée est nulle) est un minimum global, mais elle ne garantit pas à elle seule l’existence d’un tel point.</p>
+<p>Pour prouver l’existence d’un extremum, il faut également montrer que la fonction est bornée inférieurement et qu’elle atteint cette borne inférieure. En d’autres termes, il faut montrer qu’il existe une valeur minimale que la fonction peut atteindre et qu’il existe au moins un point où la fonction prend cette valeur.</p>
+<p>Dans le cas de la fonction Log Loss, on peut montrer qu’elle est bornée inférieurement par zéro (puisque le logarithme d’un nombre positif est toujours positif) et qu’elle atteint cette borne inférieure lorsque les prédictions sont parfaitement correctes (c’est-à-dire lorsque la probabilité prédite pour la classe correcte est égale à 1).</p>
+<p>En combinant la convexité de la fonction Log Loss avec le fait qu’elle est bornée inférieurement et qu’elle atteint sa borne inférieure, on peut conclure que la fonction atteint un minimum global lorsque les prédictions sont parfaitement correctes.</p>
+</section>
+<section id="How-the-Log-Loss-was-determined-?">
+<h2>How the Log-Loss was determined ?<a class="headerlink" href="#How-the-Log-Loss-was-determined-?" title="Permalink to this heading"></a></h2>
+<div class="line-block">
+<div class="line">The log-loss pénalise les erreurs de prédiction en fonction de la probabilité estimée par le modèle.</div>
+<div class="line">La fonction de coût attribue une pénalité plus élevée aux exemples pour lesquels la prédiction est loin de la valeur réelle, c’est-à-dire lorsque la probabilité estimée est proche de 0 ou de 1 alors que la valeur réelle est respectivement 1 ou 0.</div>
+</div>
+<ul class="simple">
+<li><p>Si la valeur réelle <span class="math notranslate nohighlight">\(y_i\)</span> est égale à 1 (c’est-à-dire que l’exemple appartient à la classe positive), la pénalité est égale à <span class="math notranslate nohighlight">\(-log(h_\theta(x_i))\)</span>, où <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> est la probabilité estimée par le modèle que l’exemple appartienne à la classe positive. Plus la probabilité estimée <span class="math notranslate nohighlight">\((h_\theta(x_i))\)</span> est proche de 0 (et donc s’éloigne de l’observation’), plus la pénalité est élevée (<span class="math notranslate nohighlight">\(-\log(0^+) \approx +\infty\)</span>).</p></li>
+<li><p>Si la valeur réelle <span class="math notranslate nohighlight">\(y_i\)</span> est égale à 0 (c’est-à-dire que l’exemple appartient à la classe négative), la pénalité est égale à <span class="math notranslate nohighlight">\(-log(1 - h_\theta(x_i))\)</span>, où <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> est la probabilité estimée par le modèle que l’exemple appartienne à la classe positive. Plus la probabilité estimée est proche de 1, plus la pénalité est élevée (<span class="math notranslate nohighlight">\(-\log(1 - 1^-) \approx +\infty\)</span>).</p></li>
+</ul>
+<p>On résume les deux conditions “si” précédentes en une seule formule : <span class="math notranslate nohighlight">\(y_i * log(h_\theta(x_i)) + (1 - y_i) * log(1 - h_\theta(x_i))\)</span> pour l’observation <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p><strong>L’objectif de l’apprentissage d’un modèle de régression logistique est de minimiser la fonction de coût en ajustant les paramètres :math:`theta`.</strong></p>
+<p>Pour ce faire, on utilisera une méthode d’optimisation itérative, <strong>la descente de gradient</strong>, pour trouver les valeurs de <span class="math notranslate nohighlight">\(\theta\)</span> qui minimisent la fonction de coût sur l’ensemble d’entraînement.</p>
+<p>La fonction de coût de la régression logistique est alors définie comme la moyenne des pénalités sur tous les exemples de l’ensemble d’entraînement.</p>
+<p>En minimisant la fonction de coût, on cherche à trouver les paramètres <span class="math notranslate nohighlight">\(\theta\)</span> qui permettent de minimiser la somme des pénalités <span class="math notranslate nohighlight">\(\underset{\theta} min(J(\theta))\)</span> sur tous les exemples, c’est-à-dire de maximiser la probabilité d’observer les données d’entraînement en fonction des paramètres du modèle.</p>
+</section>
+<section id="Computation-of-the-gradient-of-the-cost-function">
+<h2>Computation of the gradient of the cost function<a class="headerlink" href="#Computation-of-the-gradient-of-the-cost-function" title="Permalink to this heading"></a></h2>
+<p>The gradient of <span class="math notranslate nohighlight">\(J(\theta) = \frac{\partial}{\partial \theta}J(\theta)\)</span></p>
+<p>We start by transforming the expression of <span class="math notranslate nohighlight">\(J(\theta) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\)</span></p>
+<p>$ <span class="math">\log`(h\_:nbsphinx-math:</span>theta`(x_i)) = <span class="math">\log`(:nbsphinx-math:</span>frac{1}{1 + exp(-theta^Tx_i)}`) = -<span class="math">\log`(1 + :nbsphinx-math:</span>exp`(-:nbsphinx-math:<a href="#id13"><span class="problematic" id="id14">`</span></a>theta`^Tx_i))$</p>
+<p>and</p>
+<p>$ <span class="math">\log`(1 - h\_:nbsphinx-math:</span>theta`(x_i)) = <span class="math">\log`(1 - :nbsphinx-math:</span>frac{1}{1 + exp(-theta^Tx_i)}`) = <span class="math">\log`(:nbsphinx-math:</span>frac{1 + exp(-theta^Tx_i) - 1}{1 + exp(-theta^Tx_i)}`) = <span class="math">\log`(:nbsphinx-math:</span>frac{exp(-theta^Tx_i)}{1 + exp(-theta^Tx_i)}`) = <span class="math">\log`(:nbsphinx-math:</span>exp`(-<span class="math">\theta`^Tx_i)) - :nbsphinx-math:</span>log`({1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)}) =
+-<span class="math">\theta`^Tx_i - :nbsphinx-math:</span>log`({1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)})$</p>
+<p>$ <span class="math">\Rightarrow `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id15"><span class="problematic" id="id16">`</span></a>sum[y_i (-log(1 + exp(-theta^Tx_i))) + (1 - y_i) (-theta^Tx_i - log({1 + exp(-theta^Tx_i)}))]`$</p>
+<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id17"><span class="problematic" id="id18">`</span></a>sum[y_i (-log(1 + exp(-theta^Tx_i))) + (1 - y_i) (-theta^Tx_i - log(1 + exp(-theta^Tx_i)))]`$</p>
+<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id19"><span class="problematic" id="id20">`</span></a>sum[y_i (-log(1 + exp(-theta^Tx_i))) -theta^Tx_i - log(1 + exp(-theta^Tx_i)) + y_i theta^Tx_i  + y_i log(1 + exp(-theta^Tx_i))]`$</p>
+<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id21"><span class="problematic" id="id22">`</span></a>sum[- y_i log(1 + exp(-theta^Tx_i)) -theta^Tx_i - log({1 + exp(-theta^Tx_i)}) + y_i theta^Tx_i  + y_i log(1 + exp(-theta^Tx_i))]`$</p>
+<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id23"><span class="problematic" id="id24">`</span></a>sum[cancel{- y_i log(1 + exp(-theta^Tx_i))} -theta^Tx_i - log({1 + exp(-theta^Tx_i)}) + y_i theta^Tx_i  + cancel{y_i log(1 + exp(-theta^Tx_i))}]`$</p>
+<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id25"><span class="problematic" id="id26">`</span></a>sum[-theta^Tx_i - log({1 + exp(-theta^Tx_i)}) + y_i theta^Tx_i  ]`$</p>
+<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id27"><span class="problematic" id="id28">`</span></a>sum[y_i theta^Tx_i  -theta^Tx_i - log({1 + exp(-theta^Tx_i)}) ]`$</p>
+<p>with:</p>
+<p>$ -<span class="math">\theta`^Tx_i - :nbsphinx-math:</span>log`({1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)}) = - <span class="math">\log`(:nbsphinx-math:</span>exp`(<span class="math">\theta`^T x_i)) - :nbsphinx-math:</span>log`(1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)) = -(<span class="math">\log`(:nbsphinx-math:</span>exp`(<span class="math">\theta`^T x_i)) + :nbsphinx-math:</span>log`(1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i))) $</p>
+<p>$= -<span class="math">\log[\exp(\theta^T x_i)(1 + \exp(-\theta^Tx_i))] `= -:nbsphinx-math:</span>log`(<span class="math">\exp`(:nbsphinx-math:</span>theta`^T x_i + 1)) $</p>
+<p>$ <span class="math">\Rightarrow `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id29"><span class="problematic" id="id30">`</span></a>sum[y_i theta^Tx_i  -log(exp(theta^T x_i + 1)) ]`$</p>
+<p>$ <span class="math">\Rightarrow `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id31"><span class="problematic" id="id32">`</span></a>sum[y_i theta^Tx_i  -log(1 + exp(theta^T x_i)) ]`$</p>
+<p>$ <span class="math">\Rightarrow  `:nbsphinx-math:</span>frac{partial}{partial theta_j}`J(<span class="math">\theta</span>) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id33"><span class="problematic" id="id34">`</span></a>sum[y_i frac{partial}{partial theta_j} (theta^Tx_i)  - frac{partial}{partial theta_j}log(1 + exp(theta^T x_i)) ]`$</p>
+<p>Knowing that: <span class="math notranslate nohighlight">\(\theta^Tx_i = \theta_1 {x_i}^{(1)} + \theta_2 {x_i}^{(2)} + \ldots + \theta_k {x_i}^{(k)}\)</span></p>
+<p>$ <span class="math">\Rightarrow   `:nbsphinx-math:</span>frac{partial}{partial theta_j}` (:nbsphinx-math:<a href="#id35"><span class="problematic" id="id36">`</span></a>theta`^Tx_i) = x_i^{(j)} $</p>
+<p>And:</p>
+<p>$ <span class="math">\frac{\partial}{\partial \theta_j}</span><span class="math">\log`(1 + :nbsphinx-math:</span>exp`(<span class="math">\theta`^T x_i)) :nbsphinx-math:</span>underset{log(u)^{’} = frac{u^{‘}}{u}}` = <span class="math">\frac{\frac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))}</span> {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <cite>x_i)} = :nbsphinx-math:</cite>frac{frac{partial}{partial theta_j}(exp(theta^T x_i))}` {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <cite>x_i)}
+:nbsphinx-math:</cite>underset{exp(u)^{’} = u^{‘}exp(u)}` = <span class="math">\frac{\frac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))}</span> {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <a href="#id37"><span class="problematic" id="id38">`</span></a>x_i)} $</p>
+<p>$= <span class="math">\frac{x_i^{(j)} * (\exp(\theta^T x_i))}</span> {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <cite>x_i)} = x_i^{(j)} h_:nbsphinx-math:</cite>theta`(x_i) $</p>
+<p>$ <span class="math">\Rightarrow  `:nbsphinx-math:</span>frac{partial}{partial theta_j}`J(<span class="math">\theta</span>) = -<span class="math">\frac{1}{n}</span> <span class="math">\sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i) ] `= -:nbsphinx-math:</span>frac{1}{n}` :nbsphinx-math:<a href="#id39"><span class="problematic" id="id40">`</span></a>sum[y_i - <a href="#id53"><span class="problematic" id="id54">h_</span></a>theta(x_i) ] <a href="#id41"><span class="problematic" id="id42">`</span></a>x_i^{(j)}$</p>
+<p>$ <span class="math">\iff  `:nbsphinx-math:</span>frac{partial}{partial theta_j}`J(<span class="math">\theta</span>) = <span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id43"><span class="problematic" id="id44">`</span></a>sum[<a href="#id55"><span class="problematic" id="id56">h_</span></a>theta(x_i) - y_i ] <a href="#id45"><span class="problematic" id="id46">`</span></a>x_i^{(j)}$</p>
+<p>Sachant que l’expression de la descente de Gradient pour mettre à jour les pondérations est pour le poids <span class="math notranslate nohighlight">\(\theta_j\)</span> :</p>
+<p><span class="math notranslate nohighlight">\(\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j}J(\theta)\)</span></p>
+<p>où <span class="math notranslate nohighlight">\(\alpha\)</span> est le learning rate, on obtient:</p>
+<p><span class="math notranslate nohighlight">\(\theta_j = \theta_j - \frac{\alpha}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\)</span></p>
+</section>
+</section>
+<section id="The-Algorithm-steps">
+<h1>The Algorithm steps<a class="headerlink" href="#The-Algorithm-steps" title="Permalink to this heading"></a></h1>
+<p>Note: <span class="math notranslate nohighlight">\(\theta = (w,b)\)</span></p>
+<p>with <span class="math notranslate nohighlight">\(h_\theta(x) = \frac{1}{1 + \exp(-w x + b)}\)</span></p>
+<section id="Training">
+<h2>Training<a class="headerlink" href="#Training" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Initialize weights as zero</p></li>
+<li><p>Initialize bias as zero</p></li>
+</ul>
+</section>
+<section id="Given-a-data-point">
+<h2>Given a data point<a class="headerlink" href="#Given-a-data-point" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>Predict result by using <span class="math notranslate nohighlight">\(\hat{y} = \frac{1}{1 + \exp(-wx+b)}\)</span></p></li>
+<li><p>Calculate the error</p></li>
+<li><p>Use Gradient descent to figure out new weights and bias values</p></li>
+<li><p>Repeat n times</p></li>
+</ul>
+</section>
+<section id="Testing">
+<h2>Testing<a class="headerlink" href="#Testing" title="Permalink to this heading"></a></h2>
+<p>Given a data point:</p>
+<ul class="simple">
+<li><p>Put the values from the data point into the equation <span class="math notranslate nohighlight">\(\hat{y} = \frac{1}{1 + \exp(-w+b)}\)</span></p></li>
+<li><p>Choose the label based on the probability</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Logistic Regression from scratch</span>
+</pre></div>
+</div>
+</div>
+<p>The inputs:</p>
+<p>:math:<a href="#id47"><span class="problematic" id="id48">`</span></a>X=
+begin{pmatrix}</p>
+<blockquote>
+<div><p>x_{1,1} &amp; ldots &amp; x_{1,k} \
+x_{2,1} &amp; ldots &amp; x_{2,k} \
+ldots &amp; x_{i,j} &amp; ldots \
+x_{n,1} &amp; ldots &amp; x_{n,k}</p>
+</div></blockquote>
+<p>end{pmatrix}` , $ w=</p>
+<p>$ , <span class="math notranslate nohighlight">\(b = constant\)</span></p>
+<p>The linear model:</p>
+<p><span class="math notranslate nohighlight">\(X.w + b\)</span></p>
+<p><span class="math notranslate nohighlight">\(=\)</span> $</p>
+<p>$ . $</p>
+<p>$</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(b\)</span></p></li>
+</ul>
+<p>:math:<a href="#id49"><span class="problematic" id="id50">`</span></a>=
+begin{pmatrix}</p>
+<blockquote>
+<div><p>x_{1,1}w_1 + &amp; ldots &amp; + x_{1,k}w_k + b \
+x_{2,1}w_1 + &amp; ldots &amp; + x_{2,k}w_k + b \
+ldots     &amp;   ldots &amp;   ldots \
+x_{n,1}w_1 + &amp; ldots &amp; + x_{n,k}w_k + b</p>
+</div></blockquote>
+<p>end{pmatrix}`</p>
+<p>The model prediction (output) is given by:</p>
+<p><span class="math notranslate nohighlight">\(sigmoid(X.w+b) = \frac{1}{1 + \exp(-X.w+b)}= \hat{p} = h_\omega(X)\)</span></p>
+<p>The updates of the weights and bias are given by:</p>
+<p><span class="math notranslate nohighlight">\(\omega_j = \omega_j - \frac{\alpha}{n} \sum[h_\omega(x_i) - y_i ] x_{i,j}\)</span></p>
+<p><span class="math notranslate nohighlight">\(b = b - \frac{\alpha}{n} \sum[h_\omega(x_i) - y_i ]\)</span></p>
+<p>For <span class="math notranslate nohighlight">\(\omega\)</span> using linear algebra formula:</p>
+<p><span class="math notranslate nohighlight">\(\omega = X^t.(\hat{p} - y)\)</span></p>
+<p><span class="math notranslate nohighlight">\(=\)</span> $</p>
+<p>$ . $</p>
+<p>$</p>
+<p>For <span class="math notranslate nohighlight">\(b\)</span> using linear algebra formula:</p>
+<p><span class="math notranslate nohighlight">\(b = \sum(\hat{p} - y)\)</span></p>
+<p>:math:<a href="#id51"><span class="problematic" id="id52">`</span></a>= sum
+begin{pmatrix}</p>
+<blockquote>
+<div><p>hat{p_1} - y_1 \
+hat{p_2} - y_2 \
+ldots \
+hat{p_n} - y_n</p>
+</div></blockquote>
+<p>end{pmatrix}`</p>
+<p>The weights and bias are given by:</p>
+<p><span class="math notranslate nohighlight">\(sigmoid(X.w+b) = \frac{1}{1 + \exp(-X.w+b)}= \hat{p}\)</span></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The Logistic Regression from scratch</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[95]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[128]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Logistic_Regression</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Initiate the constructor</span>
+<span class="sd">            INPUT:</span>
+<span class="sd">                learning_rate: magnitude of the step</span>
+<span class="sd">                n_iter: number of iterations</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span> <span class="o">=</span> <span class="n">n_iter</span>
+
+    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Train the model</span>
+<span class="sd">        INPUTS:</span>
+<span class="sd">            X: the dataset of the features</span>
+<span class="sd">            y: the target</span>
+<span class="sd">        OUTPUTS:</span>
+<span class="sd">            The model</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># initialize the parameters:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_weights</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">update_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Update of the weights with Gradient descent&#39;&#39;&#39;</span>
+
+        <span class="c1"># we compute the prediction (the probability)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)))</span>
+
+        <span class="c1"># update the weights:</span>
+        <span class="c1"># w_j = w_j - (alpha / n) * S(p_hat - y_i)xij</span>
+        <span class="c1"># b = b - (alpha / n) * S(p_hat - y_i)</span>
+        <span class="n">dw</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">dw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">db</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)))</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y_pred</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[129]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[130]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the data</span>
+
+<span class="n">rep</span> <span class="o">=</span> <span class="s1">&#39;/Users/davidtbo/Documents/Data_Science/99_Data&#39;</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">rep</span><span class="p">,</span> <span class="s1">&#39;diabetes.csv&#39;</span><span class="p">)</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[131]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[131]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Pregnancies</th>
+      <th>Glucose</th>
+      <th>BloodPressure</th>
+      <th>SkinThickness</th>
+      <th>Insulin</th>
+      <th>BMI</th>
+      <th>DiabetesPedigreeFunction</th>
+      <th>Age</th>
+      <th>Outcome</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>6</td>
+      <td>148</td>
+      <td>72</td>
+      <td>35</td>
+      <td>0</td>
+      <td>33.6</td>
+      <td>0.627</td>
+      <td>50</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>85</td>
+      <td>66</td>
+      <td>29</td>
+      <td>0</td>
+      <td>26.6</td>
+      <td>0.351</td>
+      <td>31</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>8</td>
+      <td>183</td>
+      <td>64</td>
+      <td>0</td>
+      <td>0</td>
+      <td>23.3</td>
+      <td>0.672</td>
+      <td>32</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>89</td>
+      <td>66</td>
+      <td>23</td>
+      <td>94</td>
+      <td>28.1</td>
+      <td>0.167</td>
+      <td>21</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>137</td>
+      <td>40</td>
+      <td>35</td>
+      <td>168</td>
+      <td>43.1</td>
+      <td>2.288</td>
+      <td>33</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[132]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">features</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;Outcome&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[133]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Standardize the data</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+
+<span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+<span class="n">standardized_data</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">features</span><span class="p">)</span>
+
+<span class="n">features</span> <span class="o">=</span> <span class="n">standardized_data</span>
+<span class="n">target</span><span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;Outcome&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[134]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[135]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Testing the algorithm</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[136]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span> <span class="o">=</span> <span class="n">Logistic_Regression</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[137]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">classifier</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[138]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Accuracy</span>
+
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[139]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Accuracy on the training data</span>
+<span class="n">y_train_pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span>
+<span class="n">training_data_accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_train</span><span class="p">,</span> <span class="n">y_train_pred</span><span class="p">)</span>
+<span class="n">training_data_accuracy</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[139]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.754071661237785
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[140]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Accuracy on the training data</span>
+<span class="n">y_test_pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">test_data_accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_test_pred</span><span class="p">)</span>
+<span class="n">test_data_accuracy</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[140]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.7272727272727273
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[143]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Predictive system</span>
+
+<span class="n">input_data</span> <span class="o">=</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">166</span><span class="p">,</span> <span class="mi">72</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mf">25.8</span><span class="p">,</span> <span class="mf">0.587</span><span class="p">,</span> <span class="mi">51</span><span class="p">)</span>
+
+<span class="c1"># to numpy array</span>
+<span class="n">input_data_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">input_data</span><span class="p">)</span>
+
+<span class="c1"># Reshape</span>
+<span class="n">input_data_reshape</span> <span class="o">=</span> <span class="n">input_data_array</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="c1"># Standardized the data</span>
+<span class="n">input_data_std</span> <span class="o">=</span> <span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">input_data_reshape</span><span class="p">)</span>
+
+<span class="n">pred</span> <span class="o">=</span> <span class="n">classifier</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">input_data_std</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">pred</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The person is diabetic&#39;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The person is not diabetic&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+The person is diabetic
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area stderr docutils container">
+<div class="highlight"><pre>
+/opt/anaconda3/lib/python3.11/site-packages/sklearn/base.py:439: UserWarning: X does not have valid feature names, but StandardScaler was fitted with feature names
+  warnings.warn(
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[120]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">datasets</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[106]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">load_breast_cancer</span><span class="p">()</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">target</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[107]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[108]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">accuracy</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">):</span>
+    <span class="n">accuracy</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y_true</span><span class="o">==</span><span class="n">y_pred</span><span class="p">)</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">accuracy</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[109]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">clf</span> <span class="o">=</span> <span class="n">Logistic_Regression</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.0001</span><span class="p">)</span>
+<span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[110]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span> <span class="o">=</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[111]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">predictions</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[111]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">accuracy</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predictions</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[112]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0.3986013986013986
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="APPENDIX">
+<h1>APPENDIX<a class="headerlink" href="#APPENDIX" title="Permalink to this heading"></a></h1>
+<p><strong>Demonstration:</strong> The coefficient <span class="math notranslate nohighlight">\(\beta_1\)</span>​ represents the <strong>change in the log-odds of</strong> <span class="math notranslate nohighlight">\(Y=1\)</span> for a <strong>one-unit change</strong> in <span class="math notranslate nohighlight">\(X_1\)</span>​ quantitative feature.</p>
+<p>Notations:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{Odds}(Y=1|X=x+1)=P(Y=1|X=x+1) / (1-P(Y=1|X=x+1))\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{Odds}(Y=1|X=x)=P(Y=1|X=x) / (1-P(Y=1|X=x))\)</span></p></li>
+</ul>
+<p>We know that:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{log(Odds)}(Y=1|X=x+1)=\beta_0 + \beta_1 \times (x+1)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{log(Odds)}(Y=1|X=x)=\beta_0 + \beta_1 \times x\)</span></p></li>
+</ul>
+<p>By difference:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\text{log(Odds)}(Y=1|X=x+1) - \text{log(Odds)}(Y=1|X=x) =\beta_0 + \beta_1 \times (x+1) - (\beta_0 + \beta_1 \times x) = \beta_1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{log}\left(\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)}\right) =\beta_1\)</span></p></li>
+</ul>
+<p><strong>CQFD</strong></p>
+<p>Note:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)} = \exp(\beta_1)\)</span></p></li>
+</ul>
+<section id="The-Newton-Raphson-algorithm">
+<h2>The Newton-Raphson algorithm<a class="headerlink" href="#The-Newton-Raphson-algorithm" title="Permalink to this heading"></a></h2>
+<p>Another way to compute the coefficients</p>
+<div class="line-block">
+<div class="line">L’algorithme de la méthode de Newton-Raphson est utilisé pour trouver les coefficients de la régression logistique en maximisant la fonction de vraisemblance.</div>
+<div class="line">La régression logistique est un modèle de régression utilisé pour prédire la probabilité d’un événement binaire en fonction d’une ou plusieurs variables prédictives.</div>
+</div>
+<div class="line-block">
+<div class="line">Dans le cas de la régression logistique, la fonction de vraisemblance est une fonction convexe et peut être maximisée à l’aide de l’algorithme de Newton-Raphson.</div>
+<div class="line">L’algorithme de Newton-Raphson est une méthode itérative pour trouver le maximum d’une fonction en utilisant la dérivée et la dérivée seconde de la fonction.</div>
+</div>
+<p>Dans le cas de la régression logistique, la fonction de vraisemblance est donnée par:</p>
+<p><span class="math notranslate nohighlight">\(L(\omega | X, y) = prod(p(yi | xi, beta)^{yi} * (1 - p(yi | xi, beta))^{(1 - yi)})\)</span></p>
+<p>où <span class="math notranslate nohighlight">\(\omega\)</span> est le vecteur de coefficients de la régression logistique, <span class="math notranslate nohighlight">\(X\)</span> est la matrice de variables prédictives, <span class="math notranslate nohighlight">\(y\)</span> est le vecteur de variables réponses binaires et <span class="math notranslate nohighlight">\(p(yi | xi, \omega)\)</span> est la probabilité prédite de l’événement binaire pour l’observation <span class="math notranslate nohighlight">\(i\)</span>.</p>
+<p>Pour maximiser la fonction de vraisemblance, nous pouvons utiliser l’algorithme de Newton-Raphson. À chaque itération, l’algorithme met à jour le vecteur de coefficients beta en utilisant la formule suivante:</p>
+<p><span class="math notranslate nohighlight">\(\omega_{i+1} = \omega_i - H^{-1} * g\)</span></p>
+<p>où</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H = \frac{\partial^2L}{\partial \omega \partial\omega'}\)</span> est la matrice hessienne de la fonction de vraisemblance,</p></li>
+<li><p><span class="math notranslate nohighlight">\(g = \frac{\partial L}{\partial \omega }\)</span> est le vecteur gradient de la fonction de vraisemblance et</p></li>
+<li><p><span class="math notranslate nohighlight">\(\omega_i\)</span> est le vecteur de coefficients à l’itération <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ul>
+<p>La matrice hessienne et le vecteur gradient de la fonction de vraisemblance peuvent être calculés à l’aide des dérivées partielles de la fonction de vraisemblance par rapport aux coefficients beta.</p>
+<p>Donc, dans le cas de la régression logistique, l’algorithme de la méthode de Newton-Raphson est utilisé pour trouver les coefficients de la régression logistique en maximisant la fonction de vraisemblance.</p>
+<p>Cela permet d’estimer les probabilités de l’événement binaire en fonction des variables prédictives.</p>
+<p>NB: les itérations sont interrompues lorsque la différence entre deux vecteurs de solution successifs est négligeable.</p>
+</section>
+<section id="Coefficients-significativity">
+<h2>Coefficients significativity<a class="headerlink" href="#Coefficients-significativity" title="Permalink to this heading"></a></h2>
+<p>The Wald statistic allows to test the coefficients significativity <span class="math notranslate nohighlight">\(\hat{w_j}\)</span>. Wald statistic is given by:</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>:math:`(\frac{\hat{w_j}}{\sigma(\hat{w_j})})^2`
+</pre></div>
+</div>
+<p>Under $H_0 : {<span class="math">\hat{w_j}</span> = 0 } <span class="math">\Longrightarrow `:nbsphinx-math:</span>frac{hat{w_j}}{sigma(hat{w_j})}` $ ~ <span class="math notranslate nohighlight">\(\mathcal{N}(0, 1)\)</span></p>
+<p>The added-value of the variable <span class="math notranslate nohighlight">\(X_j\)</span> is only real if the Wald statistic &gt; 4 <span class="math notranslate nohighlight">\((3.84 = 1.96^2)\)</span></p>
+<p><span class="math notranslate nohighlight">\(Wald &gt; 4\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff (\frac{\hat{w_j}}{\sigma(\hat{w_j})})^2 &gt; 4\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff \frac{\hat{w_j}}{\sigma(\hat{w_j})} &gt; 2\)</span></p>
+<p>$:nbsphinx-math:<cite>iff `:nbsphinx-math:</cite>hat{w_j}` &gt; 2:nbsphinx-math:<cite>sigma`(:nbsphinx-math:</cite>hat{w_j}`) $</p>
+<p><span class="math notranslate nohighlight">\(\iff \hat{w_j} - 2\sigma(\hat{w_j}) &gt; 0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff \hat{w_j}\)</span> se trouve à plus de 2 écarts-type de 0</p>
+<p>$:nbsphinx-math:<cite>iff `$ l’intervalle de confiance de :math:</cite>hat{w_j}` ne contient pas 0 à 95%</p>
+<p>CQFD</p>
+</section>
+<section id="Model-quality-mesure-(Deviance)">
+<h2>Model quality mesure (Deviance)<a class="headerlink" href="#Model-quality-mesure-(Deviance)" title="Permalink to this heading"></a></h2>
+<p>Cf. S.Tufféry p.315</p>
+<div class="line-block">
+<div class="line"><span class="math notranslate nohighlight">\(n:\)</span> number of observations</div>
+<div class="line"><span class="math notranslate nohighlight">\(k:\)</span> number of features</div>
+</div>
+<p><span class="math notranslate nohighlight">\(L(\omega_k)\)</span> Likelihood of the “modèle ajusté”</p>
+<p><span class="math notranslate nohighlight">\(L(\omega_0)\)</span> Likelihood of the “modèle réduit à la constante”</p>
+<p><span class="math notranslate nohighlight">\(L(\omega_{max})\)</span> Likelihood of the “modèle saturé”. The one the model will compare.</p>
+<p>The Deviance formula:</p>
+<p><span class="math notranslate nohighlight">\(D(\omega_k) = -2[log(L(\omega_k)) - log(L(\omega_{max}))]\)</span> <span class="math notranslate nohighlight">\(^{(*)}\)</span></p>
+<p>As the target is 0 or 1 <span class="math notranslate nohighlight">\(\Longrightarrow L(\omega_{max})=1 \Longrightarrow log(L(\omega_{max}))=0\)</span></p>
+<p><span class="math notranslate nohighlight">\(\Longrightarrow D(\omega_k) = -2[log(L(\omega_k))]\)</span></p>
+<p>(*) <span class="math notranslate nohighlight">\(D(\omega_k) = (\frac{log(L(\omega_k))}{log(L(\omega_{max}))}^2)\)</span></p>
+<p>The goal of the logistic regression is to maximise the Likelihood which is equivalent to minimize the Deviance.</p>
+<p>The Deviance is equivalent to the SCE for the linear regression.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Supervised learning" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
