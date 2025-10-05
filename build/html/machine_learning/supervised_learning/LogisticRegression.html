@@ -958,26 +958,30 @@ array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 <section id="APPENDIX">
 <h1>APPENDIX<a class="headerlink" href="#APPENDIX" title="Permalink to this heading"></a></h1>
 <p><strong>Demonstration:</strong> The coefficient <span class="math notranslate nohighlight">\(\beta_1\)</span>​ represents the <strong>change in the log-odds of</strong> <span class="math notranslate nohighlight">\(Y=1\)</span> for a <strong>one-unit change</strong> in <span class="math notranslate nohighlight">\(X_1\)</span>​ quantitative feature.</p>
-<p>Notations:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\text{Odds}(Y=1|X=x+1)=P(Y=1|X=x+1) / (1-P(Y=1|X=x+1))\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\text{Odds}(Y=1|X=x)=P(Y=1|X=x) / (1-P(Y=1|X=x))\)</span></p></li>
-</ul>
+<div class="line-block">
+<div class="line">Notations:</div>
+<div class="line"><br /></div>
+</div>
+<blockquote>
+<div><div class="math notranslate nohighlight">
+\[\text{Odds}(Y=1|X=x+1)=P(Y=1|X=x+1) / (1-P(Y=1|X=x+1))\]</div>
+</div></blockquote>
+<div class="math notranslate nohighlight">
+\[\text{Odds}(Y=1|X=x)=P(Y=1|X=x) / (1-P(Y=1|X=x))\]</div>
 <p>We know that:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\text{log(Odds)}(Y=1|X=x+1)=\beta_0 + \beta_1 \times (x+1)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\text{log(Odds)}(Y=1|X=x)=\beta_0 + \beta_1 \times x\)</span></p></li>
-</ul>
+<div class="math notranslate nohighlight">
+\[\text{log(Odds)}(Y=1|X=x+1)=\beta_0 + \beta_1 \times (x+1)\]</div>
+<div class="math notranslate nohighlight">
+\[\text{log(Odds)}(Y=1|X=x)=\beta_0 + \beta_1 \times x\]</div>
 <p>By difference:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\text{log(Odds)}(Y=1|X=x+1) - \text{log(Odds)}(Y=1|X=x) =\beta_0 + \beta_1 \times (x+1) - (\beta_0 + \beta_1 \times x) = \beta_1\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(\text{log}\left(\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)}\right) =\beta_1\)</span></p></li>
-</ul>
+<div class="math notranslate nohighlight">
+\[\text{log(Odds)}(Y=1|X=x+1) - \text{log(Odds)}(Y=1|X=x) =\beta_0 + \beta_1 \times (x+1) - (\beta_0 + \beta_1 \times x) = \beta_1\]</div>
+<div class="math notranslate nohighlight">
+\[\text{log}\left(\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)}\right) =\beta_1\]</div>
 <p><strong>CQFD</strong></p>
 <p>Note:</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)} = \exp(\beta_1)\)</span></p></li>
-</ul>
+<div class="math notranslate nohighlight">
+\[\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)} = \exp(\beta_1)\]</div>
 <section id="The-Newton-Raphson-algorithm">
 <h2>The Newton-Raphson algorithm<a class="headerlink" href="#The-Newton-Raphson-algorithm" title="Permalink to this heading"></a></h2>
 <p>Another way to compute the coefficients</p>
