@@ -1,22 +1,22 @@
 
 
 <!DOCTYPE html>
-<html class="writer-html5" lang="en">
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Clustering: HAC &mdash; website Machine Learning 0.1 documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
 
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e031e9a9"></script>
-      <script src="../../_static/doctools.js?v=888ff710"></script>
-      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script src="../../_static/documentation_options.js?v=2709fde1"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
       <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
       <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -98,7 +98,7 @@
            <div itemprop="articleBody">
              
   <section id="Clustering:-HAC">
-<h1>Clustering: HAC<a class="headerlink" href="#Clustering:-HAC" title="Permalink to this heading"></a></h1>
+<h1>Clustering: HAC<a class="headerlink" href="#Clustering:-HAC" title="Link to this heading"></a></h1>
 <p>Hierarchical Agglomerative Clustering (HAC) / Classification Ascendante Hiérarchique (CAH)</p>
 <p><strong>Presentation of the algorithm used in this notebook is Hierarchical Clustering (CAH) on a small dataset.</strong></p>
 <div class="nbinput nblast docutils container">
@@ -107,14 +107,14 @@
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The packages</span>
 
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="kn">import</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">dendrogram</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">dendrogram</span>
 </pre></div>
 </div>
 </div>
 <section id="Reminder:-The-Euclidean-distance">
-<h2>Reminder: The Euclidean distance<a class="headerlink" href="#Reminder:-The-Euclidean-distance" title="Permalink to this heading"></a></h2>
+<h2>Reminder: The Euclidean distance<a class="headerlink" href="#Reminder:-The-Euclidean-distance" title="Link to this heading"></a></h2>
 <p>In <strong>2D</strong> the <strong>Euclidean distance</strong> between two points <span class="math notranslate nohighlight">\(i\)</span> and <span class="math notranslate nohighlight">\(j\)</span> of respective coordinates <span class="math notranslate nohighlight">\((x_i, y_i)\)</span> and <span class="math notranslate nohighlight">\((x_j, y_j)\)</span>:</p>
 <div class="math notranslate nohighlight">
 \[\text{distance}_{euclidean}(i,j) = \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}\]</div>
@@ -199,7 +199,7 @@ Distance between [2 7] and [3 6]: 1.4142135623730951
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cluster_distance</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">cluster_distance</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&#39;&#39;&#39;Using the euclidean distance to calculate the distance between two clusters.&#39;&#39;&#39;</span>
     <span class="n">min_dist</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c1</span><span class="p">:</span>
@@ -227,7 +227,7 @@ np.float64(1.4142135623730951)
 </div>
 </section>
 <section id="Single-linkage-clustering---Step-by-step-Explanation">
-<h2>Single linkage clustering - Step-by-step Explanation<a class="headerlink" href="#Single-linkage-clustering---Step-by-step-Explanation" title="Permalink to this heading"></a></h2>
+<h2>Single linkage clustering - Step-by-step Explanation<a class="headerlink" href="#Single-linkage-clustering---Step-by-step-Explanation" title="Link to this heading"></a></h2>
 <p>We will focus on <strong>single linkage</strong> (<em>saut minimum</em>) explanation based on proximity criteria:</p>
 <p><span class="math notranslate nohighlight">\(\delta_{SL}(C_k, C_l) = \min\limits_{\substack{x_i \in C_k \\ x_j \in C_l}} \delta(x_i, x_j)\)</span></p>
 <div class="line-block">
@@ -476,7 +476,7 @@ np.float64(1.4142135623730951)
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">print_simple_dendrogram</span><span class="p">():</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">print_simple_dendrogram</span><span class="p">():</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;A   B        C   D   E&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;|   |        |   |   |&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\\</span><span class="s2"> /         </span><span class="se">\\</span><span class="s2"> /    |      &lt;- 1.0 et 1.4&quot;</span><span class="p">)</span>
@@ -507,7 +507,7 @@ A   B        C   D   E
 </div>
 </section>
 <section id="The-complexity">
-<h2>The complexity<a class="headerlink" href="#The-complexity" title="Permalink to this heading"></a></h2>
+<h2>The complexity<a class="headerlink" href="#The-complexity" title="Link to this heading"></a></h2>
 <div class="line-block">
 <div class="line">At first, the calculation of the matrix of distances which represent <span class="math notranslate nohighlight">\(n \times n = n^2\)</span> calculations</div>
 <div class="line">But we don’t need to calculate the diagonal so we can substract of it <span class="math notranslate nohighlight">\(n\)</span> calculations.</div>
@@ -557,7 +557,7 @@ A   B        C   D   E
 </div>
 </section>
 <section id="⚠️-Limitations-in-High-Dimensional-Spaces">
-<h2>⚠️ Limitations in High-Dimensional Spaces<a class="headerlink" href="#⚠️-Limitations-in-High-Dimensional-Spaces" title="Permalink to this heading"></a></h2>
+<h2>⚠️ Limitations in High-Dimensional Spaces<a class="headerlink" href="#⚠️-Limitations-in-High-Dimensional-Spaces" title="Link to this heading"></a></h2>
 <div class="line-block">
 <div class="line">Hierarchical Agglomerative Clustering (HAC) is not well suited for high-dimensional datasets.</div>
 <div class="line">The computational cost (typically <span class="math notranslate nohighlight">\(O(n^2)\)</span> or worse) becomes prohibitive as the number of points grows.</div>
@@ -567,7 +567,7 @@ A   B        C   D   E
 </div>
 </section>
 <section id="Ward-Linkage-clustering---Step-by-Step-Explanation">
-<h2>Ward Linkage clustering - Step-by-Step Explanation<a class="headerlink" href="#Ward-Linkage-clustering---Step-by-Step-Explanation" title="Permalink to this heading"></a></h2>
+<h2>Ward Linkage clustering - Step-by-Step Explanation<a class="headerlink" href="#Ward-Linkage-clustering---Step-by-Step-Explanation" title="Link to this heading"></a></h2>
 <p>We will use the same 5 points with 2D coordinates.</p>
 <table class="docutils align-default">
 <thead>
@@ -800,14 +800,14 @@ A   B        C   D   E
 <p>Note: the final step merged at slightly lower cost than the previous due to rounding approximations.</p>
 </section>
 <section id="HAC-from-scratch">
-<h2>HAC from scratch<a class="headerlink" href="#HAC-from-scratch" title="Permalink to this heading"></a></h2>
+<h2>HAC from scratch<a class="headerlink" href="#HAC-from-scratch" title="Link to this heading"></a></h2>
 <section id="Data">
-<h3>Data<a class="headerlink" href="#Data" title="Permalink to this heading"></a></h3>
+<h3>Data<a class="headerlink" href="#Data" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Dictionnaire of the points with labels</span>
 <span class="n">points</span> <span class="o">=</span> <span class="p">{</span>
@@ -836,7 +836,7 @@ A   B        C   D   E
 </div>
 </section>
 <section id="Initialization">
-<h3>Initialization<a class="headerlink" href="#Initialization" title="Permalink to this heading"></a></h3>
+<h3>Initialization<a class="headerlink" href="#Initialization" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
 </pre></div>
@@ -883,7 +883,7 @@ A   B        C   D   E
 </div>
 </section>
 <section id="Matrix-of-distance">
-<h3>Matrix of distance<a class="headerlink" href="#Matrix-of-distance" title="Permalink to this heading"></a></h3>
+<h3>Matrix of distance<a class="headerlink" href="#Matrix-of-distance" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
 </pre></div>
@@ -928,13 +928,13 @@ E [3.60555128 3.16227766 1.41421356 2.         0.        ]
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">euclidean</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="kn">import</span> <span class="n">euclidean</span>
 
 <span class="c1"># Step 0: Initialization — Each point is its own cluster</span>
 <span class="n">clusters</span> <span class="o">=</span> <span class="p">{</span><span class="n">i</span><span class="p">:</span> <span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))}</span>
 <span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
 
-<span class="k">def</span> <span class="nf">cluster_distance</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">cluster_distance</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span> <span class="n">c2</span><span class="p">):</span>
     <span class="c1"># Single linkage: min distance between any point in cluster 1 and any point in cluster 2</span>
     <span class="c1"># we use Euclidean distance</span>
     <span class="k">return</span> <span class="nb">min</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">X</span><span class="p">[</span><span class="n">j</span><span class="p">])</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">c1</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">c2</span><span class="p">)</span>
@@ -1018,7 +1018,7 @@ E [3.60555128 3.16227766 1.41421356 2.         0.        ]
 </section>
 </section>
 <section id="HAC-with-Python-packages">
-<h2>HAC with Python packages<a class="headerlink" href="#HAC-with-Python-packages" title="Permalink to this heading"></a></h2>
+<h2>HAC with Python packages<a class="headerlink" href="#HAC-with-Python-packages" title="Link to this heading"></a></h2>
 <p>In this notebook we will build classes with spherical and equal variances.</p>
 <div class="line-block">
 <div class="line">Note1:</div>
@@ -1051,11 +1051,11 @@ E [3.60555128 3.16227766 1.41421356 2.         0.        ]
 
 <span class="c1"># Install and import necessary libraries</span>
 <span class="c1"># !pip install pandas matplotlib seaborn palettable</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">palettable.colorbrewer.qualitative</span> <span class="kn">import</span> <span class="n">Dark2_8</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">palettable.colorbrewer.qualitative</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dark2_8</span>
 </pre></div>
 </div>
 </div>
@@ -1089,7 +1089,7 @@ E [3.60555128 3.16227766 1.41421356 2.         0.        ]
 </div>
 </section>
 <section id="HAC-using-Single-linkage-method">
-<h2>HAC using Single linkage method<a class="headerlink" href="#HAC-using-Single-linkage-method" title="Permalink to this heading"></a></h2>
+<h2>HAC using Single linkage method<a class="headerlink" href="#HAC-using-Single-linkage-method" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
 </pre></div>
@@ -1105,8 +1105,8 @@ E [3.60555128 3.16227766 1.41421356 2.         0.        ]
 <span class="c1"># 1) On calcule les distances euclidienne entre les points de données (premières deux colonnes de &#39;blobs&#39;)</span>
 <span class="c1"># 2) On effectue le clustering hiérarchique en utilisant la méthode de Single linkage (minimum jump)</span>
 
-<span class="kn">import</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="k">as</span> <span class="nn">sch</span>
-<span class="kn">import</span> <span class="nn">scipy.spatial.distance</span> <span class="k">as</span> <span class="nn">ssd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.spatial.distance</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">ssd</span>
 
 <span class="c1"># Calculate the pairwise euclidean distance (matrix)</span>
 
@@ -1136,7 +1136,7 @@ E [3.60555128 3.16227766 1.41421356 2.         0.        ]
 </div>
 </div>
 <section id="Evolution-of-the-aggregation-criterion">
-<h3>Evolution of the aggregation criterion<a class="headerlink" href="#Evolution-of-the-aggregation-criterion" title="Permalink to this heading"></a></h3>
+<h3>Evolution of the aggregation criterion<a class="headerlink" href="#Evolution-of-the-aggregation-criterion" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
 </pre></div>
@@ -1178,13 +1178,13 @@ E [3.60555128 3.16227766 1.41421356 2.         0.        ]
 </div>
 </section>
 <section id="Build-the-clustering">
-<h3>Build the clustering<a class="headerlink" href="#Build-the-clustering" title="Permalink to this heading"></a></h3>
+<h3>Build the clustering<a class="headerlink" href="#Build-the-clustering" title="Link to this heading"></a></h3>
 <p>Now the we know K (the number of clusters), we can use the <code class="docutils literal notranslate"><span class="pre">fcluster</span></code> function to extract the clusters from the hierarchical clustering result.</p>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="kn">import</span> <span class="n">fcluster</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">fcluster</span>
 
 <span class="c1"># Cut the dendrogram to get 3 clusters</span>
 
@@ -1222,7 +1222,7 @@ Name: count, dtype: int64
 </div>
 </section>
 <section id="Dendrogram-with-the-obtained-partitioning-and-clustering">
-<h3>Dendrogram with the obtained partitioning and clustering<a class="headerlink" href="#Dendrogram-with-the-obtained-partitioning-and-clustering" title="Permalink to this heading"></a></h3>
+<h3>Dendrogram with the obtained partitioning and clustering<a class="headerlink" href="#Dendrogram-with-the-obtained-partitioning-and-clustering" title="Link to this heading"></a></h3>
 <p>The following code performs a visual evaluation of hierarchical clustering results by displaying two plots side-by-side:</p>
 <ul class="simple">
 <li><p>Dendrogram: Shows the hierarchical clustering tree structure.</p></li>
@@ -1246,9 +1246,9 @@ Name: count, dtype: int64
 
 <span class="c1"># !pip install plotnine mizani</span>
 <span class="c1"># Importing necessary libraries</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="k">as</span> <span class="nn">sch</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span> <span class="c1"># Assuming blobs is a pandas DataFrame and clusters is a pandas Series or numpy array</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span> <span class="c1"># Assuming blobs is a pandas DataFrame and clusters is a pandas Series or numpy array</span>
 
 <span class="c1"># Assuming &#39;dend&#39; is the linkage matrix from sch.linkage</span>
 <span class="c1"># Assuming &#39;blobs&#39; is a pandas DataFrame with the original data</span>
@@ -1302,7 +1302,7 @@ Name: count, dtype: int64
 </div>
 </section>
 <section id="Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix">
-<h3>Evaluating Cluster Quality Against Ground Truth Labels with the Confusion Matrix<a class="headerlink" href="#Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix" title="Permalink to this heading"></a></h3>
+<h3>Evaluating Cluster Quality Against Ground Truth Labels with the Confusion Matrix<a class="headerlink" href="#Evaluating-Cluster-Quality-Against-Ground-Truth-Labels-with-the-Confusion-Matrix" title="Link to this heading"></a></h3>
 <div class="line-block">
 <div class="line">The purpose is to check whether the clusters correspond well to the original categories,</div>
 <div class="line">in order to evaluate the quality of the clustering against a ‘ground truth’ or known label.</div>
@@ -1353,7 +1353,7 @@ row_0
 </section>
 </section>
 <section id="HAC-using-Ward's-Method">
-<h2>HAC using Ward’s Method<a class="headerlink" href="#HAC-using-Ward's-Method" title="Permalink to this heading"></a></h2>
+<h2>HAC using Ward’s Method<a class="headerlink" href="#HAC-using-Ward's-Method" title="Link to this heading"></a></h2>
 <p>The Ward’s method regoups two clusters that minimize the percentage of loss of variance inter-groups (Between Sum of Square) after aggregation:</p>
 <p>After the aggregations of two clusters, the BSS always decrease.</p>
 <ul class="simple">
@@ -1425,7 +1425,7 @@ row_0
 </div>
 </div>
 <section id="Choice-of-a-partition-into-3-classes">
-<h3>Choice of a partition into 3 classes<a class="headerlink" href="#Choice-of-a-partition-into-3-classes" title="Permalink to this heading"></a></h3>
+<h3>Choice of a partition into 3 classes<a class="headerlink" href="#Choice-of-a-partition-into-3-classes" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
 </pre></div>
@@ -1465,26 +1465,26 @@ Name: count, dtype: int64
 </div>
 </section>
 <section id="id1">
-<h3>Dendrogram with the obtained partitioning and clustering<a class="headerlink" href="#id1" title="Permalink to this heading"></a></h3>
+<h3>Dendrogram with the obtained partitioning and clustering<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># !pip install plotnine mizani</span>
-<span class="kn">from</span> <span class="nn">plotnine</span> <span class="kn">import</span> <span class="n">ggplot</span><span class="p">,</span> <span class="n">aes</span><span class="p">,</span> <span class="n">geom_point</span><span class="p">,</span> <span class="n">theme_bw</span>
-<span class="kn">from</span> <span class="nn">mizani.formatters</span> <span class="kn">import</span> <span class="n">percent_format</span>
-<span class="kn">from</span> <span class="nn">plotnine.guides</span> <span class="kn">import</span> <span class="n">guide_legend</span>
-<span class="kn">from</span> <span class="nn">plotnine.scales</span> <span class="kn">import</span> <span class="n">scale_x_continuous</span><span class="p">,</span> <span class="n">scale_y_continuous</span>
-<span class="kn">from</span> <span class="nn">plotnine.labels</span> <span class="kn">import</span> <span class="n">labs</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine</span><span class="w"> </span><span class="kn">import</span> <span class="n">ggplot</span><span class="p">,</span> <span class="n">aes</span><span class="p">,</span> <span class="n">geom_point</span><span class="p">,</span> <span class="n">theme_bw</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">mizani.formatters</span><span class="w"> </span><span class="kn">import</span> <span class="n">percent_format</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine.guides</span><span class="w"> </span><span class="kn">import</span> <span class="n">guide_legend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine.scales</span><span class="w"> </span><span class="kn">import</span> <span class="n">scale_x_continuous</span><span class="p">,</span> <span class="n">scale_y_continuous</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">plotnine.labels</span><span class="w"> </span><span class="kn">import</span> <span class="n">labs</span>
 
 <span class="c1"># Import `ggmatrix` if needed, though a simple subplot approach is used below</span>
 <span class="c1"># !pip install ggmatrix # Install if you want to use ggmatrix (less common in Python plotnine context)</span>
 <span class="c1"># from ggmatrix import ggmatrix # Import if installed</span>
 
 <span class="c1"># Import necessary libraries for plotting the dendrogram using matplotlib</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="k">as</span> <span class="nn">sch</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Assuming &#39;dend&#39; is the linkage matrix from sch.linkage (from the single linkage method)</span>
 <span class="c1"># Assuming &#39;clusters&#39; is a numpy array or pandas Series containing the cluster assignments (1, 2, or 3) from single linkage</span>
@@ -1562,7 +1562,7 @@ Name: count, dtype: int64
 </div>
 </section>
 <section id="Confusion-Matrix">
-<h3>Confusion Matrix<a class="headerlink" href="#Confusion-Matrix" title="Permalink to this heading"></a></h3>
+<h3>Confusion Matrix<a class="headerlink" href="#Confusion-Matrix" title="Link to this heading"></a></h3>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
 </pre></div>
@@ -1609,15 +1609,15 @@ row_0
 </section>
 </section>
 <section id="HAC-on-iris-data">
-<h2>HAC on iris data<a class="headerlink" href="#HAC-on-iris-data" title="Permalink to this heading"></a></h2>
+<h2>HAC on iris data<a class="headerlink" href="#HAC-on-iris-data" title="Link to this heading"></a></h2>
 <div class="nbinput docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 
 <span class="c1"># Load the IRIS dataset</span>
 <span class="c1"># head(iris) equivalent in pandas</span>
@@ -1667,8 +1667,8 @@ row_0
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.cluster.hierarchy</span> <span class="kn">import</span> <span class="n">dendrogram</span><span class="p">,</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">cut_tree</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.cluster.hierarchy</span><span class="w"> </span><span class="kn">import</span> <span class="n">dendrogram</span><span class="p">,</span> <span class="n">linkage</span><span class="p">,</span> <span class="n">cut_tree</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
 <span class="c1"># Hierarchical Classification with Ward&#39;s method</span>
 <span class="c1"># Equivalent to dend &lt;- hclust(dist(iris.norm[,1:4], method=&quot;euclidean&quot;), method=&quot;ward.D2&quot;) in R</span>
@@ -1738,7 +1738,7 @@ row_0
 
 <span class="c1"># Confusion matrix</span>
 <span class="c1"># Equivalent to table(clusters, iris$Species) in R</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.metrics</span><span class="w"> </span><span class="kn">import</span> <span class="n">confusion_matrix</span>
 <span class="c1"># Need to map the species names to numerical labels to compare with cluster IDs</span>
 <span class="n">species_map</span> <span class="o">=</span> <span class="p">{</span><span class="n">species</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">species</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">iris</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())}</span>
 <span class="n">true_labels</span> <span class="o">=</span> <span class="n">iris</span><span class="p">[</span><span class="s1">&#39;species&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">species_map</span><span class="p">)</span>
