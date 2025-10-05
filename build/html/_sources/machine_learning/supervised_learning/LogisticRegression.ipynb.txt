@@ -133,21 +133,21 @@
    "source": [
     "Demonstration: \n",
     "\n",
-    "$p(x) = \\dfrac{1}{1 + \\exp(-\\beta x)} $\n",
+    "$$p(x) = \\dfrac{1}{1 + \\exp(-\\beta x)}$$\n",
     "\n",
-    "$\\underset{inverse}   \\iff \\dfrac{1}{p} = 1 + \\exp(-\\beta x) $\n",
+    "$$\\underset{inverse}   \\iff \\dfrac{1}{p} = 1 + \\exp(-\\beta x)$$\n",
     "\n",
-    "$\\iff \\dfrac{1}{p} - 1 = \\exp(-\\beta x) $\n",
+    "$$\\iff \\dfrac{1}{p} - 1 = \\exp(-\\beta x)$$\n",
     "\n",
-    "$\\iff \\dfrac{1}{p} - \\dfrac{p}{p} = \\exp(-\\beta x) $\n",
+    "$$\\iff \\dfrac{1}{p} - \\dfrac{p}{p} = \\exp(-\\beta x)$$\n",
     "\n",
-    "$\\iff \\dfrac{1-p}{p} = \\exp(-\\beta x) $\n",
+    "$$\\iff \\dfrac{1-p}{p} = \\exp(-\\beta x)$$\n",
     "\n",
-    "$\\iff \\log(\\dfrac{1-p}{p}) = -\\beta x $\n",
+    "$$\\iff \\log(\\dfrac{1-p}{p}) = -\\beta x$$\n",
     "\n",
-    "$\\iff \\log(\\dfrac{p}{1-p}) = \\beta x$\n",
+    "$$\\iff \\log(\\dfrac{p}{1-p}) = \\beta x$$\n",
     "\n",
-    "To simplify the writing we have put $ p $ rather than $ p(x)$"
+    "To simplify the writing we have put $p$ rather than $p(x)$"
    ]
   },
   {
