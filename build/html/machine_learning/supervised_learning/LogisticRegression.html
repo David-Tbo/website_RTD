@@ -262,7 +262,7 @@
 <div class="line"><span class="math notranslate nohighlight">\(\exp(\beta_1​)\)</span> compares the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> between <span class="math notranslate nohighlight">\(X_1=1\)</span> and <span class="math notranslate nohighlight">\(X_1=0\)</span>, controlling for all other variables in the model (all others features constant).</div>
 </div>
 <ul class="simple">
-<li><p>Case: :math:<code class="docutils literal notranslate"><span class="pre">X_1</span></code> is Binary</p></li>
+<li><p>Case: <span class="math notranslate nohighlight">\(X_1\)</span> is Binary</p></li>
 </ul>
 <p>For a binary predictor <span class="math notranslate nohighlight">\(X_1\)</span>​ (e.g., <span class="math notranslate nohighlight">\(0\)</span> = non-smoker, <span class="math notranslate nohighlight">\(1\)</span> = smoker), the odds ratio <span class="math notranslate nohighlight">\(\exp(\beta_1)\)</span>​ compares the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> between the two groups.</p>
 <ul class="simple">
@@ -319,10 +319,10 @@
 <p>The same way, <span class="math notranslate nohighlight">\(\exp(\beta_{\text{green}})\)</span>​ compares the odds for “green” vs. the “red” reference.</p>
 <blockquote>
 <div><p><strong>Interpretation:</strong></p>
-<p><strong>If :math:`exp(beta_{text{green}})​=1.5`, the odds of :math:`Y=1` are :math:`1.5` times higher for “green” compared to “red”.</strong></p>
+<p>If <span class="math notranslate nohighlight">\(\exp(\beta_{\text{green}})​=1.5\)</span>, the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> are <span class="math notranslate nohighlight">\(1.5\)</span> times higher for “green” compared to “red”.</p>
 </div></blockquote>
 <ul>
-<li><p class="rubric" id="case-x-1-is-quantitative"><strong>Case: :math:`X_1` is Quantitative</strong></p>
+<li><p class="rubric" id="case-x-1-is-quantitative">Case: <span class="math notranslate nohighlight">\(X_1\)</span> is Quantitative</p>
 </li>
 </ul>
 <p>For a continuous predictor <span class="math notranslate nohighlight">\(X_1\)</span> (e.g., age, blood pressure), the odds ratio <span class="math notranslate nohighlight">\(\exp(\beta_1)\)</span>​ represents the multiplicative change in the odds of <span class="math notranslate nohighlight">\(Y=1\)</span> for a one-unit increase in <span class="math notranslate nohighlight">\(X_1\)</span>​.</p>
@@ -414,31 +414,29 @@
 <h2>Computation of the gradient of the cost function<a class="headerlink" href="#Computation-of-the-gradient-of-the-cost-function" title="Permalink to this heading"></a></h2>
 <p>The gradient of <span class="math notranslate nohighlight">\(J(\theta) = \frac{\partial}{\partial \theta}J(\theta)\)</span></p>
 <p>We start by transforming the expression of <span class="math notranslate nohighlight">\(J(\theta) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\)</span></p>
-<p>$ <span class="math">\log`(h\_:nbsphinx-math:</span>theta`(x_i)) = <span class="math">\log`(:nbsphinx-math:</span>frac{1}{1 + exp(-theta^Tx_i)}`) = -<span class="math">\log`(1 + :nbsphinx-math:</span>exp`(-:nbsphinx-math:<a href="#id1"><span class="problematic" id="id2">`</span></a>theta`^Tx_i))$</p>
+<p><span class="math notranslate nohighlight">\(\log(h_\theta(x_i)) = \log(\frac{1}{1 + \exp(-\theta^Tx_i)}) = -\log(1 + \exp(-\theta^Tx_i))\)</span></p>
 <p>and</p>
-<p>$ <span class="math">\log`(1 - h\_:nbsphinx-math:</span>theta`(x_i)) = <span class="math">\log`(1 - :nbsphinx-math:</span>frac{1}{1 + exp(-theta^Tx_i)}`) = <span class="math">\log`(:nbsphinx-math:</span>frac{1 + exp(-theta^Tx_i) - 1}{1 + exp(-theta^Tx_i)}`) = <span class="math">\log`(:nbsphinx-math:</span>frac{exp(-theta^Tx_i)}{1 + exp(-theta^Tx_i)}`) = <span class="math">\log`(:nbsphinx-math:</span>exp`(-<span class="math">\theta`^Tx_i)) - :nbsphinx-math:</span>log`({1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)}) =
--<span class="math">\theta`^Tx_i - :nbsphinx-math:</span>log`({1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)})$</p>
-<p>$ <span class="math">\Rightarrow `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id3"><span class="problematic" id="id4">`</span></a>sum[y_i (-log(1 + exp(-theta^Tx_i))) + (1 - y_i) (-theta^Tx_i - log({1 + exp(-theta^Tx_i)}))]`$</p>
-<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id5"><span class="problematic" id="id6">`</span></a>sum[y_i (-log(1 + exp(-theta^Tx_i))) + (1 - y_i) (-theta^Tx_i - log(1 + exp(-theta^Tx_i)))]`$</p>
-<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id7"><span class="problematic" id="id8">`</span></a>sum[y_i (-log(1 + exp(-theta^Tx_i))) -theta^Tx_i - log(1 + exp(-theta^Tx_i)) + y_i theta^Tx_i  + y_i log(1 + exp(-theta^Tx_i))]`$</p>
-<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id9"><span class="problematic" id="id10">`</span></a>sum[- y_i log(1 + exp(-theta^Tx_i)) -theta^Tx_i - log({1 + exp(-theta^Tx_i)}) + y_i theta^Tx_i  + y_i log(1 + exp(-theta^Tx_i))]`$</p>
-<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id11"><span class="problematic" id="id12">`</span></a>sum[cancel{- y_i log(1 + exp(-theta^Tx_i))} -theta^Tx_i - log({1 + exp(-theta^Tx_i)}) + y_i theta^Tx_i  + cancel{y_i log(1 + exp(-theta^Tx_i))}]`$</p>
-<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id13"><span class="problematic" id="id14">`</span></a>sum[-theta^Tx_i - log({1 + exp(-theta^Tx_i)}) + y_i theta^Tx_i  ]`$</p>
-<p>$ <span class="math">\iff `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id15"><span class="problematic" id="id16">`</span></a>sum[y_i theta^Tx_i  -theta^Tx_i - log({1 + exp(-theta^Tx_i)}) ]`$</p>
+<p><span class="math notranslate nohighlight">\(\log(1 - h_\theta(x_i)) = \log(1 - \frac{1}{1 + \exp(-\theta^Tx_i)}) = \log(\frac{1 + \exp(-\theta^Tx_i) - 1}{1 + \exp(-\theta^Tx_i)}) = \log(\frac{\exp(-\theta^Tx_i)}{1 + \exp(-\theta^Tx_i)}) = \log(\exp(-\theta^Tx_i)) - \log({1 + \exp(-\theta^Tx_i)}) = -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)})\)</span></p>
+<p><span class="math notranslate nohighlight">\(\Rightarrow J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}))]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log(1 + exp(-\theta^Tx_i)))]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) -\theta^Tx_i - \log(1 + \exp(-\theta^Tx_i)) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[- y_i \log(1 + \exp(-\theta^Tx_i)) -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[\cancel{- y_i \log(1 + \exp(-\theta^Tx_i))} -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + \cancel{y_i \log(1 + \exp(-\theta^Tx_i))}]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  ]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) ]\)</span></p>
 <p>with:</p>
-<p>$ -<span class="math">\theta`^Tx_i - :nbsphinx-math:</span>log`({1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)}) = - <span class="math">\log`(:nbsphinx-math:</span>exp`(<span class="math">\theta`^T x_i)) - :nbsphinx-math:</span>log`(1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i)) = -(<span class="math">\log`(:nbsphinx-math:</span>exp`(<span class="math">\theta`^T x_i)) + :nbsphinx-math:</span>log`(1 + <span class="math">\exp`(-:nbsphinx-math:</span>theta`^Tx_i))) $</p>
-<p>$= -<span class="math">\log[\exp(\theta^T x_i)(1 + \exp(-\theta^Tx_i))] `= -:nbsphinx-math:</span>log`(<span class="math">\exp`(:nbsphinx-math:</span>theta`^T x_i + 1)) $</p>
-<p>$ <span class="math">\Rightarrow `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id17"><span class="problematic" id="id18">`</span></a>sum[y_i theta^Tx_i  -log(exp(theta^T x_i + 1)) ]`$</p>
-<p>$ <span class="math">\Rightarrow `J(:nbsphinx-math:</span>theta`) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id19"><span class="problematic" id="id20">`</span></a>sum[y_i theta^Tx_i  -log(1 + exp(theta^T x_i)) ]`$</p>
-<p>$ <span class="math">\Rightarrow  `:nbsphinx-math:</span>frac{partial}{partial theta_j}`J(<span class="math">\theta</span>) = -<span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id21"><span class="problematic" id="id22">`</span></a>sum[y_i frac{partial}{partial theta_j} (theta^Tx_i)  - frac{partial}{partial theta_j}log(1 + exp(theta^T x_i)) ]`$</p>
+<p><span class="math notranslate nohighlight">\(-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = - \log(\exp(\theta^T x_i)) - \log(1 + \exp(-\theta^Tx_i)) = -(\log(\exp(\theta^T x_i)) + \log(1 + \exp(-\theta^Tx_i)))\)</span></p>
+<p><span class="math notranslate nohighlight">\(= -\log[\exp(\theta^T x_i)(1 + \exp(-\theta^Tx_i))] = -\log(\exp(\theta^T x_i + 1))\)</span></p>
+<p><span class="math notranslate nohighlight">\(\Rightarrow J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(\exp(\theta^T x_i + 1)) ]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\Rightarrow J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(1 + \exp(\theta^T x_i)) ]\)</span></p>
+<p><span class="math notranslate nohighlight">\(\Rightarrow  \frac{\partial}{\partial \theta_j}J(\theta) = -\frac{1}{n} \sum[y_i \frac{\partial}{\partial \theta_j} (\theta^Tx_i)  - \frac{\partial}{\partial \theta_j}\log(1 + \exp(\theta^T x_i)) ]\)</span></p>
 <p>Knowing that: <span class="math notranslate nohighlight">\(\theta^Tx_i = \theta_1 {x_i}^{(1)} + \theta_2 {x_i}^{(2)} + \ldots + \theta_k {x_i}^{(k)}\)</span></p>
-<p>$ <span class="math">\Rightarrow   `:nbsphinx-math:</span>frac{partial}{partial theta_j}` (:nbsphinx-math:<a href="#id23"><span class="problematic" id="id24">`</span></a>theta`^Tx_i) = x_i^{(j)} $</p>
+<p><span class="math notranslate nohighlight">\(\Rightarrow \frac{\partial}{\partial \theta_j} (\theta^Tx_i) = x_i^{(j)}\)</span></p>
 <p>And:</p>
-<p>$ <span class="math">\frac{\partial}{\partial \theta_j}</span><span class="math">\log`(1 + :nbsphinx-math:</span>exp`(<span class="math">\theta`^T x_i)) :nbsphinx-math:</span>underset{log(u)^{’} = frac{u^{‘}}{u}}` = <span class="math">\frac{\frac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))}</span> {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <cite>x_i)} = :nbsphinx-math:</cite>frac{frac{partial}{partial theta_j}(exp(theta^T x_i))}` {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <cite>x_i)}
-:nbsphinx-math:</cite>underset{exp(u)^{’} = u^{‘}exp(u)}` = <span class="math">\frac{\frac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))}</span> {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <a href="#id25"><span class="problematic" id="id26">`</span></a>x_i)} $</p>
-<p>$= <span class="math">\frac{x_i^{(j)} * (\exp(\theta^T x_i))}</span> {1 + <span class="math">\exp`(:nbsphinx-math:</span>theta <cite>x_i)} = x_i^{(j)} h_:nbsphinx-math:</cite>theta`(x_i) $</p>
-<p>$ <span class="math">\Rightarrow  `:nbsphinx-math:</span>frac{partial}{partial theta_j}`J(<span class="math">\theta</span>) = -<span class="math">\frac{1}{n}</span> <span class="math">\sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i) ] `= -:nbsphinx-math:</span>frac{1}{n}` :nbsphinx-math:<a href="#id27"><span class="problematic" id="id28">`</span></a>sum[y_i - <a href="#id41"><span class="problematic" id="id42">h_</span></a>theta(x_i) ] <a href="#id29"><span class="problematic" id="id30">`</span></a>x_i^{(j)}$</p>
-<p>$ <span class="math">\iff  `:nbsphinx-math:</span>frac{partial}{partial theta_j}`J(<span class="math">\theta</span>) = <span class="math">\frac{1}{n}</span> :nbsphinx-math:<a href="#id31"><span class="problematic" id="id32">`</span></a>sum[<a href="#id43"><span class="problematic" id="id44">h_</span></a>theta(x_i) - y_i ] <a href="#id33"><span class="problematic" id="id34">`</span></a>x_i^{(j)}$</p>
+<p><span class="math notranslate nohighlight">\(\frac{\partial}{\partial \theta_j}\log(1 + \exp(\theta^T x_i)) \underset{\log(u)^{'} = \frac{u^{'}}{u}} = \frac{\frac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = \frac{\frac{\partial}{\partial \theta_j}(\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} \underset{\exp(u)^{'} = u^{'}\exp(u)} =  \frac{\frac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\)</span></p>
+<p><span class="math notranslate nohighlight">\(=  \frac{x_i^{(j)} * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = x_i^{(j)} h_\theta(x_i)\)</span></p>
+<p><span class="math notranslate nohighlight">\(\Rightarrow  \frac{\partial}{\partial \theta_j}J(\theta) = -\frac{1}{n} \sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i) ] = -\frac{1}{n} \sum[y_i - h_\theta(x_i) ] x_i^{(j)}\)</span></p>
+<p><span class="math notranslate nohighlight">\(\iff  \frac{\partial}{\partial \theta_j}J(\theta) = \frac{1}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\)</span></p>
 <p>Sachant que l’expression de la descente de Gradient pour mettre à jour les pondérations est pour le poids <span class="math notranslate nohighlight">\(\theta_j\)</span> :</p>
 <p><span class="math notranslate nohighlight">\(\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j}J(\theta)\)</span></p>
 <p>où <span class="math notranslate nohighlight">\(\alpha\)</span> est le learning rate, on obtient:</p>
@@ -481,7 +479,7 @@
 </div>
 </div>
 <p>The inputs:</p>
-<p>:math:<a href="#id35"><span class="problematic" id="id36">`</span></a>X=
+<p>:math:<a href="#id1"><span class="problematic" id="id2">`</span></a>X=
 begin{pmatrix}</p>
 <blockquote>
 <div><p>x_{1,1} &amp; ldots &amp; x_{1,k} \
@@ -499,7 +497,7 @@ x_{n,1} &amp; ldots &amp; x_{n,k}</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(b\)</span></p></li>
 </ul>
-<p>:math:<a href="#id37"><span class="problematic" id="id38">`</span></a>=
+<p>:math:<a href="#id3"><span class="problematic" id="id4">`</span></a>=
 begin{pmatrix}</p>
 <blockquote>
 <div><p>x_{1,1}w_1 + &amp; ldots &amp; + x_{1,k}w_k + b \
@@ -520,7 +518,7 @@ x_{n,1}w_1 + &amp; ldots &amp; + x_{n,k}w_k + b</p>
 <p>$</p>
 <p>For <span class="math notranslate nohighlight">\(b\)</span> using linear algebra formula:</p>
 <p><span class="math notranslate nohighlight">\(b = \sum(\hat{p} - y)\)</span></p>
-<p>:math:<a href="#id39"><span class="problematic" id="id40">`</span></a>= sum
+<p>:math:<a href="#id5"><span class="problematic" id="id6">`</span></a>= sum
 begin{pmatrix}</p>
 <blockquote>
 <div><p>hat{p_1} - y_1 \
