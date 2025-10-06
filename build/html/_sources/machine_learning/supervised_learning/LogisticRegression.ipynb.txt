@@ -430,317 +430,6 @@
    ]
   },
   {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "# The cost function to minimize"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "### The general cost function\n",
-    "\n",
-    "In Machine Learning, the cost function on a $n$ samples measure the average cost of the sample.  \n",
-    "\n",
-    "$$J(θ) = -\\frac{1}{n} \\sum Cost(h_\\theta(x_i), y_i)$$\n",
-    "\n",
-    "With $h_\\theta(x_i)$ the prediction and $y_i$ the observed output.\n",
-    "\n",
-    "### The logistic regression cost function\n",
-    "\n",
-    "The **logistic regression cost function**, also known as logistic loss or **log loss**, measures the prediction error of a logistic regression model.  \n",
-    "It evaluates how well the model fits the training data and is used to optimize the model’s parameters during training. \n",
-    "\n",
-    "The cost function for logistic regression is defined as:  \n",
-    "\n",
-    "$$J(θ) = -\\frac{1}{n} \\sum(y_i \\log(h_\\theta(x_i)) + (1 - y_i) \\log(1 - h_\\theta(x_i)))$$\n",
-    "\n",
-    "where the prediction of the logistic regression is defined:\n",
-    "\n",
-    "$$h_{\\theta}(x_i) = P(y_i=1 | x_i; \\theta) = \\frac{1}{1 + \\exp(-\\theta^Tx_i)}$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Convexité\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "La convexité est une propriété importante en optimisation, car elle garantit qu'un minimum local est également un minimum global. Cela signifie qu'il est plus facile de trouver la solution optimale lors de l'utilisation de méthodes d'optimisation telles que la descente de gradient.\n",
-    "\n",
-    "Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "La convexité est une propriété importante en optimisation, car elle garantit qu'un minimum local est également un minimum global. Cela signifie qu'il est plus facile de trouver la solution optimale lors de l'utilisation de méthodes d'optimisation telles que la descente de gradient.\n",
-    "\n",
-    "Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "La convexité d'une fonction garantit qu'un point stationnaire (c'est-à-dire un point où la dérivée est nulle) est un minimum global, mais elle ne garantit pas à elle seule l'existence d'un tel point.\n",
-    "\n",
-    "Pour prouver l'existence d'un extremum, il faut également montrer que la fonction est bornée inférieurement et qu'elle atteint cette borne inférieure. En d'autres termes, il faut montrer qu'il existe une valeur minimale que la fonction peut atteindre et qu'il existe au moins un point où la fonction prend cette valeur.\n",
-    "\n",
-    "Dans le cas de la fonction Log Loss, on peut montrer qu'elle est bornée inférieurement par zéro (puisque le logarithme d'un nombre positif est toujours positif) et qu'elle atteint cette borne inférieure lorsque les prédictions sont parfaitement correctes (c'est-à-dire lorsque la probabilité prédite pour la classe correcte est égale à 1).\n",
-    "\n",
-    "En combinant la convexité de la fonction Log Loss avec le fait qu'elle est bornée inférieurement et qu'elle atteint sa borne inférieure, on peut conclure que la fonction atteint un minimum global lorsque les prédictions sont parfaitement correctes."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## How the Log-Loss was determined ?"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The log-loss pénalise les erreurs de prédiction en fonction de la probabilité estimée par le modèle.  \n",
-    "La fonction de coût attribue une pénalité plus élevée aux exemples pour lesquels la prédiction est loin de la valeur réelle, c'est-à-dire lorsque la probabilité estimée est proche de 0 ou de 1 alors que la valeur réelle est respectivement 1 ou 0.\n",
-    "\n",
-    "- Si la valeur réelle $y_i$ est égale à 1 (c'est-à-dire que l'exemple appartient à la classe positive), la pénalité est égale à $-log(h_\\theta(x_i))$, où $h_\\theta(x_i)$ est la probabilité estimée par le modèle que l'exemple appartienne à la classe positive. Plus la probabilité estimée $(h_\\theta(x_i))$ est proche de 0 (et donc s'éloigne de l'observation'), plus la pénalité est élevée ($-\\log(0^+) \\approx +\\infty$).  \n",
-    " \n",
-    "- Si la valeur réelle $y_i$ est égale à 0 (c'est-à-dire que l'exemple appartient à la classe négative), la pénalité est égale à $-log(1 - h_\\theta(x_i))$, où $h_\\theta(x_i)$ est la probabilité estimée par le modèle que l'exemple appartienne à la classe positive. Plus la probabilité estimée est proche de 1, plus la pénalité est élevée ($-\\log(1 - 1^-) \\approx +\\infty$).  \n",
-    "\n",
-    "On résume les deux conditions \"si\" précédentes en une seule formule : $y_i * log(h_\\theta(x_i)) + (1 - y_i) * log(1 - h_\\theta(x_i))$ pour l'observation $i$.\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "**L'objectif de l'apprentissage d'un modèle de régression logistique est de minimiser la fonction de coût en ajustant les paramètres $\\theta$.**\n",
-    "\n",
-    "Pour ce faire, on utilisera une méthode d'optimisation itérative, **la descente de gradient**, pour trouver les valeurs de $\\theta$ qui minimisent la fonction de coût sur l'ensemble d'entraînement.\n",
-    "\n",
-    "La fonction de coût de la régression logistique est alors définie comme la moyenne des pénalités sur tous les exemples de l'ensemble d'entraînement.\n",
-    "\n",
-    "En minimisant la fonction de coût, on cherche à trouver les paramètres $\\theta$ qui permettent de minimiser la somme des pénalités $\\underset{\\theta} min(J(\\theta))$  sur tous les exemples, c'est-à-dire de maximiser la probabilité d'observer les données d'entraînement en fonction des paramètres du modèle."
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Computation of the gradient of the cost function"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The gradient of $J(\\theta): \\frac{\\partial}{\\partial \\theta}J(\\theta)$\n",
-    "We start by transforming the expression of  $J(\\theta) = -\\frac{1}{n} \\sum(y_i \\log(h_\\theta(x_i)) + (1 - y_i) \\log(1 - h_\\theta(x_i)))$\n",
-    "\n",
-    "$\\log(h_\\theta(x_i)) = \\log(\\frac{1}{1 + \\exp(-\\theta^Tx_i)}) = -\\log(1 + \\exp(-\\theta^Tx_i))$  \n",
-    "\n",
-    "and \n",
-    "\n",
-    "$\\log(1 - h_\\theta(x_i)) = \\log(1 - \\frac{1}{1 + \\exp(-\\theta^Tx_i)}) = \\log(\\frac{1 + \\exp(-\\theta^Tx_i) - 1}{1 + \\exp(-\\theta^Tx_i)}) = \\log(\\frac{\\exp(-\\theta^Tx_i)}{1 + \\exp(-\\theta^Tx_i)}) = \\log(\\exp(-\\theta^Tx_i)) - \\log({1 + \\exp(-\\theta^Tx_i)}) = -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)})$\n",
-    "$\\Rightarrow J(\\theta) = -\\frac{1}{n} \\sum[y_i (-\\log(1 + \\exp(-\\theta^Tx_i))) + (1 - y_i) (-\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}))]$\n",
-    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[y_i (-\\log(1 + \\exp(-\\theta^Tx_i))) + (1 - y_i) (-\\theta^Tx_i - \\log(1 + exp(-\\theta^Tx_i)))]$\n",
-    "\n",
-    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[y_i (-\\log(1 + \\exp(-\\theta^Tx_i))) -\\theta^Tx_i - \\log(1 + \\exp(-\\theta^Tx_i)) + y_i \\theta^Tx_i  + y_i \\log(1 + \\exp(-\\theta^Tx_i))]$\n",
-    "\n",
-    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[- y_i \\log(1 + \\exp(-\\theta^Tx_i)) -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) + y_i \\theta^Tx_i  + y_i \\log(1 + \\exp(-\\theta^Tx_i))]$\n",
-    "\n",
-    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[\\cancel{- y_i \\log(1 + \\exp(-\\theta^Tx_i))} -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) + y_i \\theta^Tx_i  + \\cancel{y_i \\log(1 + \\exp(-\\theta^Tx_i))}]$\n",
-    "\n",
-    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[-\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) + y_i \\theta^Tx_i  ]$\n",
-    "\n",
-    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[y_i \\theta^Tx_i  -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) ]$\n",
-    "\n",
-    "with:\n",
-    "\n",
-    "$-\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) = - \\log(\\exp(\\theta^T x_i)) - \\log(1 + \\exp(-\\theta^Tx_i)) = -(\\log(\\exp(\\theta^T x_i)) + \\log(1 + \\exp(-\\theta^Tx_i)))$  \n",
-    "\n",
-    "$= -\\log[\\exp(\\theta^T x_i)(1 + \\exp(-\\theta^Tx_i))] = -\\log(\\exp(\\theta^T x_i + 1))$\n",
-    "$\\Rightarrow J(\\theta) = -\\frac{1}{n} \\sum[y_i \\theta^Tx_i  -\\log(\\exp(\\theta^T x_i + 1)) ]$\n",
-    "\n",
-    "$\\Rightarrow J(\\theta) = -\\frac{1}{n} \\sum[y_i \\theta^Tx_i  -\\log(1 + \\exp(\\theta^T x_i)) ]$\n",
-    "$\\Rightarrow  \\frac{\\partial}{\\partial \\theta_j}J(\\theta) = -\\frac{1}{n} \\sum[y_i \\frac{\\partial}{\\partial \\theta_j} (\\theta^Tx_i)  - \\frac{\\partial}{\\partial \\theta_j}\\log(1 + \\exp(\\theta^T x_i)) ]$\n",
-    "Knowing that: $\\theta^Tx_i = \\theta_1 {x_i}^{(1)} + \\theta_2 {x_i}^{(2)} + \\ldots + \\theta_k {x_i}^{(k)}$\n",
-    "\n",
-    "$\\Rightarrow \\frac{\\partial}{\\partial \\theta_j} (\\theta^Tx_i) = x_i^{(j)}$\n",
-    "And:  \n",
-    "\n",
-    "$\\frac{\\partial}{\\partial \\theta_j}\\log(1 + \\exp(\\theta^T x_i)) \\underset{\\log(u)^{'} = \\frac{u^{'}}{u}} = \\frac{\\frac{\\partial}{\\partial \\theta_j}(1 + \\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)} = \\frac{\\frac{\\partial}{\\partial \\theta_j}(\\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)} \\underset{\\exp(u)^{'} = u^{'}\\exp(u)} =  \\frac{\\frac{\\partial}{\\partial \\theta_j}(\\theta^T x_i) * (\\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)}$  \n",
-    "\n",
-    "$=  \\frac{x_i^{(j)} * (\\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)} = x_i^{(j)} h_\\theta(x_i)$\n",
-    "$\\Rightarrow  \\frac{\\partial}{\\partial \\theta_j}J(\\theta) = -\\frac{1}{n} \\sum[y_i x_i^{(j)}  - x_i^{(j)} h_\\theta(x_i) ] = -\\frac{1}{n} \\sum[y_i - h_\\theta(x_i) ] x_i^{(j)}$\n",
-    "$\\iff  \\frac{\\partial}{\\partial \\theta_j}J(\\theta) = \\frac{1}{n} \\sum[h_\\theta(x_i) - y_i ] x_i^{(j)}$\n",
-    "Sachant que l'expression de la descente de Gradient pour mettre à jour les pondérations est pour le poids $\\theta_j$ :\n",
-    "\n",
-    "$\\theta_j = \\theta_j - \\alpha \\frac{\\partial}{\\partial \\theta_j}J(\\theta)$\n",
-    "où $\\alpha$ est le learning rate, on obtient:\n",
-    "\n",
-    "$\\theta_j = \\theta_j - \\frac{\\alpha}{n} \\sum[h_\\theta(x_i) - y_i ] x_i^{(j)}$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "# The Algorithm steps\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Note: $\\theta = (w,b)$   \n",
-    "\n",
-    "with $h_\\theta(x) = \\frac{1}{1 + \\exp(-w x + b)}$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Training\n"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "- Initialize weights as zero\n",
-    "- Initialize bias as zero"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Given a data point"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "- Predict result by using $\\hat{y} = \\frac{1}{1 + \\exp(-wx+b)}$\n",
-    "- Calculate the error\n",
-    "- Use Gradient descent to figure out new weights and bias values\n",
-    "- Repeat n times"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "## Testing"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "Given a data point:  \n",
-    "- Put the values from the data point into the equation $\\hat{y} = \\frac{1}{1 + \\exp(-w+b)}$\n",
-    "- Choose the label based on the probability"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Logistic Regression from scratch"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The inputs:\n",
-    "\n",
-    "$$X=\\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}, w=\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix}, b = \\text{constant}$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The linear model:\n",
-    "\n",
-    "$$X.w + b = \\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}.\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix} + b = \\begin{pmatrix} x_{1,1}w_1 + & \\ldots & + x_{1,k}w_k + b \\\\ x_{2,1}w_1 + & \\ldots & + x_{2,k}w_k + b \\\\ \\ldots & \\ldots &   \\ldots \\\\ x_{n,1}w_1 + & \\ldots & + x_{n,k}w_k + b \\end{pmatrix}$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The model prediction (output) is given by:\n",
-    "\n",
-    "$$\\text{sigmoid}(X.w+b) = \\frac{1}{1 + \\exp(-X.w+b)}= \\hat{p} = h_\\omega(X)$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The updates of the weights and bias are given by:\n",
-    "\n",
-    "$$\\omega_j = \\omega_j - \\frac{\\alpha}{n} \\sum[h_\\omega(x_i) - y_i ] x_{i,j}$$\n",
-    "\n",
-    "$$b = b - \\frac{\\alpha}{n} \\sum[h_\\omega(x_i) - y_i ]$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "For $\\omega$ using linear algebra formula:\n",
-    "\n",
-    "$$\\omega = X^t.(\\hat{p} - y) = \\begin{pmatrix} x_{1,1} & \\ldots & x_{1,n} \\\\ x_{2,1} & \\ldots & x_{2,n} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{k,1} & \\ldots & x_{k,n} \\end{pmatrix}.\\begin{pmatrix} \\hat{p_1} - y_1 \\\\ \\hat{p_2} - y_2 \\\\ \\ldots \\\\ \\hat{p_n} - y_n \\end{pmatrix}$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "For $b$ using linear algebra formula:\n",
-    "\n",
-    "$$b = \\sum(\\hat{p} - y) = \\sum\\begin{pmatrix} \\hat{p_1} - y_1 \\\\ \\hat{p_2} - y_2 \\\\ \\ldots \\\\ \\hat{p_n} - y_n \\end{pmatrix}$$"
-   ]
-  },
-  {
-   "cell_type": "markdown",
-   "metadata": {},
-   "source": [
-    "The weights and bias are given by:\n",
-    "\n",
-    "$$\\text{sigmoid}(X.w+b) = \\frac{1}{1 + \\exp(-X.w+b)}= \\hat{p}$$"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 20,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# The Logistic Regression from scratch"
-   ]
-  },
-  {
    "cell_type": "code",
    "execution_count": null,
    "metadata": {},
@@ -1123,223 +812,6 @@
    ]
   },
   {
-   "cell_type": "code",
-   "execution_count": 30,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "classifier = Logistic_Regression(learning_rate=0.01, n_iter=1000)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 31,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "classifier.fit(X_train, y_train)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 32,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "# Accuracy\n",
-    "\n",
-    "from sklearn.metrics import accuracy_score"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 33,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "0.754071661237785"
-      ]
-     },
-     "execution_count": 33,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# Accuracy on the training data\n",
-    "y_train_pred = classifier.predict(X_train)\n",
-    "training_data_accuracy = accuracy_score(y_train, y_train_pred)\n",
-    "training_data_accuracy"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 34,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "0.7272727272727273"
-      ]
-     },
-     "execution_count": 34,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "# Accuracy on the training data\n",
-    "y_test_pred = classifier.predict(X_test)\n",
-    "test_data_accuracy = accuracy_score(y_test, y_test_pred)\n",
-    "test_data_accuracy"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 35,
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stdout",
-     "output_type": "stream",
-     "text": [
-      "The person is diabetic\n"
-     ]
-    }
-   ],
-   "source": [
-    "# Predictive system\n",
-    "\n",
-    "input_data = (5, 166, 72, 19, 175, 25.8, 0.587, 51)\n",
-    "\n",
-    "# to numpy array\n",
-    "input_data_array = np.asarray(input_data)\n",
-    "\n",
-    "# Reshape\n",
-    "input_data_reshape = input_data_array.reshape(1, -1)\n",
-    "\n",
-    "# Standardized the data\n",
-    "input_data_std = scaler.transform(input_data_reshape)\n",
-    "\n",
-    "pred = classifier.predict(input_data_std)\n",
-    "\n",
-    "if pred:\n",
-    "    print('The person is diabetic')\n",
-    "else:\n",
-    "    print('The person is not diabetic')"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 120,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "import numpy as np\n",
-    "from sklearn.model_selection import train_test_split\n",
-    "from sklearn import datasets\n",
-    "import matplotlib.pyplot as plt"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 106,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "df = datasets.load_breast_cancer()\n",
-    "X, y = df.data, df.target"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 107,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "X_train, X_test, y_train, y_test = train_test_split(X, y)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 108,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "def accuracy(y_true, y_pred):\n",
-    "    accuracy = sum(y_true==y_pred)/len(y_true)\n",
-    "    return accuracy"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 109,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "clf = Logistic_Regression(learning_rate=0.0001)\n",
-    "clf.fit(X_train, y_train)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 110,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "predictions = clf.predict(X_test)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": 111,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
-       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
-       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
-       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
-       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
-       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
-       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])"
-      ]
-     },
-     "execution_count": 111,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "predictions"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [
-    {
-     "data": {
-      "text/plain": [
-       "0.3986013986013986"
-      ]
-     },
-     "execution_count": 112,
-     "metadata": {},
-     "output_type": "execute_result"
-    }
-   ],
-   "source": [
-    "accuracy(y_test, predictions)"
-   ]
-  },
-  {
    "cell_type": "markdown",
    "metadata": {},
    "source": [
@@ -1382,7 +854,235 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
+    "# The cost function to minimize"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### The general cost function\n",
+    "\n",
+    "In Machine Learning, the cost function on a $n$ samples measure the average cost of the sample.  \n",
+    "\n",
+    "$$J(θ) = -\\frac{1}{n} \\sum Cost(h_\\theta(x_i), y_i)$$\n",
+    "\n",
+    "With $h_\\theta(x_i)$ the prediction and $y_i$ the observed output.\n",
+    "\n",
+    "### The logistic regression cost function\n",
+    "\n",
+    "The **logistic regression cost function**, also known as logistic loss or **log loss**, measures the prediction error of a logistic regression model.  \n",
+    "It evaluates how well the model fits the training data and is used to optimize the model’s parameters during training. \n",
+    "\n",
+    "The cost function for logistic regression is defined as:  \n",
+    "\n",
+    "$$J(θ) = -\\frac{1}{n} \\sum(y_i \\log(h_\\theta(x_i)) + (1 - y_i) \\log(1 - h_\\theta(x_i)))$$\n",
+    "\n",
+    "where the prediction of the logistic regression is defined:\n",
+    "\n",
+    "$$h_{\\theta}(x_i) = P(y_i=1 | x_i; \\theta) = \\frac{1}{1 + \\exp(-\\theta^Tx_i)}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Convexité\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "La convexité est une propriété importante en optimisation, car elle garantit qu'un minimum local est également un minimum global. Cela signifie qu'il est plus facile de trouver la solution optimale lors de l'utilisation de méthodes d'optimisation telles que la descente de gradient.\n",
+    "\n",
+    "Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "La convexité est une propriété importante en optimisation, car elle garantit qu'un minimum local est également un minimum global. Cela signifie qu'il est plus facile de trouver la solution optimale lors de l'utilisation de méthodes d'optimisation telles que la descente de gradient.\n",
+    "\n",
+    "Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "La convexité d'une fonction garantit qu'un point stationnaire (c'est-à-dire un point où la dérivée est nulle) est un minimum global, mais elle ne garantit pas à elle seule l'existence d'un tel point.\n",
+    "\n",
+    "Pour prouver l'existence d'un extremum, il faut également montrer que la fonction est bornée inférieurement et qu'elle atteint cette borne inférieure. En d'autres termes, il faut montrer qu'il existe une valeur minimale que la fonction peut atteindre et qu'il existe au moins un point où la fonction prend cette valeur.\n",
+    "\n",
+    "Dans le cas de la fonction Log Loss, on peut montrer qu'elle est bornée inférieurement par zéro (puisque le logarithme d'un nombre positif est toujours positif) et qu'elle atteint cette borne inférieure lorsque les prédictions sont parfaitement correctes (c'est-à-dire lorsque la probabilité prédite pour la classe correcte est égale à 1).\n",
+    "\n",
+    "En combinant la convexité de la fonction Log Loss avec le fait qu'elle est bornée inférieurement et qu'elle atteint sa borne inférieure, on peut conclure que la fonction atteint un minimum global lorsque les prédictions sont parfaitement correctes."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## How the Log-Loss was determined ?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The log-loss pénalise les erreurs de prédiction en fonction de la probabilité estimée par le modèle.  \n",
+    "La fonction de coût attribue une pénalité plus élevée aux exemples pour lesquels la prédiction est loin de la valeur réelle, c'est-à-dire lorsque la probabilité estimée est proche de 0 ou de 1 alors que la valeur réelle est respectivement 1 ou 0.\n",
+    "\n",
+    "- Si la valeur réelle $y_i$ est égale à 1 (c'est-à-dire que l'exemple appartient à la classe positive), la pénalité est égale à $-log(h_\\theta(x_i))$, où $h_\\theta(x_i)$ est la probabilité estimée par le modèle que l'exemple appartienne à la classe positive. Plus la probabilité estimée $(h_\\theta(x_i))$ est proche de 0 (et donc s'éloigne de l'observation'), plus la pénalité est élevée ($-\\log(0^+) \\approx +\\infty$).  \n",
+    " \n",
+    "- Si la valeur réelle $y_i$ est égale à 0 (c'est-à-dire que l'exemple appartient à la classe négative), la pénalité est égale à $-log(1 - h_\\theta(x_i))$, où $h_\\theta(x_i)$ est la probabilité estimée par le modèle que l'exemple appartienne à la classe positive. Plus la probabilité estimée est proche de 1, plus la pénalité est élevée ($-\\log(1 - 1^-) \\approx +\\infty$).  \n",
+    "\n",
+    "On résume les deux conditions \"si\" précédentes en une seule formule : $y_i * log(h_\\theta(x_i)) + (1 - y_i) * log(1 - h_\\theta(x_i))$ pour l'observation $i$.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**L'objectif de l'apprentissage d'un modèle de régression logistique est de minimiser la fonction de coût en ajustant les paramètres $\\theta$.**\n",
+    "\n",
+    "Pour ce faire, on utilisera une méthode d'optimisation itérative, **la descente de gradient**, pour trouver les valeurs de $\\theta$ qui minimisent la fonction de coût sur l'ensemble d'entraînement.\n",
+    "\n",
+    "La fonction de coût de la régression logistique est alors définie comme la moyenne des pénalités sur tous les exemples de l'ensemble d'entraînement.\n",
+    "\n",
+    "En minimisant la fonction de coût, on cherche à trouver les paramètres $\\theta$ qui permettent de minimiser la somme des pénalités $\\underset{\\theta} min(J(\\theta))$  sur tous les exemples, c'est-à-dire de maximiser la probabilité d'observer les données d'entraînement en fonction des paramètres du modèle."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Computation of the gradient of the cost function"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The gradient of $J(\\theta): \\frac{\\partial}{\\partial \\theta}J(\\theta)$\n",
+    "We start by transforming the expression of  $J(\\theta) = -\\frac{1}{n} \\sum(y_i \\log(h_\\theta(x_i)) + (1 - y_i) \\log(1 - h_\\theta(x_i)))$\n",
+    "\n",
+    "$\\log(h_\\theta(x_i)) = \\log(\\frac{1}{1 + \\exp(-\\theta^Tx_i)}) = -\\log(1 + \\exp(-\\theta^Tx_i))$  \n",
+    "\n",
+    "and \n",
+    "\n",
+    "$\\log(1 - h_\\theta(x_i)) = \\log(1 - \\frac{1}{1 + \\exp(-\\theta^Tx_i)}) = \\log(\\frac{1 + \\exp(-\\theta^Tx_i) - 1}{1 + \\exp(-\\theta^Tx_i)}) = \\log(\\frac{\\exp(-\\theta^Tx_i)}{1 + \\exp(-\\theta^Tx_i)}) = \\log(\\exp(-\\theta^Tx_i)) - \\log({1 + \\exp(-\\theta^Tx_i)}) = -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)})$\n",
+    "$\\Rightarrow J(\\theta) = -\\frac{1}{n} \\sum[y_i (-\\log(1 + \\exp(-\\theta^Tx_i))) + (1 - y_i) (-\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}))]$\n",
+    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[y_i (-\\log(1 + \\exp(-\\theta^Tx_i))) + (1 - y_i) (-\\theta^Tx_i - \\log(1 + exp(-\\theta^Tx_i)))]$\n",
+    "\n",
+    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[y_i (-\\log(1 + \\exp(-\\theta^Tx_i))) -\\theta^Tx_i - \\log(1 + \\exp(-\\theta^Tx_i)) + y_i \\theta^Tx_i  + y_i \\log(1 + \\exp(-\\theta^Tx_i))]$\n",
+    "\n",
+    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[- y_i \\log(1 + \\exp(-\\theta^Tx_i)) -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) + y_i \\theta^Tx_i  + y_i \\log(1 + \\exp(-\\theta^Tx_i))]$\n",
+    "\n",
+    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[\\cancel{- y_i \\log(1 + \\exp(-\\theta^Tx_i))} -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) + y_i \\theta^Tx_i  + \\cancel{y_i \\log(1 + \\exp(-\\theta^Tx_i))}]$\n",
+    "\n",
+    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[-\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) + y_i \\theta^Tx_i  ]$\n",
+    "\n",
+    "$\\iff J(\\theta) = -\\frac{1}{n} \\sum[y_i \\theta^Tx_i  -\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) ]$\n",
+    "\n",
+    "with:\n",
+    "\n",
+    "$-\\theta^Tx_i - \\log({1 + \\exp(-\\theta^Tx_i)}) = - \\log(\\exp(\\theta^T x_i)) - \\log(1 + \\exp(-\\theta^Tx_i)) = -(\\log(\\exp(\\theta^T x_i)) + \\log(1 + \\exp(-\\theta^Tx_i)))$  \n",
+    "\n",
+    "$= -\\log[\\exp(\\theta^T x_i)(1 + \\exp(-\\theta^Tx_i))] = -\\log(\\exp(\\theta^T x_i + 1))$\n",
+    "$\\Rightarrow J(\\theta) = -\\frac{1}{n} \\sum[y_i \\theta^Tx_i  -\\log(\\exp(\\theta^T x_i + 1)) ]$\n",
+    "\n",
+    "$\\Rightarrow J(\\theta) = -\\frac{1}{n} \\sum[y_i \\theta^Tx_i  -\\log(1 + \\exp(\\theta^T x_i)) ]$\n",
+    "$\\Rightarrow  \\frac{\\partial}{\\partial \\theta_j}J(\\theta) = -\\frac{1}{n} \\sum[y_i \\frac{\\partial}{\\partial \\theta_j} (\\theta^Tx_i)  - \\frac{\\partial}{\\partial \\theta_j}\\log(1 + \\exp(\\theta^T x_i)) ]$\n",
+    "Knowing that: $\\theta^Tx_i = \\theta_1 {x_i}^{(1)} + \\theta_2 {x_i}^{(2)} + \\ldots + \\theta_k {x_i}^{(k)}$\n",
+    "\n",
+    "$\\Rightarrow \\frac{\\partial}{\\partial \\theta_j} (\\theta^Tx_i) = x_i^{(j)}$\n",
+    "And:  \n",
+    "\n",
+    "$\\frac{\\partial}{\\partial \\theta_j}\\log(1 + \\exp(\\theta^T x_i)) \\underset{\\log(u)^{'} = \\frac{u^{'}}{u}} = \\frac{\\frac{\\partial}{\\partial \\theta_j}(1 + \\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)} = \\frac{\\frac{\\partial}{\\partial \\theta_j}(\\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)} \\underset{\\exp(u)^{'} = u^{'}\\exp(u)} =  \\frac{\\frac{\\partial}{\\partial \\theta_j}(\\theta^T x_i) * (\\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)}$  \n",
+    "\n",
+    "$=  \\frac{x_i^{(j)} * (\\exp(\\theta^T x_i))} {1 + \\exp(\\theta x_i)} = x_i^{(j)} h_\\theta(x_i)$\n",
+    "$\\Rightarrow  \\frac{\\partial}{\\partial \\theta_j}J(\\theta) = -\\frac{1}{n} \\sum[y_i x_i^{(j)}  - x_i^{(j)} h_\\theta(x_i) ] = -\\frac{1}{n} \\sum[y_i - h_\\theta(x_i) ] x_i^{(j)}$\n",
+    "$\\iff  \\frac{\\partial}{\\partial \\theta_j}J(\\theta) = \\frac{1}{n} \\sum[h_\\theta(x_i) - y_i ] x_i^{(j)}$\n",
+    "Sachant que l'expression de la descente de Gradient pour mettre à jour les pondérations est pour le poids $\\theta_j$ :\n",
+    "\n",
+    "$\\theta_j = \\theta_j - \\alpha \\frac{\\partial}{\\partial \\theta_j}J(\\theta)$\n",
+    "où $\\alpha$ est le learning rate, on obtient:\n",
+    "\n",
+    "$\\theta_j = \\theta_j - \\frac{\\alpha}{n} \\sum[h_\\theta(x_i) - y_i ] x_i^{(j)}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
     "## The Newton-Raphson algorithm"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "# The Algorithm steps\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Note: $\\theta = (w,b)$   \n",
+    "\n",
+    "with $h_\\theta(x) = \\frac{1}{1 + \\exp(-w x + b)}$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Training\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- Initialize weights as zero\n",
+    "- Initialize bias as zero"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Given a data point"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "- Predict result by using $\\hat{y} = \\frac{1}{1 + \\exp(-wx+b)}$\n",
+    "- Calculate the error\n",
+    "- Use Gradient descent to figure out new weights and bias values\n",
+    "- Repeat n times"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Testing"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Given a data point:  \n",
+    "- Put the values from the data point into the equation $\\hat{y} = \\frac{1}{1 + \\exp(-w+b)}$\n",
+    "- Choose the label based on the probability"
    ]
   },
   {
@@ -1428,6 +1128,302 @@
     "Cela permet d'estimer les probabilités de l'événement binaire en fonction des variables prédictives.  \n",
     "\n",
     "NB: les itérations sont interrompues lorsque la différence entre deux vecteurs de solution successifs est négligeable."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "classifier = Logistic_Regression(learning_rate=0.01, n_iter=1000)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "classifier.fit(X_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Accuracy\n",
+    "\n",
+    "from sklearn.metrics import accuracy_score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.754071661237785"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Accuracy on the training data\n",
+    "y_train_pred = classifier.predict(X_train)\n",
+    "training_data_accuracy = accuracy_score(y_train, y_train_pred)\n",
+    "training_data_accuracy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.7272727272727273"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Accuracy on the training data\n",
+    "y_test_pred = classifier.predict(X_test)\n",
+    "test_data_accuracy = accuracy_score(y_test, y_test_pred)\n",
+    "test_data_accuracy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The person is diabetic\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Predictive system\n",
+    "\n",
+    "input_data = (5, 166, 72, 19, 175, 25.8, 0.587, 51)\n",
+    "\n",
+    "# to numpy array\n",
+    "input_data_array = np.asarray(input_data)\n",
+    "\n",
+    "# Reshape\n",
+    "input_data_reshape = input_data_array.reshape(1, -1)\n",
+    "\n",
+    "# Standardized the data\n",
+    "input_data_std = scaler.transform(input_data_reshape)\n",
+    "\n",
+    "pred = classifier.predict(input_data_std)\n",
+    "\n",
+    "if pred:\n",
+    "    print('The person is diabetic')\n",
+    "else:\n",
+    "    print('The person is not diabetic')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "from sklearn.model_selection import train_test_split\n",
+    "from sklearn import datasets\n",
+    "import matplotlib.pyplot as plt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = datasets.load_breast_cancer()\n",
+    "X, y = df.data, df.target"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "X_train, X_test, y_train, y_test = train_test_split(X, y)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def accuracy(y_true, y_pred):\n",
+    "    accuracy = sum(y_true==y_pred)/len(y_true)\n",
+    "    return accuracy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "clf = Logistic_Regression(learning_rate=0.0001)\n",
+    "clf.fit(X_train, y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "predictions = clf.predict(X_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,\n",
+       "       0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "predictions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0.3986013986013986"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "accuracy(y_test, predictions)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Logistic Regression from scratch"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The inputs:\n",
+    "\n",
+    "$$X=\\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}, w=\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix}, b = \\text{constant}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The linear model:\n",
+    "\n",
+    "$$X.w + b = \\begin{pmatrix} x_{1,1} & \\ldots & x_{1,k} \\\\ x_{2,1} & \\ldots & x_{2,k} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{n,1} & \\ldots & x_{n,k} \\end{pmatrix}.\\begin{pmatrix} w_1 \\\\ w_2 \\\\ \\ldots \\\\ w_k \\end{pmatrix} + b = \\begin{pmatrix} x_{1,1}w_1 + & \\ldots & + x_{1,k}w_k + b \\\\ x_{2,1}w_1 + & \\ldots & + x_{2,k}w_k + b \\\\ \\ldots & \\ldots &   \\ldots \\\\ x_{n,1}w_1 + & \\ldots & + x_{n,k}w_k + b \\end{pmatrix}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The model prediction (output) is given by:\n",
+    "\n",
+    "$$\\text{sigmoid}(X.w+b) = \\frac{1}{1 + \\exp(-X.w+b)}= \\hat{p} = h_\\omega(X)$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The updates of the weights and bias are given by:\n",
+    "\n",
+    "$$\\omega_j = \\omega_j - \\frac{\\alpha}{n} \\sum[h_\\omega(x_i) - y_i ] x_{i,j}$$\n",
+    "\n",
+    "$$b = b - \\frac{\\alpha}{n} \\sum[h_\\omega(x_i) - y_i ]$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For $\\omega$ using linear algebra formula:\n",
+    "\n",
+    "$$\\omega = X^t.(\\hat{p} - y) = \\begin{pmatrix} x_{1,1} & \\ldots & x_{1,n} \\\\ x_{2,1} & \\ldots & x_{2,n} \\\\ \\ldots & x_{i,j} & \\ldots \\\\ x_{k,1} & \\ldots & x_{k,n} \\end{pmatrix}.\\begin{pmatrix} \\hat{p_1} - y_1 \\\\ \\hat{p_2} - y_2 \\\\ \\ldots \\\\ \\hat{p_n} - y_n \\end{pmatrix}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "For $b$ using linear algebra formula:\n",
+    "\n",
+    "$$b = \\sum(\\hat{p} - y) = \\sum\\begin{pmatrix} \\hat{p_1} - y_1 \\\\ \\hat{p_2} - y_2 \\\\ \\ldots \\\\ \\hat{p_n} - y_n \\end{pmatrix}$$"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "The weights and bias are given by:\n",
+    "\n",
+    "$$\\text{sigmoid}(X.w+b) = \\frac{1}{1 + \\exp(-X.w+b)}= \\hat{p}$$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# The Logistic Regression from scratch"
    ]
   },
   {
