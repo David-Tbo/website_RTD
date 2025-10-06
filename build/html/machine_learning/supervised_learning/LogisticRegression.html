@@ -378,64 +378,6 @@
 </div>
 </div>
 <div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Logistic_Regression</span><span class="p">:</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Initiate the constructor</span>
-<span class="sd">            INPUT:</span>
-<span class="sd">                learning_rate: magnitude of the step</span>
-<span class="sd">                n_iter: number of iterations</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span> <span class="o">=</span> <span class="n">n_iter</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Train the model</span>
-<span class="sd">        INPUTS:</span>
-<span class="sd">            X: the dataset of the features</span>
-<span class="sd">            y: the target</span>
-<span class="sd">        OUTPUTS:</span>
-<span class="sd">            The model</span>
-<span class="sd">        &#39;&#39;&#39;</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
-
-        <span class="c1"># initialize the parameters:</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="mi">0</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
-
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span><span class="p">):</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_weights</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">update_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&#39;&#39;&#39;Update of the weights with Gradient descent&#39;&#39;&#39;</span>
-
-        <span class="c1"># we compute the prediction (the probability)</span>
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)))</span>
-
-        <span class="c1"># update the weights:</span>
-        <span class="c1"># w_j = w_j - (alpha / n) * S(p_hat - y_i)xij</span>
-        <span class="c1"># b = b - (alpha / n) * S(p_hat - y_i)</span>
-        <span class="n">dw</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
-        <span class="n">db</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">dw</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">db</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)))</span>
-        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">y_pred</span>
-</pre></div>
-</div>
-</div>
-<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
 </pre></div>
 </div>
@@ -701,9 +643,6 @@ dtype: float64
 <div class="line">This means that for each one-unit increase in pregnancies, the odds of the outcome occurring (e.g., having diabetes) increase by approximately 17.4%, assuming all other features remain constant.</div>
 </div>
 </section>
-<section id="Testing-the-from-scratch-algorithm">
-<h3>Testing the from scratch algorithm<a class="headerlink" href="#Testing-the-from-scratch-algorithm" title="Link to this heading"></a></h3>
-</section>
 </section>
 </section>
 <section id="APPENDIX">
@@ -754,8 +693,6 @@ dtype: float64
 <h2>Convexité<a class="headerlink" href="#Convexité" title="Link to this heading"></a></h2>
 <p>La convexité est une propriété importante en optimisation, car elle garantit qu’un minimum local est également un minimum global. Cela signifie qu’il est plus facile de trouver la solution optimale lors de l’utilisation de méthodes d’optimisation telles que la descente de gradient.</p>
 <p>Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives.</p>
-<p>La convexité est une propriété importante en optimisation, car elle garantit qu’un minimum local est également un minimum global. Cela signifie qu’il est plus facile de trouver la solution optimale lors de l’utilisation de méthodes d’optimisation telles que la descente de gradient.</p>
-<p>Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives.</p>
 <p>La convexité d’une fonction garantit qu’un point stationnaire (c’est-à-dire un point où la dérivée est nulle) est un minimum global, mais elle ne garantit pas à elle seule l’existence d’un tel point.</p>
 <p>Pour prouver l’existence d’un extremum, il faut également montrer que la fonction est bornée inférieurement et qu’elle atteint cette borne inférieure. En d’autres termes, il faut montrer qu’il existe une valeur minimale que la fonction peut atteindre et qu’il existe au moins un point où la fonction prend cette valeur.</p>
 <p>Dans le cas de la fonction Log Loss, on peut montrer qu’elle est bornée inférieurement par zéro (puisque le logarithme d’un nombre positif est toujours positif) et qu’elle atteint cette borne inférieure lorsque les prédictions sont parfaitement correctes (c’est-à-dire lorsque la probabilité prédite pour la classe correcte est égale à 1).</p>
@@ -779,26 +716,82 @@ dtype: float64
 </section>
 <section id="Computation-of-the-gradient-of-the-cost-function">
 <h2>Computation of the gradient of the cost function<a class="headerlink" href="#Computation-of-the-gradient-of-the-cost-function" title="Link to this heading"></a></h2>
-<p>The gradient of <span class="math notranslate nohighlight">\(J(\theta): \frac{\partial}{\partial \theta}J(\theta)\)</span> We start by transforming the expression of <span class="math notranslate nohighlight">\(J(\theta) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\)</span></p>
-<p><span class="math notranslate nohighlight">\(\log(h_\theta(x_i)) = \log(\frac{1}{1 + \exp(-\theta^Tx_i)}) = -\log(1 + \exp(-\theta^Tx_i))\)</span></p>
-<p>and</p>
-<p><span class="math notranslate nohighlight">\(\log(1 - h_\theta(x_i)) = \log(1 - \frac{1}{1 + \exp(-\theta^Tx_i)}) = \log(\frac{1 + \exp(-\theta^Tx_i) - 1}{1 + \exp(-\theta^Tx_i)}) = \log(\frac{\exp(-\theta^Tx_i)}{1 + \exp(-\theta^Tx_i)}) = \log(\exp(-\theta^Tx_i)) - \log({1 + \exp(-\theta^Tx_i)}) = -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)})\)</span> <span class="math notranslate nohighlight">\(\Rightarrow J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}))]\)</span>
-<span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log(1 + exp(-\theta^Tx_i)))]\)</span></p>
-<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) -\theta^Tx_i - \log(1 + \exp(-\theta^Tx_i)) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\)</span></p>
-<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[- y_i \log(1 + \exp(-\theta^Tx_i)) -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\)</span></p>
-<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[\cancel{- y_i \log(1 + \exp(-\theta^Tx_i))} -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + \cancel{y_i \log(1 + \exp(-\theta^Tx_i))}]\)</span></p>
-<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  ]\)</span></p>
-<p><span class="math notranslate nohighlight">\(\iff J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) ]\)</span></p>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
+<p>To compute the gradient <span class="math notranslate nohighlight">\(\nabla J(\theta)\)</span> we start by transforming the expression of:</p>
+<div class="math notranslate nohighlight">
+\[\log(h_\theta(x_i)) = \log\left(\frac{1}{1 + \exp(-\theta^Tx_i)}\right) = -\log(1 + \exp(-\theta^Tx_i))\]</div>
+<p>And:</p>
+<div class="math notranslate nohighlight">
+\[\log(1 - h_\theta(x_i)) = \log\left(1 - \frac{1}{1 + \exp(-\theta^Tx_i)}\right)\]</div>
+<div class="math notranslate nohighlight">
+\[\log(1 - h_\theta(x_i)) = \log\left(\frac{1 + \exp(-\theta^Tx_i) - 1}{1 + \exp(-\theta^Tx_i)}\right)\]</div>
+<div class="math notranslate nohighlight">
+\[\log(1 - h_\theta(x_i)) = \log\left(\frac{\exp(-\theta^Tx_i)}{1 + \exp(-\theta^Tx_i)}\right)\]</div>
+<div class="math notranslate nohighlight">
+\[\log(1 - h_\theta(x_i)) = \log(\exp(-\theta^Tx_i)) - \log({1 + \exp(-\theta^Tx_i)})\]</div>
+<div class="math notranslate nohighlight">
+\[\log(1 - h_\theta(x_i)) = -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)})\]</div>
+<p>We integrate these modifications:</p>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}))]\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log(1 + exp(-\theta^Tx_i)))]\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) -\theta^Tx_i - \log(1 + \exp(-\theta^Tx_i)) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[- y_i \log(1 + \exp(-\theta^Tx_i)) -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[\cancel{- y_i \log(1 + \exp(-\theta^Tx_i))} -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + \cancel{y_i \log(1 + \exp(-\theta^Tx_i))}]\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  ]\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) ]\]</div>
 <p>with:</p>
-<p><span class="math notranslate nohighlight">\(-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = - \log(\exp(\theta^T x_i)) - \log(1 + \exp(-\theta^Tx_i)) = -(\log(\exp(\theta^T x_i)) + \log(1 + \exp(-\theta^Tx_i)))\)</span></p>
-<p><span class="math notranslate nohighlight">\(= -\log[\exp(\theta^T x_i)(1 + \exp(-\theta^Tx_i))] = -\log(\exp(\theta^T x_i + 1))\)</span> <span class="math notranslate nohighlight">\(\Rightarrow J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(\exp(\theta^T x_i + 1)) ]\)</span></p>
-<p><span class="math notranslate nohighlight">\(\Rightarrow J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(1 + \exp(\theta^T x_i)) ]\)</span> <span class="math notranslate nohighlight">\(\Rightarrow  \frac{\partial}{\partial \theta_j}J(\theta) = -\frac{1}{n} \sum[y_i \frac{\partial}{\partial \theta_j} (\theta^Tx_i)  - \frac{\partial}{\partial \theta_j}\log(1 + \exp(\theta^T x_i)) ]\)</span> Knowing that: <span class="math notranslate nohighlight">\(\theta^Tx_i = \theta_1 {x_i}^{(1)} + \theta_2 {x_i}^{(2)} + \ldots + \theta_k {x_i}^{(k)}\)</span></p>
-<p><span class="math notranslate nohighlight">\(\Rightarrow \frac{\partial}{\partial \theta_j} (\theta^Tx_i) = x_i^{(j)}\)</span> And:</p>
-<p><span class="math notranslate nohighlight">\(\frac{\partial}{\partial \theta_j}\log(1 + \exp(\theta^T x_i)) \underset{\log(u)^{'} = \frac{u^{'}}{u}} = \frac{\frac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = \frac{\frac{\partial}{\partial \theta_j}(\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} \underset{\exp(u)^{'} = u^{'}\exp(u)} =  \frac{\frac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\)</span></p>
-<p><span class="math notranslate nohighlight">\(=  \frac{x_i^{(j)} * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = x_i^{(j)} h_\theta(x_i)\)</span> <span class="math notranslate nohighlight">\(\Rightarrow  \frac{\partial}{\partial \theta_j}J(\theta) = -\frac{1}{n} \sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i) ] = -\frac{1}{n} \sum[y_i - h_\theta(x_i) ] x_i^{(j)}\)</span> <span class="math notranslate nohighlight">\(\iff  \frac{\partial}{\partial \theta_j}J(\theta) = \frac{1}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\)</span> Sachant que l’expression de la descente de Gradient pour mettre à jour les pondérations est pour le poids
-<span class="math notranslate nohighlight">\(\theta_j\)</span> :</p>
-<p><span class="math notranslate nohighlight">\(\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j}J(\theta)\)</span> où <span class="math notranslate nohighlight">\(\alpha\)</span> est le learning rate, on obtient:</p>
-<p><span class="math notranslate nohighlight">\(\theta_j = \theta_j - \frac{\alpha}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\)</span></p>
+<div class="math notranslate nohighlight">
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = - \log(\exp(\theta^T x_i)) - \log(1 + \exp(-\theta^Tx_i))\]</div>
+<div class="math notranslate nohighlight">
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = -(\log(\exp(\theta^T x_i)) + \log(1 + \exp(-\theta^Tx_i)))\]</div>
+<div class="math notranslate nohighlight">
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = -\log[\exp(\theta^T x_i)(1 + \exp(-\theta^Tx_i))]\]</div>
+<div class="math notranslate nohighlight">
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = -\log(\exp(\theta^T x_i) + 1)\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(\exp(\theta^T x_i + 1)) ]\]</div>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(1 + \exp(\theta^T x_i)) ]\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial \theta_j}J(\theta) = -\frac{1}{n} \sum[y_i \frac{\partial}{\partial \theta_j} (\theta^Tx_i)  - \frac{\partial}{\partial \theta_j}\log(1 + \exp(\theta^T x_i)) ]\]</div>
+<p>Knowing that:</p>
+<div class="math notranslate nohighlight">
+\[\theta^Tx_i = \theta_1 {x_i}^{(1)} + \theta_2 {x_i}^{(2)} + \ldots + \theta_k {x_i}^{(k)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial \theta_j} (\theta^Tx_i) = x_i^{(j)}\]</div>
+<div class="math notranslate nohighlight">
+\[\dfrac{\partial}{\partial \theta_j}\left(\log(1 + \exp(\theta^T x_i))\right) \underset{\log(u)^{'} = \dfrac{u^{'}}{u}} = \dfrac{\dfrac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]</div>
+<p>And:</p>
+<div class="math notranslate nohighlight">
+\[\dfrac{\partial}{\partial \theta_j}\left(\log(1 + \exp(\theta^T x_i))\right) \underset{\log(u)^{'} = \dfrac{u^{'}}{u}} = \dfrac{\dfrac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]</div>
+<div class="math notranslate nohighlight">
+\[\dfrac{\dfrac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = \dfrac{\dfrac{\partial}{\partial \theta_j}(\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]</div>
+<div class="math notranslate nohighlight">
+\[\dfrac{\dfrac{\partial}{\partial \theta_j}(\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} \underset{\exp(u)^{'} = u^{'}\exp(u)} =  \dfrac{\dfrac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]</div>
+<div class="math notranslate nohighlight">
+\[\dfrac{\dfrac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = \frac{x_i^{(j)} * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]</div>
+<div class="math notranslate nohighlight">
+\[\dfrac{x_i^{(j)} * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = x_i^{(j)} * h_\theta(x_i)\]</div>
+<div class="math notranslate nohighlight">
+\[\dfrac{\partial}{\partial \theta_j}J(\theta) = -\dfrac{1}{n} \sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i)]\]</div>
+<div class="math notranslate nohighlight">
+\[-\dfrac{1}{n} \sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i)] = -\dfrac{1}{n} \sum[y_i - h_\theta(x_i) ] x_i^{(j)}\]</div>
+<div class="math notranslate nohighlight">
+\[\frac{\partial}{\partial \theta_j}J(\theta) = \frac{1}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\]</div>
+<p>We know that the expression of the Gradient descent to update the weights is for the weight <span class="math notranslate nohighlight">\(\theta_j\)</span> :</p>
+<div class="math notranslate nohighlight">
+\[\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j}J(\theta)\]</div>
+<p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the learning rate, we have:</p>
+<div class="math notranslate nohighlight">
+\[\theta_j = \theta_j - \frac{\alpha}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\]</div>
 </section>
 <section id="The-Newton-Raphson-algorithm">
 <h2>The Newton-Raphson algorithm<a class="headerlink" href="#The-Newton-Raphson-algorithm" title="Link to this heading"></a></h2>
@@ -855,6 +848,69 @@ dtype: float64
 <p>Donc, dans le cas de la régression logistique, l’algorithme de la méthode de Newton-Raphson est utilisé pour trouver les coefficients de la régression logistique en maximisant la fonction de vraisemblance.</p>
 <p>Cela permet d’estimer les probabilités de l’événement binaire en fonction des variables prédictives.</p>
 <p>NB: les itérations sont interrompues lorsque la différence entre deux vecteurs de solution successifs est négligeable.</p>
+<section id="Logistic-Regression-from-scratch">
+<h3>Logistic Regression from scratch<a class="headerlink" href="#Logistic-Regression-from-scratch" title="Link to this heading"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Logistic_Regression</span><span class="p">:</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">n_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Initiate the constructor</span>
+<span class="sd">            INPUT:</span>
+<span class="sd">                learning_rate: magnitude of the step</span>
+<span class="sd">                n_iter: number of iterations</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span> <span class="o">=</span> <span class="n">learning_rate</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span> <span class="o">=</span> <span class="n">n_iter</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Train the model</span>
+<span class="sd">        INPUTS:</span>
+<span class="sd">            X: the dataset of the features</span>
+<span class="sd">            y: the target</span>
+<span class="sd">        OUTPUTS:</span>
+<span class="sd">            The model</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_features</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+
+        <span class="c1"># initialize the parameters:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_features</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">X</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n_iter</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">update_weights</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">update_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39;Update of the weights with Gradient descent&#39;&#39;&#39;</span>
+
+        <span class="c1"># we compute the prediction (the probability)</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)))</span>
+
+        <span class="c1"># update the weights:</span>
+        <span class="c1"># w_j = w_j - (alpha / n) * S(p_hat - y_i)xij</span>
+        <span class="c1"># b = b - (alpha / n) * S(p_hat - y_i)</span>
+        <span class="n">dw</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_samples</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">dw</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">learning_rate</span><span class="o">*</span><span class="n">db</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="p">):</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span> <span class="o">-</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">bias</span><span class="p">)))</span>
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">y_pred</span> <span class="o">&gt;</span> <span class="mf">0.5</span> <span class="p">,</span> <span class="mi">1</span> <span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y_pred</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Testing-the-from-scratch-algorithm">
+<h3>Testing the from scratch algorithm<a class="headerlink" href="#Testing-the-from-scratch-algorithm" title="Link to this heading"></a></h3>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -1046,14 +1102,6 @@ array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 0.3986013986013986
 </pre></div></div>
 </div>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
-</pre></div>
-</div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Logistic Regression from scratch</span>
-</pre></div>
-</div>
-</div>
 <p>The inputs:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}X=\begin{pmatrix} x_{1,1} &amp; \ldots &amp; x_{1,k} \\ x_{2,1} &amp; \ldots &amp; x_{2,k} \\ \ldots &amp; x_{i,j} &amp; \ldots \\ x_{n,1} &amp; \ldots &amp; x_{n,k} \end{pmatrix}, w=\begin{pmatrix} w_1 \\ w_2 \\ \ldots \\ w_k \end{pmatrix}, b = \text{constant}\end{split}\]</div>
@@ -1085,6 +1133,7 @@ array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 </pre></div>
 </div>
 </div>
+</section>
 </section>
 <section id="Coefficients-significativity">
 <h2>Coefficients significativity<a class="headerlink" href="#Coefficients-significativity" title="Link to this heading"></a></h2>
