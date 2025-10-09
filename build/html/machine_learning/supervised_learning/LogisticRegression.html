@@ -61,9 +61,9 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#The-cost-function-to-minimize">The cost function to minimize</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Convexity">Convexity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#How-the-Log-Loss-was-determined-?">How the Log-Loss was determined ?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Computation-of-the-gradient-of-the-cost-function">Computation of the gradient of the cost function</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Convexity">Convexity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#The-Newton-Raphson-algorithm">The Newton-Raphson algorithm</a></li>
 </ul>
 </li>
@@ -675,9 +675,35 @@ dtype: float64
 </section>
 <section id="The-cost-function-to-minimize">
 <h1>The cost function to minimize<a class="headerlink" href="#The-cost-function-to-minimize" title="Link to this heading"></a></h1>
+<p><strong>The goal of learning a logistic regression model is to minimize the cost function by adjusting the parameters :math:`theta`.</strong></p>
+<div class="math notranslate nohighlight">
+\[J(θ) = -\frac{1}{n} \sum cost(\hat{y_i}, y_i)\]</div>
+<p>To achieve this, we use an iterative optimization method, gradient descent, to find the values of <span class="math notranslate nohighlight">\(\theta\)</span> that minimize the cost function over the training set.</p>
+<p>The cost function for logistic regression is defined as the average of the penalties across all training examples. By minimizing the cost function, we aim to find the parameters <span class="math notranslate nohighlight">\(\theta\)</span> that minimize the sum of penalties <span class="math notranslate nohighlight">\(\underset{\theta} min(J(\theta))\)</span> across all examples, effectively maximizing the likelihood of observing the training data given the model parameters.</p>
+<p>The cost function for logistic regression is defined as:</p>
+<div class="math notranslate nohighlight">
+\[J(θ) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
+<p>where the prediction <span class="math notranslate nohighlight">\(y_i=1\)</span> of the logistic regression is defined:</p>
+<div class="math notranslate nohighlight">
+\[h_{\theta}(x_i) = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)}\]</div>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(y_i=1\)</span>, then <span class="math notranslate nohighlight">\(P(y_i|x_i; \theta)=P(y_i=1|x_i; \theta)\)</span></p></li>
+<li><p>If <span class="math notranslate nohighlight">\(y_i=0\)</span>, then <span class="math notranslate nohighlight">\(P(y_i|x_i; \theta)=P(y_i=0|x_i; \theta) = 1 - P(y_i=1|x_i; \theta)\)</span></p></li>
+</ul>
+<p>We can write these two equations into a single one:</p>
+<div class="math notranslate nohighlight">
+\[P(y_i|x_i; \theta)=P(y_i=1|x_i; \theta)^{y_i}\times (1 - P(y_i=1|x_i; \theta))^{1-y_i}\]</div>
+<p>With the notations:</p>
+<div class="math notranslate nohighlight">
+\[P(y_i|x_i; \theta)=h_{\theta}(x_i)^{y_i}\times (1 - h_{\theta}(x_i))^{1-y_i}\]</div>
+<p>LIKEHOOD RATIO INTERPRETATION:</p>
+<p><strong>L’objectif de l’apprentissage d’un modèle de régression logistique est de minimiser la fonction de coût en ajustant les paramètres :math:`theta`.</strong></p>
+<p>Pour ce faire, on utilisera une méthode d’optimisation itérative, <strong>la descente de gradient</strong>, pour trouver les valeurs de <span class="math notranslate nohighlight">\(\theta\)</span> qui minimisent la fonction de coût sur l’ensemble d’entraînement.</p>
+<p>La fonction de coût de la régression logistique est alors définie comme la moyenne des pénalités sur tous les exemples de l’ensemble d’entraînement.</p>
+<p>En minimisant la fonction de coût, on cherche à trouver les paramètres <span class="math notranslate nohighlight">\(\theta\)</span> qui permettent de minimiser la somme des pénalités <span class="math notranslate nohighlight">\(\underset{\theta} min(J(\theta))\)</span> sur tous les exemples, c’est-à-dire de maximiser la probabilité d’observer les données d’entraînement en fonction des paramètres du modèle.</p>
 <p>In Machine Learning, the cost function on a <span class="math notranslate nohighlight">\(n\)</span> samples measure the average cost of the sample.</p>
 <div class="math notranslate nohighlight">
-\[J(θ) = -\frac{1}{n} \sum Cost(h_\theta(x_i), y_i)\]</div>
+\[J(θ) = -\frac{1}{n} \sum cost(h_\theta(x_i), y_i)\]</div>
 <p>With <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> the prediction and <span class="math notranslate nohighlight">\(y_i\)</span> the observed output.</p>
 <div class="line-block">
 <div class="line">The <strong>logistic regression cost function</strong>, also known as logistic loss or <strong>log loss</strong>, measures the prediction error of a logistic regression model.</div>
@@ -689,13 +715,6 @@ dtype: float64
 <p>where the prediction of the logistic regression is defined:</p>
 <div class="math notranslate nohighlight">
 \[h_{\theta}(x_i) = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)}\]</div>
-<section id="Convexity">
-<h2>Convexity<a class="headerlink" href="#Convexity" title="Link to this heading"></a></h2>
-<p>Convexity is a crucial property in optimization, as it ensures that any local minimum is also a global minimum. This makes it easier to find the optimal solution using methods like gradient descent.</p>
-<p>The Log Loss function is convex due to its logarithmic form, which is always convex for positive values. While convexity guarantees that a stationary point (where the derivative is zero) is a global minimum, it does not guarantee the existence of such a point.</p>
-<p>To prove the existence of a minimum, the function must also be bounded below and attain this lower bound. For Log Loss, the function is bounded below by zero (since the logarithm of a positive number is always defined) and reaches this bound when predictions are perfectly accurate (i.e., the predicted probability for the correct class is 1).</p>
-<p>Combining convexity with the fact that Log Loss is bounded below and attains its lower bound, we conclude that the function reaches a global minimum when predictions are perfectly correct.</p>
-</section>
 <section id="How-the-Log-Loss-was-determined-?">
 <h2>How the Log-Loss was determined ?<a class="headerlink" href="#How-the-Log-Loss-was-determined-?" title="Link to this heading"></a></h2>
 <div class="line-block">
@@ -707,10 +726,6 @@ dtype: float64
 <li><p>Si la valeur réelle <span class="math notranslate nohighlight">\(y_i\)</span> est égale à 0 (c’est-à-dire que l’exemple appartient à la classe négative), la pénalité est égale à <span class="math notranslate nohighlight">\(-log(1 - h_\theta(x_i))\)</span>, où <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> est la probabilité estimée par le modèle que l’exemple appartienne à la classe positive. Plus la probabilité estimée est proche de 1, plus la pénalité est élevée (<span class="math notranslate nohighlight">\(-\log(1 - 1^-) \approx +\infty\)</span>).</p></li>
 </ul>
 <p>On résume les deux conditions “si” précédentes en une seule formule : <span class="math notranslate nohighlight">\(y_i * log(h_\theta(x_i)) + (1 - y_i) * log(1 - h_\theta(x_i))\)</span> pour l’observation <span class="math notranslate nohighlight">\(i\)</span>.</p>
-<p><strong>L’objectif de l’apprentissage d’un modèle de régression logistique est de minimiser la fonction de coût en ajustant les paramètres :math:`theta`.</strong></p>
-<p>Pour ce faire, on utilisera une méthode d’optimisation itérative, <strong>la descente de gradient</strong>, pour trouver les valeurs de <span class="math notranslate nohighlight">\(\theta\)</span> qui minimisent la fonction de coût sur l’ensemble d’entraînement.</p>
-<p>La fonction de coût de la régression logistique est alors définie comme la moyenne des pénalités sur tous les exemples de l’ensemble d’entraînement.</p>
-<p>En minimisant la fonction de coût, on cherche à trouver les paramètres <span class="math notranslate nohighlight">\(\theta\)</span> qui permettent de minimiser la somme des pénalités <span class="math notranslate nohighlight">\(\underset{\theta} min(J(\theta))\)</span> sur tous les exemples, c’est-à-dire de maximiser la probabilité d’observer les données d’entraînement en fonction des paramètres du modèle.</p>
 </section>
 <section id="Computation-of-the-gradient-of-the-cost-function">
 <h2>Computation of the gradient of the cost function<a class="headerlink" href="#Computation-of-the-gradient-of-the-cost-function" title="Link to this heading"></a></h2>
@@ -790,6 +805,13 @@ dtype: float64
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the learning rate, we have:</p>
 <div class="math notranslate nohighlight">
 \[\theta_j = \theta_j - \frac{\alpha}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\]</div>
+</section>
+<section id="Convexity">
+<h2>Convexity<a class="headerlink" href="#Convexity" title="Link to this heading"></a></h2>
+<p>Convexity is a crucial property in optimization, as it ensures that any local minimum is also a global minimum. This makes it easier to find the optimal solution using methods like gradient descent.</p>
+<p>The Log Loss function is convex due to its logarithmic form, which is always convex for positive values. While convexity guarantees that a stationary point (where the derivative is zero) is a global minimum, it does not guarantee the existence of such a point.</p>
+<p>To prove the existence of a minimum, the function must also be bounded below and attain this lower bound. For Log Loss, the function is bounded below by zero (since the logarithm of a positive number is always defined) and reaches this bound when predictions are perfectly accurate (i.e., the predicted probability for the correct class is 1).</p>
+<p>Combining convexity with the fact that Log Loss is bounded below and attains its lower bound, we conclude that the function reaches a global minimum when predictions are perfectly correct.</p>
 </section>
 <section id="The-Newton-Raphson-algorithm">
 <h2>The Newton-Raphson algorithm<a class="headerlink" href="#The-Newton-Raphson-algorithm" title="Link to this heading"></a></h2>
