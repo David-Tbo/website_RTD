@@ -61,7 +61,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#The-cost-function-to-minimize">The cost function to minimize</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Convexité">Convexité</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Convexity">Convexity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#How-the-Log-Loss-was-determined-?">How the Log-Loss was determined ?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Computation-of-the-gradient-of-the-cost-function">Computation of the gradient of the cost function</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#The-Newton-Raphson-algorithm">The Newton-Raphson algorithm</a></li>
@@ -689,14 +689,12 @@ dtype: float64
 <p>where the prediction of the logistic regression is defined:</p>
 <div class="math notranslate nohighlight">
 \[h_{\theta}(x_i) = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)}\]</div>
-<section id="Convexité">
-<h2>Convexité<a class="headerlink" href="#Convexité" title="Link to this heading"></a></h2>
-<p>La convexité est une propriété importante en optimisation, car elle garantit qu’un minimum local est également un minimum global. Cela signifie qu’il est plus facile de trouver la solution optimale lors de l’utilisation de méthodes d’optimisation telles que la descente de gradient.</p>
-<p>Dans le cas de la fonction Log Loss, sa convexité provient de la forme logarithmique de la fonction, qui est toujours convexe pour des valeurs positives.</p>
-<p>La convexité d’une fonction garantit qu’un point stationnaire (c’est-à-dire un point où la dérivée est nulle) est un minimum global, mais elle ne garantit pas à elle seule l’existence d’un tel point.</p>
-<p>Pour prouver l’existence d’un extremum, il faut également montrer que la fonction est bornée inférieurement et qu’elle atteint cette borne inférieure. En d’autres termes, il faut montrer qu’il existe une valeur minimale que la fonction peut atteindre et qu’il existe au moins un point où la fonction prend cette valeur.</p>
-<p>Dans le cas de la fonction Log Loss, on peut montrer qu’elle est bornée inférieurement par zéro (puisque le logarithme d’un nombre positif est toujours positif) et qu’elle atteint cette borne inférieure lorsque les prédictions sont parfaitement correctes (c’est-à-dire lorsque la probabilité prédite pour la classe correcte est égale à 1).</p>
-<p>En combinant la convexité de la fonction Log Loss avec le fait qu’elle est bornée inférieurement et qu’elle atteint sa borne inférieure, on peut conclure que la fonction atteint un minimum global lorsque les prédictions sont parfaitement correctes.</p>
+<section id="Convexity">
+<h2>Convexity<a class="headerlink" href="#Convexity" title="Link to this heading"></a></h2>
+<p>Convexity is a crucial property in optimization, as it ensures that any local minimum is also a global minimum. This makes it easier to find the optimal solution using methods like gradient descent.</p>
+<p>The Log Loss function is convex due to its logarithmic form, which is always convex for positive values. While convexity guarantees that a stationary point (where the derivative is zero) is a global minimum, it does not guarantee the existence of such a point.</p>
+<p>To prove the existence of a minimum, the function must also be bounded below and attain this lower bound. For Log Loss, the function is bounded below by zero (since the logarithm of a positive number is always defined) and reaches this bound when predictions are perfectly accurate (i.e., the predicted probability for the correct class is 1).</p>
+<p>Combining convexity with the fact that Log Loss is bounded below and attains its lower bound, we conclude that the function reaches a global minimum when predictions are perfectly correct.</p>
 </section>
 <section id="How-the-Log-Loss-was-determined-?">
 <h2>How the Log-Loss was determined ?<a class="headerlink" href="#How-the-Log-Loss-was-determined-?" title="Link to this heading"></a></h2>
