@@ -59,11 +59,8 @@
 <li class="toctree-l4"><a class="reference internal" href="#Coefficients-interpretation">Coefficients interpretation</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#The-cost-function-to-minimize">The cost function to minimize</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Computation-of-the-gradient-of-the-cost-function">Computation of the gradient of the cost function</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Convexity">Convexity</a></li>
-<li class="toctree-l4"><a class="reference internal" href="#The-Newton-Raphson-algorithm">The Newton-Raphson algorithm</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#The-Algorithm-steps">The Algorithm steps</a><ul>
@@ -671,20 +668,9 @@ dtype: float64
 <p>Note:</p>
 <div class="math notranslate nohighlight">
 \[\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)} = \exp(\beta_1)\]</div>
-</section>
-<section id="The-cost-function-to-minimize">
-<h1>The cost function to minimize<a class="headerlink" href="#The-cost-function-to-minimize" title="Link to this heading"></a></h1>
-<p><strong>The goal of learning a logistic regression model is to minimize the cost function by adjusting the parameters :math:`theta`.</strong></p>
+<p>The prediction <span class="math notranslate nohighlight">\(y_i=1\)</span> of the logistic regression is defined:</p>
 <div class="math notranslate nohighlight">
-\[J(θ) = -\frac{1}{n} \sum cost(\hat{y_i}, y_i)\]</div>
-<p>To achieve this, we use an iterative optimization method, gradient descent, to find the values of <span class="math notranslate nohighlight">\(\theta\)</span> that minimize the cost function over the training set.</p>
-<p>The cost function for logistic regression is defined as the average of the penalties across all training examples. By minimizing the cost function, we aim to find the parameters <span class="math notranslate nohighlight">\(\theta\)</span> that minimize the sum of penalties <span class="math notranslate nohighlight">\(\underset{\theta} min(J(\theta))\)</span> across all examples, effectively maximizing the likelihood of observing the training data given the model parameters.</p>
-<p>The cost function for logistic regression is defined as:</p>
-<div class="math notranslate nohighlight">
-\[J(θ) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
-<p>where the prediction <span class="math notranslate nohighlight">\(y_i=1\)</span> of the logistic regression is defined:</p>
-<div class="math notranslate nohighlight">
-\[h_{\theta}(x_i) = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)}\]</div>
+\[\hat{y_i} = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)} = h_{\theta}(x_i)\]</div>
 <ul class="simple">
 <li><p>If <span class="math notranslate nohighlight">\(y_i=1\)</span>, then <span class="math notranslate nohighlight">\(P(y_i|x_i; \theta)=P(y_i=1|x_i; \theta)\)</span></p></li>
 <li><p>If <span class="math notranslate nohighlight">\(y_i=0\)</span>, then <span class="math notranslate nohighlight">\(P(y_i|x_i; \theta)=P(y_i=0|x_i; \theta) = 1 - P(y_i=1|x_i; \theta)\)</span></p></li>
@@ -695,17 +681,6 @@ dtype: float64
 <p>With the notations:</p>
 <div class="math notranslate nohighlight">
 \[P(y_i|x_i; \theta)=h_{\theta}(x_i)^{y_i}\times (1 - h_{\theta}(x_i))^{1-y_i}\]</div>
-<p>LIKEHOOD RATIO INTERPRETATION:</p>
-<p><strong>L’objectif de l’apprentissage d’un modèle de régression logistique est de minimiser la fonction de coût en ajustant les paramètres :math:`theta`.</strong></p>
-<p>Pour ce faire, on utilisera une méthode d’optimisation itérative, <strong>la descente de gradient</strong>, pour trouver les valeurs de <span class="math notranslate nohighlight">\(\theta\)</span> qui minimisent la fonction de coût sur l’ensemble d’entraînement.</p>
-<p>La fonction de coût de la régression logistique est alors définie comme la moyenne des pénalités sur tous les exemples de l’ensemble d’entraînement.</p>
-<p>En minimisant la fonction de coût, on cherche à trouver les paramètres <span class="math notranslate nohighlight">\(\theta\)</span> qui permettent de minimiser la somme des pénalités <span class="math notranslate nohighlight">\(\underset{\theta} min(J(\theta))\)</span> sur tous les exemples, c’est-à-dire de maximiser la probabilité d’observer les données d’entraînement en fonction des paramètres du modèle.</p>
-<p>In Machine Learning, the cost function on a <span class="math notranslate nohighlight">\(n\)</span> samples measure the average cost of the sample.</p>
-<div class="math notranslate nohighlight">
-\[J(θ) = -\frac{1}{n} \sum cost(h_\theta(x_i), y_i)\]</div>
-<p>With <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> the prediction and <span class="math notranslate nohighlight">\(y_i\)</span> the observed output.</p>
-<p>The <strong>logistic regression cost function</strong>, also known as logistic loss or <strong>log loss</strong>, measures the prediction error of a logistic regression model.</p>
-<p>The log loss is directly derived from the log-likelihood.</p>
 <p>The <strong>likelihood</strong> of the observations <span class="math notranslate nohighlight">\(y_i\)</span> given the inputs <span class="math notranslate nohighlight">\(x_i\)</span> and parameters <span class="math notranslate nohighlight">\(\theta\)</span> is defined as:</p>
 <div class="math notranslate nohighlight">
 \[L(\theta) = \prod_{i=1}^n P(y_i|x_i;\theta) = \prod_{i=1}^n (h_{\theta}(x_i))^{y_i} (1 -h_{\theta}(x_i))^{1-y_i}\]</div>
@@ -715,26 +690,47 @@ dtype: float64
 <p>The <strong>log-likelihood</strong> is defined as:</p>
 <div class="math notranslate nohighlight">
 \[l(\theta) = \log(L(\theta))=\sum_{i=1}^n[y_i \log (h_{\theta}(x_i)) + (1 - y_i) \log(1 - h_{\theta}(x_i))]\]</div>
-<p>The <strong>log loss</strong> is the negative average of the log likelihood:</p>
+<p>The goal of learning a <strong>logistic regression model</strong> is to <strong>minimize the cost function</strong> by adjusting the parameters <span class="math notranslate nohighlight">\(\theta\)</span>.The cost function measures the average prediction error across all <span class="math notranslate nohighlight">\(n\)</span> training samples.</p>
+<p>The cost function <span class="math notranslate nohighlight">\(J(\theta)\)</span> is defined as the average penalty for prediction errors across the training set. Mathematically, it is expressed as:</p>
 <div class="math notranslate nohighlight">
-\[J(\theta) = -\dfrac{1}{n}l(\theta)\]</div>
-<p>It evaluates how well the model fits the training data and is used to optimize the model’s parameters during training.</p>
-<p><strong>The higher the likelihood, the lower the log loss is</strong>.</p>
-<p>The cost function for logistic regression is defined as:</p>
+\[J(θ) = -\frac{1}{n} \sum cost(h_\theta(x_i), y_i)\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> the model’s prediction for sample <span class="math notranslate nohighlight">\(x_i\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(y_i\)</span> the observed (true) value.</p></li>
+</ul>
+<p>Alternatively, it can be written as:</p>
 <div class="math notranslate nohighlight">
-\[J(θ) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
-<p>The log-loss function penalizes prediction errors based on the estimated probability from the model. It assigns higher penalties when predictions are far from the true values—specifically, when the predicted probability is close to 0 or 1 while the actual label is the opposite.</p>
-<ul>
-<li><div class="line-block">
-<div class="line">If the label <span class="math notranslate nohighlight">\(y_i = 1\)</span> (positive class), the penalty is <span class="math notranslate nohighlight">\(-log(h_{\theta}(x_i))\)</span>, where <span class="math notranslate nohighlight">\(h_{\theta}(x_i)\)</span> is the model’s estimated probability of the example belonging to the positive class.</div>
-<div class="line">The closer <span class="math notranslate nohighlight">\(h_{\theta}(x_i)\)</span> is to 0 (far from the true label), the higher the penalty (<span class="math notranslate nohighlight">\(-\log(0^+) \approx + \infty\)</span>).</div>
+\[J(θ) = \frac{1}{n} \sum cost(\hat{y_i}, y_i)\]</div>
+<p>Where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\hat{y_i} = h_{\theta}(x_i)\)</span></p></li>
+</ul>
+<div class="line-block">
+<div class="line">For logistic regression, the cost function is called <strong>log loss</strong> (or logistic loss).</div>
+<div class="line"><strong>Log loss</strong> is derived from the log-likelihood <span class="math notranslate nohighlight">\(l(\theta)\)</span> and is defined as:</div>
 </div>
-</li>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\dfrac{1}{n}l(\theta) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
+<p>The log-loss function penalizes prediction errors based on the estimated probability from the model. It assigns higher penalties when predictions are far from the true labels—specifically:</p>
+<ul class="simple">
+<li><p>If the label <span class="math notranslate nohighlight">\(y_i = 1\)</span> (positive class), the penalty is <span class="math notranslate nohighlight">\(-log(h_{\theta}(x_i))\)</span>. The closer <span class="math notranslate nohighlight">\(h_{\theta}(x_i)\)</span> is to 0 (far from the true label), the higher the penalty (<span class="math notranslate nohighlight">\(-\log(0^+) \approx + \infty\)</span>).</p></li>
 <li><p>If the label <span class="math notranslate nohighlight">\(y_i = 0\)</span> (negative class), the penalty is <span class="math notranslate nohighlight">\(-log(1-h_{\theta}(x_i))\)</span>, the closer <span class="math notranslate nohighlight">\(h_{\theta}(x_i)\)</span> is to 1 (far from the true label), the higher the penalty (<span class="math notranslate nohighlight">\(-\log(1 -1^+) \approx + \infty\)</span>).</p></li>
 </ul>
 <p>The two cases are combined into a single formula for observation <span class="math notranslate nohighlight">\(i\)</span>:</p>
 <div class="math notranslate nohighlight">
-\[y_i  log(h_\theta(x_i)) + (1 - y_i)  log(1 - h_\theta(x_i))\]</div>
+\[y_i log(h_\theta(x_i)) + (1 - y_i) log(1 - h_\theta(x_i))\]</div>
+<p><strong>Key insights:</strong></p>
+<ul class="simple">
+<li><p><strong>Log loss</strong> evaluates how well the model fits the training data.</p></li>
+<li><p>The log loss is the negative average the log likelihood.</p></li>
+<li><p><strong>Higher likelihood</strong> leads to <strong>lower the log loss</strong> (since <span class="math notranslate nohighlight">\(J(\theta) = -\frac{1}{n}l(\theta)\)</span>).</p></li>
+<li><p>The log-loss function heavily penalizes confident wrong predictions.</p></li>
+</ul>
+<p>By minimizing the cost function <span class="math notranslate nohighlight">\(J(\theta)\)</span>, we aim to find the parameters <span class="math notranslate nohighlight">\(\theta\)</span> that maximize the likelihood of observing the training data given the model parameters.</p>
+<p>To achieve this, we use an iterative optimization method, gradient descent, to find the values of <span class="math notranslate nohighlight">\(\theta\)</span> that minimize the cost function over the training set:</p>
+<div class="math notranslate nohighlight">
+\[\underset{\theta}{minimize}(J(\theta))\]</div>
 <section id="Computation-of-the-gradient-of-the-cost-function">
 <h2>Computation of the gradient of the cost function<a class="headerlink" href="#Computation-of-the-gradient-of-the-cost-function" title="Link to this heading"></a></h2>
 <div class="math notranslate nohighlight">
@@ -813,17 +809,11 @@ dtype: float64
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the learning rate, we have:</p>
 <div class="math notranslate nohighlight">
 \[\theta_j = \theta_j - \frac{\alpha}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\]</div>
-</section>
-<section id="Convexity">
-<h2>Convexity<a class="headerlink" href="#Convexity" title="Link to this heading"></a></h2>
+<p>## Convexity</p>
 <p>Convexity is a crucial property in optimization, as it ensures that any local minimum is also a global minimum. This makes it easier to find the optimal solution using methods like gradient descent.</p>
 <p>The Log Loss function is convex due to its logarithmic form, which is always convex for positive values. While convexity guarantees that a stationary point (where the derivative is zero) is a global minimum, it does not guarantee the existence of such a point.</p>
 <p>To prove the existence of a minimum, the function must also be bounded below and attain this lower bound. For Log Loss, the function is bounded below by zero (since the logarithm of a positive number is always defined) and reaches this bound when predictions are perfectly accurate (i.e., the predicted probability for the correct class is 1).</p>
-<p>Combining convexity with the fact that Log Loss is bounded below and attains its lower bound, we conclude that the function reaches a global minimum when predictions are perfectly correct.</p>
-</section>
-<section id="The-Newton-Raphson-algorithm">
-<h2>The Newton-Raphson algorithm<a class="headerlink" href="#The-Newton-Raphson-algorithm" title="Link to this heading"></a></h2>
-<p>The Newton-Raphson algorithm is used to find the coefficients of logistic regression by maximizing the likelihood function.</p>
+<p>Combining convexity with the fact that Log Loss is bounded below and attains its lower bound, we conclude that the function reaches a global minimum when predictions are perfectly correct. ## The Newton-Raphson algorithm The Newton-Raphson algorithm is used to find the coefficients of logistic regression by maximizing the likelihood function.</p>
 <p>Logistic regression is a regression model used to predict the probability of a binary event based on one or more predictive variables. In logistic regression, the likelihood function is convex and can be maximized using the Newton-Raphson algorithm.</p>
 <p>The Newton-Raphson algorithm is an iterative method for finding the maximum of a function using its first and second derivatives. For logistic regression, the likelihood function is given by:</p>
 <p><span class="math notranslate nohighlight">\(L(\theta | X, y) = \prod(P(yi | x_i, \theta)^{yi} (1 - P(y_i | x_i, \theta))^{(1 - y_i)})\)</span></p>
@@ -835,7 +825,7 @@ dtype: float64
 <li><p><span class="math notranslate nohighlight">\(P(y_i | x_i, \theta)\)</span> is the predicted probability of the binary event for observation <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
 </ul>
 <p>To maximize the likelihood function, the Newton-Raphson algorithm updates the coefficient vector <span class="math notranslate nohighlight">\(\theta\)</span> at each iteration using the following formula:</p>
-<p><span class="math notranslate nohighlight">\(\theta_{i+1} = \theta_i - H^{-1} * g\)</span></p>
+<p><span class="math notranslate nohighlight">\(\theta_{i+1} = \theta_i - H^{-1} . g\)</span></p>
 <p>where</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(H = \dfrac{\partial^2L}{\partial \theta \partial\theta'}\)</span> is the Hessian matrix of the likelihood function.</p></li>
