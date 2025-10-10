@@ -61,7 +61,6 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#The-cost-function-to-minimize">The cost function to minimize</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#How-the-Log-Loss-was-determined-?">How the Log-Loss was determined ?</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Computation-of-the-gradient-of-the-cost-function">Computation of the gradient of the cost function</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Convexity">Convexity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#The-Newton-Raphson-algorithm">The Newton-Raphson algorithm</a></li>
@@ -705,28 +704,37 @@ dtype: float64
 <div class="math notranslate nohighlight">
 \[J(θ) = -\frac{1}{n} \sum cost(h_\theta(x_i), y_i)\]</div>
 <p>With <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> the prediction and <span class="math notranslate nohighlight">\(y_i\)</span> the observed output.</p>
-<div class="line-block">
-<div class="line">The <strong>logistic regression cost function</strong>, also known as logistic loss or <strong>log loss</strong>, measures the prediction error of a logistic regression model.</div>
-<div class="line">It evaluates how well the model fits the training data and is used to optimize the model’s parameters during training.</div>
-</div>
-<p>The cost function for logistic regression is defined as:</p>
+<p>The <strong>logistic regression cost function</strong>, also known as logistic loss or <strong>log loss</strong>, measures the prediction error of a logistic regression model.</p>
+<p>The log loss is directly derived from the log-likelihood.</p>
+<p>The <strong>likelihood</strong> of the observations <span class="math notranslate nohighlight">\(y_i\)</span> given the inputs <span class="math notranslate nohighlight">\(x_i\)</span> and parameters <span class="math notranslate nohighlight">\(\theta\)</span> is defined as:</p>
 <div class="math notranslate nohighlight">
-\[J(θ) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
+\[L(\theta) = \prod_{i=1}^n P(y_i|x_i;\theta) = \prod_{i=1}^n (h_{\theta}(x_i))^{y_i} (1 -h_{\theta}(x_i))^{1-y_i}\]</div>
 <p>where the prediction of the logistic regression is defined:</p>
 <div class="math notranslate nohighlight">
 \[h_{\theta}(x_i) = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)}\]</div>
-<section id="How-the-Log-Loss-was-determined-?">
-<h2>How the Log-Loss was determined ?<a class="headerlink" href="#How-the-Log-Loss-was-determined-?" title="Link to this heading"></a></h2>
-<div class="line-block">
-<div class="line">The log-loss pénalise les erreurs de prédiction en fonction de la probabilité estimée par le modèle.</div>
-<div class="line">La fonction de coût attribue une pénalité plus élevée aux exemples pour lesquels la prédiction est loin de la valeur réelle, c’est-à-dire lorsque la probabilité estimée est proche de 0 ou de 1 alors que la valeur réelle est respectivement 1 ou 0.</div>
+<p>The <strong>log-likelihood</strong> is defined as:</p>
+<div class="math notranslate nohighlight">
+\[l(\theta) = \log(L(\theta))=\sum_{i=1}^n[y_i \log (h_{\theta}(x_i)) + (1 - y_i) \log(1 - h_{\theta}(x_i))]\]</div>
+<p>The <strong>log loss</strong> is the negative average of the log likelihood:</p>
+<div class="math notranslate nohighlight">
+\[J(\theta) = -\dfrac{1}{n}l(\theta)\]</div>
+<p>It evaluates how well the model fits the training data and is used to optimize the model’s parameters during training.</p>
+<p><strong>The higher the likelihood, the lower the log loss is</strong>.</p>
+<p>The cost function for logistic regression is defined as:</p>
+<div class="math notranslate nohighlight">
+\[J(θ) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
+<p>The log-loss function penalizes prediction errors based on the estimated probability from the model. It assigns higher penalties when predictions are far from the true values—specifically, when the predicted probability is close to 0 or 1 while the actual label is the opposite.</p>
+<ul>
+<li><div class="line-block">
+<div class="line">If the label <span class="math notranslate nohighlight">\(y_i = 1\)</span> (positive class), the penalty is <span class="math notranslate nohighlight">\(-log(h_{\theta}(x_i))\)</span>, where <span class="math notranslate nohighlight">\(h_{\theta}(x_i)\)</span> is the model’s estimated probability of the example belonging to the positive class.</div>
+<div class="line">The closer <span class="math notranslate nohighlight">\(h_{\theta}(x_i)\)</span> is to 0 (far from the true label), the higher the penalty (<span class="math notranslate nohighlight">\(-\log(0^+) \approx + \infty\)</span>).</div>
 </div>
-<ul class="simple">
-<li><p>Si la valeur réelle <span class="math notranslate nohighlight">\(y_i\)</span> est égale à 1 (c’est-à-dire que l’exemple appartient à la classe positive), la pénalité est égale à <span class="math notranslate nohighlight">\(-log(h_\theta(x_i))\)</span>, où <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> est la probabilité estimée par le modèle que l’exemple appartienne à la classe positive. Plus la probabilité estimée <span class="math notranslate nohighlight">\((h_\theta(x_i))\)</span> est proche de 0 (et donc s’éloigne de l’observation’), plus la pénalité est élevée (<span class="math notranslate nohighlight">\(-\log(0^+) \approx +\infty\)</span>).</p></li>
-<li><p>Si la valeur réelle <span class="math notranslate nohighlight">\(y_i\)</span> est égale à 0 (c’est-à-dire que l’exemple appartient à la classe négative), la pénalité est égale à <span class="math notranslate nohighlight">\(-log(1 - h_\theta(x_i))\)</span>, où <span class="math notranslate nohighlight">\(h_\theta(x_i)\)</span> est la probabilité estimée par le modèle que l’exemple appartienne à la classe positive. Plus la probabilité estimée est proche de 1, plus la pénalité est élevée (<span class="math notranslate nohighlight">\(-\log(1 - 1^-) \approx +\infty\)</span>).</p></li>
+</li>
+<li><p>If the label <span class="math notranslate nohighlight">\(y_i = 0\)</span> (negative class), the penalty is <span class="math notranslate nohighlight">\(-log(1-h_{\theta}(x_i))\)</span>, the closer <span class="math notranslate nohighlight">\(h_{\theta}(x_i)\)</span> is to 1 (far from the true label), the higher the penalty (<span class="math notranslate nohighlight">\(-\log(1 -1^+) \approx + \infty\)</span>).</p></li>
 </ul>
-<p>On résume les deux conditions “si” précédentes en une seule formule : <span class="math notranslate nohighlight">\(y_i * log(h_\theta(x_i)) + (1 - y_i) * log(1 - h_\theta(x_i))\)</span> pour l’observation <span class="math notranslate nohighlight">\(i\)</span>.</p>
-</section>
+<p>The two cases are combined into a single formula for observation <span class="math notranslate nohighlight">\(i\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[y_i  log(h_\theta(x_i)) + (1 - y_i)  log(1 - h_\theta(x_i))\]</div>
 <section id="Computation-of-the-gradient-of-the-cost-function">
 <h2>Computation of the gradient of the cost function<a class="headerlink" href="#Computation-of-the-gradient-of-the-cost-function" title="Link to this heading"></a></h2>
 <div class="math notranslate nohighlight">
@@ -815,6 +823,28 @@ dtype: float64
 </section>
 <section id="The-Newton-Raphson-algorithm">
 <h2>The Newton-Raphson algorithm<a class="headerlink" href="#The-Newton-Raphson-algorithm" title="Link to this heading"></a></h2>
+<p>The Newton-Raphson algorithm is used to find the coefficients of logistic regression by maximizing the likelihood function.</p>
+<p>Logistic regression is a regression model used to predict the probability of a binary event based on one or more predictive variables. In logistic regression, the likelihood function is convex and can be maximized using the Newton-Raphson algorithm.</p>
+<p>The Newton-Raphson algorithm is an iterative method for finding the maximum of a function using its first and second derivatives. For logistic regression, the likelihood function is given by:</p>
+<p><span class="math notranslate nohighlight">\(L(\theta | X, y) = \prod(P(yi | x_i, \theta)^{yi} (1 - P(y_i | x_i, \theta))^{(1 - y_i)})\)</span></p>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\theta\)</span> is the vector of logistic regression coefficients,</p></li>
+<li><p><span class="math notranslate nohighlight">\(X\)</span> is the matrix of predictive variables,</p></li>
+<li><p><span class="math notranslate nohighlight">\(y\)</span> is the vector of binary response variables, and</p></li>
+<li><p><span class="math notranslate nohighlight">\(P(y_i | x_i, \theta)\)</span> is the predicted probability of the binary event for observation <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ul>
+<p>To maximize the likelihood function, the Newton-Raphson algorithm updates the coefficient vector <span class="math notranslate nohighlight">\(\theta\)</span> at each iteration using the following formula:</p>
+<p><span class="math notranslate nohighlight">\(\theta_{i+1} = \theta_i - H^{-1} * g\)</span></p>
+<p>where</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(H = \dfrac{\partial^2L}{\partial \theta \partial\theta'}\)</span> is the Hessian matrix of the likelihood function.</p></li>
+<li><p><span class="math notranslate nohighlight">\(g = \dfrac{\partial L}{\partial \theta }\)</span> is the gradient vector of the likelihood function, and,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\theta_i\)</span> is the coefficient vector at iteration <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
+</ul>
+<p>The Hessian matrix and gradient vector of the likelihood function are computed using the partial derivatives of the likelihood with respect to the coefficients <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
+<p>Thus, in logistic regression, the Newton-Raphson algorithm is used to estimate the coefficients by maximizing the likelihood function. This allows the prediction of binary event probabilities based on the predictive variables.</p>
+<p><strong>Note</strong>: The iterations stop when the difference between two successive solution vectors becomes negligible.</p>
 </section>
 </section>
 <section id="The-Algorithm-steps">
@@ -845,29 +875,6 @@ dtype: float64
 <li><p>Choose the label based on the probability</p></li>
 </ul>
 <p>Another way to compute the coefficients</p>
-<div class="line-block">
-<div class="line">L’algorithme de la méthode de Newton-Raphson est utilisé pour trouver les coefficients de la régression logistique en maximisant la fonction de vraisemblance.</div>
-<div class="line">La régression logistique est un modèle de régression utilisé pour prédire la probabilité d’un événement binaire en fonction d’une ou plusieurs variables prédictives.</div>
-</div>
-<div class="line-block">
-<div class="line">Dans le cas de la régression logistique, la fonction de vraisemblance est une fonction convexe et peut être maximisée à l’aide de l’algorithme de Newton-Raphson.</div>
-<div class="line">L’algorithme de Newton-Raphson est une méthode itérative pour trouver le maximum d’une fonction en utilisant la dérivée et la dérivée seconde de la fonction.</div>
-</div>
-<p>Dans le cas de la régression logistique, la fonction de vraisemblance est donnée par:</p>
-<p><span class="math notranslate nohighlight">\(L(\omega | X, y) = prod(p(yi | xi, beta)^{yi} * (1 - p(yi | xi, beta))^{(1 - yi)})\)</span></p>
-<p>où <span class="math notranslate nohighlight">\(\omega\)</span> est le vecteur de coefficients de la régression logistique, <span class="math notranslate nohighlight">\(X\)</span> est la matrice de variables prédictives, <span class="math notranslate nohighlight">\(y\)</span> est le vecteur de variables réponses binaires et <span class="math notranslate nohighlight">\(p(yi | xi, \omega)\)</span> est la probabilité prédite de l’événement binaire pour l’observation <span class="math notranslate nohighlight">\(i\)</span>.</p>
-<p>Pour maximiser la fonction de vraisemblance, nous pouvons utiliser l’algorithme de Newton-Raphson. À chaque itération, l’algorithme met à jour le vecteur de coefficients beta en utilisant la formule suivante:</p>
-<p><span class="math notranslate nohighlight">\(\omega_{i+1} = \omega_i - H^{-1} * g\)</span></p>
-<p>où</p>
-<ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(H = \frac{\partial^2L}{\partial \omega \partial\omega'}\)</span> est la matrice hessienne de la fonction de vraisemblance,</p></li>
-<li><p><span class="math notranslate nohighlight">\(g = \frac{\partial L}{\partial \omega }\)</span> est le vecteur gradient de la fonction de vraisemblance et</p></li>
-<li><p><span class="math notranslate nohighlight">\(\omega_i\)</span> est le vecteur de coefficients à l’itération <span class="math notranslate nohighlight">\(i\)</span>.</p></li>
-</ul>
-<p>La matrice hessienne et le vecteur gradient de la fonction de vraisemblance peuvent être calculés à l’aide des dérivées partielles de la fonction de vraisemblance par rapport aux coefficients beta.</p>
-<p>Donc, dans le cas de la régression logistique, l’algorithme de la méthode de Newton-Raphson est utilisé pour trouver les coefficients de la régression logistique en maximisant la fonction de vraisemblance.</p>
-<p>Cela permet d’estimer les probabilités de l’événement binaire en fonction des variables prédictives.</p>
-<p>NB: les itérations sont interrompues lorsque la différence entre deux vecteurs de solution successifs est négligeable.</p>
 <section id="Logistic-Regression-from-scratch">
 <h3>Logistic Regression from scratch<a class="headerlink" href="#Logistic-Regression-from-scratch" title="Link to this heading"></a></h3>
 <div class="nbinput nblast docutils container">
