@@ -59,10 +59,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#Coefficients-interpretation">Coefficients interpretation</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Computation-of-the-gradient-of-the-cost-function">Computation of the gradient of the cost function</a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="#APPENDIX">APPENDIX</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#The-Algorithm-steps">The Algorithm steps</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Training">Training</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Given-a-data-point">Given a data point</a></li>
@@ -724,15 +721,13 @@ dtype: float64
 <ul class="simple">
 <li><p><strong>Log loss</strong> evaluates how well the model fits the training data.</p></li>
 <li><p>The log loss is the negative average the log likelihood.</p></li>
-<li><p><strong>Higher likelihood</strong> leads to <strong>lower the log loss</strong> (since <span class="math notranslate nohighlight">\(J(\theta) = -\frac{1}{n}l(\theta)\)</span>).</p></li>
+<li><p><strong>Higher likelihood</strong> leads to <strong>lower log loss</strong> (since <span class="math notranslate nohighlight">\(J(\theta) = -\frac{1}{n}l(\theta)\)</span>).</p></li>
 <li><p>The log-loss function heavily penalizes confident wrong predictions.</p></li>
 </ul>
 <p>By minimizing the cost function <span class="math notranslate nohighlight">\(J(\theta)\)</span>, we aim to find the parameters <span class="math notranslate nohighlight">\(\theta\)</span> that maximize the likelihood of observing the training data given the model parameters.</p>
-<p>To achieve this, we use an iterative optimization method, gradient descent, to find the values of <span class="math notranslate nohighlight">\(\theta\)</span> that minimize the cost function over the training set:</p>
+<p>To achieve this, we use an iterative optimization method, <strong>gradient descent</strong>, to find the values of <span class="math notranslate nohighlight">\(\theta\)</span> that minimize the cost function over the training set:</p>
 <div class="math notranslate nohighlight">
 \[\underset{\theta}{minimize}(J(\theta))\]</div>
-<section id="Computation-of-the-gradient-of-the-cost-function">
-<h2>Computation of the gradient of the cost function<a class="headerlink" href="#Computation-of-the-gradient-of-the-cost-function" title="Link to this heading"></a></h2>
 <div class="math notranslate nohighlight">
 \[J(\theta) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]</div>
 <p>To compute the gradient <span class="math notranslate nohighlight">\(\nabla J(\theta)\)</span> we start by transforming the expression of:</p>
@@ -809,11 +804,7 @@ dtype: float64
 <p>where <span class="math notranslate nohighlight">\(\alpha\)</span> is the learning rate, we have:</p>
 <div class="math notranslate nohighlight">
 \[\theta_j = \theta_j - \frac{\alpha}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\]</div>
-<p>## Convexity</p>
-<p>Convexity is a crucial property in optimization, as it ensures that any local minimum is also a global minimum. This makes it easier to find the optimal solution using methods like gradient descent.</p>
-<p>The Log Loss function is convex due to its logarithmic form, which is always convex for positive values. While convexity guarantees that a stationary point (where the derivative is zero) is a global minimum, it does not guarantee the existence of such a point.</p>
-<p>To prove the existence of a minimum, the function must also be bounded below and attain this lower bound. For Log Loss, the function is bounded below by zero (since the logarithm of a positive number is always defined) and reaches this bound when predictions are perfectly accurate (i.e., the predicted probability for the correct class is 1).</p>
-<p>Combining convexity with the fact that Log Loss is bounded below and attains its lower bound, we conclude that the function reaches a global minimum when predictions are perfectly correct. ## The Newton-Raphson algorithm The Newton-Raphson algorithm is used to find the coefficients of logistic regression by maximizing the likelihood function.</p>
+<p>The Newton-Raphson algorithm is used to find the coefficients of logistic regression by maximizing the likelihood function.</p>
 <p>Logistic regression is a regression model used to predict the probability of a binary event based on one or more predictive variables. In logistic regression, the likelihood function is convex and can be maximized using the Newton-Raphson algorithm.</p>
 <p>The Newton-Raphson algorithm is an iterative method for finding the maximum of a function using its first and second derivatives. For logistic regression, the likelihood function is given by:</p>
 <p><span class="math notranslate nohighlight">\(L(\theta | X, y) = \prod(P(yi | x_i, \theta)^{yi} (1 - P(y_i | x_i, \theta))^{(1 - y_i)})\)</span></p>
@@ -835,7 +826,10 @@ dtype: float64
 <p>The Hessian matrix and gradient vector of the likelihood function are computed using the partial derivatives of the likelihood with respect to the coefficients <span class="math notranslate nohighlight">\(\theta\)</span>.</p>
 <p>Thus, in logistic regression, the Newton-Raphson algorithm is used to estimate the coefficients by maximizing the likelihood function. This allows the prediction of binary event probabilities based on the predictive variables.</p>
 <p><strong>Note</strong>: The iterations stop when the difference between two successive solution vectors becomes negligible.</p>
-</section>
+<p>Convexity is a crucial property in optimization, as it ensures that any local minimum is also a global minimum. This makes it easier to find the optimal solution using methods like gradient descent.</p>
+<p>The Log Loss function is convex due to its logarithmic form, which is always convex for positive values. While convexity guarantees that a stationary point (where the derivative is zero) is a global minimum, it does not guarantee the existence of such a point.</p>
+<p>To prove the existence of a minimum, the function must also be bounded below and attain this lower bound. For Log Loss, the function is bounded below by zero (since the logarithm of a positive number is always defined) and reaches this bound when predictions are perfectly accurate (i.e., the predicted probability for the correct class is 1).</p>
+<p>Combining convexity with the fact that Log Loss is bounded below and attains its lower bound, we conclude that the function reaches a global minimum when predictions are perfectly correct.</p>
 </section>
 <section id="The-Algorithm-steps">
 <h1>The Algorithm steps<a class="headerlink" href="#The-Algorithm-steps" title="Link to this heading"></a></h1>
