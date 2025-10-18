@@ -52,8 +52,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../unsupervised_learning/index.html">Unsupervised learning</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="index.html">Supervised learning</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">The logistic regression</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Table-des-Matières"><strong>Table des Matières</strong></a></li>
-<li class="toctree-l4"><a class="reference internal" href="#Introduction">Introduction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Table-of-Contents"><strong>Table of Contents</strong></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Introduction-to-Logistic-Regression">Introduction to Logistic Regression</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#The-model">The model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#The-linear-LOGIT-model">The linear LOGIT model</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Key-Assumptions-for-Generalizability-of-the-logit-model">Key Assumptions for Generalizability of the logit model</a></li>
@@ -99,47 +99,47 @@
              
   <section id="The-logistic-regression">
 <h1>The logistic regression<a class="headerlink" href="#The-logistic-regression" title="Permalink to this heading"></a></h1>
-<section id="Table-des-Matières">
-<h2><strong>Table des Matières</strong><a class="headerlink" href="#Table-des-Matières" title="Permalink to this heading"></a></h2>
+<section id="Table-of-Contents">
+<h2><strong>Table of Contents</strong><a class="headerlink" href="#Table-of-Contents" title="Permalink to this heading"></a></h2>
 <ol class="arabic">
-<li><p>Introduction à la Régression Logistique</p></li>
-<li><p>Théorie et Fondamentaux</p>
+<li><p><a class="reference internal" href="#Introduction-to-Logistic-Regression"><span class="std std-ref">Introduction to Logistic Regression</span></a></p></li>
+<li><p>Theory and Fundamentals</p>
 <ul class="simple">
-<li><p>Modèle et Hypothèses</p></li>
-<li><p>Interprétation des Coefficients</p></li>
-<li><p>Fonction de Coût et Optimisation</p></li>
+<li><p>Model and Assumptions</p></li>
+<li><p>Coefficient Interpretation</p></li>
+<li><p>Cost Function and Optimization</p></li>
 </ul>
 </li>
-<li><p><cite>Implémentation avec ``statsmodels`</cite> &lt;#impl_statsmodels&gt;`__</p>
+<li><p><cite>Implementation with ``statsmodels`</cite> &lt;#implementation-with-statsmodels&gt;`__</p>
 <ul class="simple">
-<li><p>Préparation des Données</p></li>
-<li><p>Entraînement et Interprétation</p></li>
+<li><p>Data Preparation</p></li>
+<li><p>Training and Interpretation</p></li>
 </ul>
 </li>
-<li><p>Implémentation “From Scratch”</p>
+<li><p>Implementation “From Scratch”</p>
 <ul class="simple">
-<li><p>Algorithme de Gradient Descendant</p></li>
-<li><p>Test et Validation</p></li>
+<li><p>Gradient Descent Algorithm</p></li>
+<li><p>Testing and Validation</p></li>
 </ul>
 </li>
-<li><p>Application : Prédiction du Diabète</p>
+<li><p>Application: Diabetes Prediction</p>
 <ul class="simple">
-<li><p>Préparation des Données</p></li>
-<li><p>Prédiction et Interprétation</p></li>
+<li><p>Data Preparation</p></li>
+<li><p>Prediction and Interpretation</p></li>
 </ul>
 </li>
-<li><p>Annexes</p>
+<li><p>Appendices</p>
 <ul class="simple">
-<li><p>Démonstrations Mathématiques</p></li>
-<li><p>Wald Statistic et Deviance</p></li>
+<li><p>Mathematical Demonstrations</p></li>
+<li><p>Wald Statistic and Deviance</p></li>
 </ul>
 </li>
-<li><p class="rubric" id="references">Références</p>
+<li><p class="rubric" id="references">References</p>
 </li>
 </ol>
 </section>
-<section id="Introduction">
-<h2>Introduction<a class="headerlink" href="#Introduction" title="Permalink to this heading"></a></h2>
+<section id="Introduction-to-Logistic-Regression">
+<h2>Introduction to Logistic Regression<a class="headerlink" href="#Introduction-to-Logistic-Regression" title="Permalink to this heading"></a></h2>
 <p>The Logistic regression applies to cases where:</p>
 <ul class="simple">
 <li><p><span class="math notranslate nohighlight">\(Y\)</span> is a random qualitative variable with 2 categories (a binary variable by convention, <span class="math notranslate nohighlight">\(Y = 0\)</span> if the event does not occur, and <span class="math notranslate nohighlight">\(Y = 1\)</span> if it does),</p></li>
