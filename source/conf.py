@@ -5,12 +5,13 @@ sys.path.insert(0, os.path.abspath('.'))
 
 # Project information
 project = 'website Machine Learning'
-author = 'David TBO'
+author = 'David Thébault'
 release = '0.1'
 
 # Sphinx extensions
 extensions = [
     'nbsphinx',
+    'myst_parser',
     'sphinx.ext.autodoc',
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
@@ -19,7 +20,7 @@ extensions = [
 
 # Paths to the templates and files to exclude
 templates_path = ['_templates']
-exclude_patterns = ['_build', '**.ipynb_checkpoints']
+exclude_patterns = ['_build', '**.ipynb_checkpoints',]
 
 # HTML
 html_theme = 'sphinx_rtd_theme'
@@ -32,4 +33,5 @@ nbsphinx_allow_errors = True
 source_suffix = {
     '.rst': 'restructuredtext',
     '.md': 'markdown',
+    '.ipynb': 'myst_parser',
 }

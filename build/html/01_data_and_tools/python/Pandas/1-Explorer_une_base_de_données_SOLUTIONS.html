@@ -1,0 +1,1228 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explorer une base de données &mdash; website Machine Learning 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            website Machine Learning
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../02_machine_learning/index.html">Machine Leanring</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">website Machine Learning</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Explorer une base de données</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/01_data_and_tools/python/Pandas/1-Explorer_une_base_de_données_SOLUTIONS.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Explorer-une-base-de-données">
+<h1>Explorer une base de données<a class="headerlink" href="#Explorer-une-base-de-données" title="Permalink to this heading"></a></h1>
+<p>Exerçons nous sur Pandas. Cet exercice porte sur le dataset <em>chipotle.csv</em> qui a été utilisé lors de la démo d’utilisation de Pandas.</p>
+<ol class="arabic simple">
+<li><p>Importez les bonnes librairies</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Importez le dataset</p></li>
+</ol>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;../../src/chipotle.csv&quot;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="3">
+<li><p>Regardez les 10 premières lignes du dataset</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>order_id</th>
+      <th>quantity</th>
+      <th>item_name</th>
+      <th>choice_description</th>
+      <th>item_price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Fresh Tomato Salsa</td>
+      <td>NaN</td>
+      <td>$2.39</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Izze</td>
+      <td>[Clementine]</td>
+      <td>$3.39</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Nantucket Nectar</td>
+      <td>[Apple]</td>
+      <td>$3.39</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Tomatillo-Green Chili Salsa</td>
+      <td>NaN</td>
+      <td>$2.39</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>2</td>
+      <td>Chicken Bowl</td>
+      <td>[Tomatillo-Red Chili Salsa (Hot), [Black Beans...</td>
+      <td>$16.98</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Fresh Tomato Salsa (Mild), [Rice, Cheese, Sou...</td>
+      <td>$10.98</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3</td>
+      <td>1</td>
+      <td>Side of Chips</td>
+      <td>NaN</td>
+      <td>$1.69</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>4</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Tomatillo Red Chili Salsa, [Fajita Vegetables...</td>
+      <td>$11.75</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>4</td>
+      <td>1</td>
+      <td>Steak Soft Tacos</td>
+      <td>[Tomatillo Green Chili Salsa, [Pinto Beans, Ch...</td>
+      <td>$9.25</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>5</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Fresh Tomato Salsa, [Rice, Black Beans, Pinto...</td>
+      <td>$9.25</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>Quelle est la taille de notre dataset ?</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(4622, 5)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4622
+</pre></div></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>Affichez toutes les colonnes de notre dataset</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">columns</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;order_id&#39;, &#39;quantity&#39;, &#39;item_name&#39;, &#39;choice_description&#39;,
+       &#39;item_price&#39;],
+      dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<ol class="arabic" start="6">
+<li><p>Quel est l’item le plus commandé</p>
+<p><em>Indice : On utilisera ``.groupby()`` &amp; ``sort_values()``</em></p>
+</li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;item_name&#39;</span><span class="p">)[</span><span class="s1">&#39;quantity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+item_name
+Chicken Bowl                             761
+Chicken Burrito                          591
+Chips and Guacamole                      506
+Steak Burrito                            386
+Canned Soft Drink                        351
+Chips                                    230
+Steak Bowl                               221
+Bottled Water                            211
+Chips and Fresh Tomato Salsa             130
+Canned Soda                              126
+Chicken Salad Bowl                       123
+Chicken Soft Tacos                       120
+Side of Chips                            110
+Veggie Burrito                            97
+Barbacoa Burrito                          91
+Veggie Bowl                               87
+Carnitas Bowl                             71
+Barbacoa Bowl                             66
+Carnitas Burrito                          60
+Steak Soft Tacos                          56
+6 Pack Soft Drink                         55
+Chips and Tomatillo Red Chili Salsa       50
+Chicken Crispy Tacos                      50
+Chips and Tomatillo Green Chili Salsa     45
+Carnitas Soft Tacos                       40
+Steak Crispy Tacos                        36
+Chips and Tomatillo-Green Chili Salsa     33
+Steak Salad Bowl                          31
+Nantucket Nectar                          29
+Chips and Tomatillo-Red Chili Salsa       25
+Barbacoa Soft Tacos                       25
+Chips and Roasted Chili Corn Salsa        23
+Izze                                      20
+Chips and Roasted Chili-Corn Salsa        18
+Veggie Salad Bowl                         18
+Barbacoa Crispy Tacos                     12
+Barbacoa Salad Bowl                       10
+Chicken Salad                              9
+Veggie Soft Tacos                          8
+Carnitas Crispy Tacos                      8
+Burrito                                    6
+Carnitas Salad Bowl                        6
+Veggie Salad                               6
+Steak Salad                                4
+Bowl                                       4
+Salad                                      2
+Crispy Tacos                               2
+Chips and Mild Fresh Tomato Salsa          1
+Veggie Crispy Tacos                        1
+Carnitas Salad                             1
+Name: quantity, dtype: int64
+</pre></div></div>
+</div>
+<ol class="arabic simple" start="7">
+<li><p>Combien d’items ont été commandés au total chez Chipotle</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;quantity&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4972
+</pre></div></div>
+</div>
+<ol class="arabic simple" start="8">
+<li><p>Combien de chiffre d’affaire à realisé Chipotle ?
+A. Convertissez item_price en nombre décimal 1. Regardez dataset[“item_price”], que voyez vous ? 2. Trouvons un moyen d’enlever ce “$” qui nous gène. Pour cela, on peut utiliser <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/user_guide/text.html">str</a> 3. Convertissons maintenant la série en float au lieu de string
+B. Multipliez la quantité vendue par le prix de l’item
+C. Faites la somme du tout, combien trouvez vous?
+D. Arrondissez à deux chiffres après la virgule
+1. On pourra utiliser la fonction <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.Series.round.html#pandas.Series.round">Series.round()</a></p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;item_price&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0        $2.39
+1        $3.39
+2        $3.39
+3        $2.39
+4       $16.98
+5       $10.98
+6        $1.69
+7       $11.75
+8        $9.25
+9        $9.25
+10       $4.45
+11       $8.75
+12       $8.75
+13      $11.25
+14       $4.45
+15       $2.39
+16       $8.49
+17       $8.49
+18       $2.18
+19       $8.75
+20       $4.45
+21       $8.99
+22       $3.39
+23      $10.98
+24       $3.39
+25       $2.39
+26       $8.49
+27       $8.99
+28       $1.09
+29       $8.49
+         ...
+4592    $11.75
+4593    $11.75
+4594    $11.75
+4595     $8.75
+4596     $4.45
+4597     $1.25
+4598     $1.50
+4599     $8.75
+4600     $4.45
+4601     $1.25
+4602     $9.25
+4603     $9.25
+4604     $8.75
+4605     $4.45
+4606     $1.25
+4607    $11.75
+4608    $11.25
+4609     $1.25
+4610    $11.75
+4611    $11.25
+4612     $9.25
+4613     $2.15
+4614     $1.50
+4615     $8.75
+4616     $4.45
+4617    $11.75
+4618    $11.75
+4619    $11.25
+4620     $8.75
+4621     $8.75
+Name: item_price, Length: 4622, dtype: object
+</pre></div></div>
+</div>
+<div class="line-block">
+<div class="line">Les données dans cette colonne sont des chaines de caractères (<code class="docutils literal notranslate"><span class="pre">str</span></code>).</div>
+<div class="line">Il faut les “caster” en <code class="docutils literal notranslate"><span class="pre">float</span></code> pour pouvoir les utiliser dans des calculs.</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;item_price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;item_price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;$&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;item_price&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;item_price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;item_price&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;quantity&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+39237.02
+</pre></div></div>
+</div>
+<ol class="arabic simple" start="9">
+<li><p>Quel est le revenu moyen par commande ?</p></li>
+</ol>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;revenue&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;quantity&quot;</span><span class="p">]</span> <span class="o">*</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;item_price&quot;</span><span class="p">]</span>
+<span class="n">dataset</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>order_id</th>
+      <th>quantity</th>
+      <th>item_name</th>
+      <th>choice_description</th>
+      <th>item_price</th>
+      <th>revenue</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Fresh Tomato Salsa</td>
+      <td>NaN</td>
+      <td>2.39</td>
+      <td>2.39</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Izze</td>
+      <td>[Clementine]</td>
+      <td>3.39</td>
+      <td>3.39</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Nantucket Nectar</td>
+      <td>[Apple]</td>
+      <td>3.39</td>
+      <td>3.39</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Tomatillo-Green Chili Salsa</td>
+      <td>NaN</td>
+      <td>2.39</td>
+      <td>2.39</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>2</td>
+      <td>Chicken Bowl</td>
+      <td>[Tomatillo-Red Chili Salsa (Hot), [Black Beans...</td>
+      <td>16.98</td>
+      <td>33.96</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>3</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Fresh Tomato Salsa (Mild), [Rice, Cheese, Sou...</td>
+      <td>10.98</td>
+      <td>10.98</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>3</td>
+      <td>1</td>
+      <td>Side of Chips</td>
+      <td>NaN</td>
+      <td>1.69</td>
+      <td>1.69</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>4</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Tomatillo Red Chili Salsa, [Fajita Vegetables...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>4</td>
+      <td>1</td>
+      <td>Steak Soft Tacos</td>
+      <td>[Tomatillo Green Chili Salsa, [Pinto Beans, Ch...</td>
+      <td>9.25</td>
+      <td>9.25</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>5</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Fresh Tomato Salsa, [Rice, Black Beans, Pinto...</td>
+      <td>9.25</td>
+      <td>9.25</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>5</td>
+      <td>1</td>
+      <td>Chips and Guacamole</td>
+      <td>NaN</td>
+      <td>4.45</td>
+      <td>4.45</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>6</td>
+      <td>1</td>
+      <td>Chicken Crispy Tacos</td>
+      <td>[Roasted Chili Corn Salsa, [Fajita Vegetables,...</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>6</td>
+      <td>1</td>
+      <td>Chicken Soft Tacos</td>
+      <td>[Roasted Chili Corn Salsa, [Rice, Black Beans,...</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>7</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Fresh Tomato Salsa, [Fajita Vegetables, Rice,...</td>
+      <td>11.25</td>
+      <td>11.25</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>7</td>
+      <td>1</td>
+      <td>Chips and Guacamole</td>
+      <td>NaN</td>
+      <td>4.45</td>
+      <td>4.45</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>8</td>
+      <td>1</td>
+      <td>Chips and Tomatillo-Green Chili Salsa</td>
+      <td>NaN</td>
+      <td>2.39</td>
+      <td>2.39</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>8</td>
+      <td>1</td>
+      <td>Chicken Burrito</td>
+      <td>[Tomatillo-Green Chili Salsa (Medium), [Pinto ...</td>
+      <td>8.49</td>
+      <td>8.49</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>9</td>
+      <td>1</td>
+      <td>Chicken Burrito</td>
+      <td>[Fresh Tomato Salsa (Mild), [Black Beans, Rice...</td>
+      <td>8.49</td>
+      <td>8.49</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>9</td>
+      <td>2</td>
+      <td>Canned Soda</td>
+      <td>[Sprite]</td>
+      <td>2.18</td>
+      <td>4.36</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>10</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Tomatillo Red Chili Salsa, [Fajita Vegetables...</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>10</td>
+      <td>1</td>
+      <td>Chips and Guacamole</td>
+      <td>NaN</td>
+      <td>4.45</td>
+      <td>4.45</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>11</td>
+      <td>1</td>
+      <td>Barbacoa Burrito</td>
+      <td>[[Fresh Tomato Salsa (Mild), Tomatillo-Green C...</td>
+      <td>8.99</td>
+      <td>8.99</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>11</td>
+      <td>1</td>
+      <td>Nantucket Nectar</td>
+      <td>[Pomegranate Cherry]</td>
+      <td>3.39</td>
+      <td>3.39</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>12</td>
+      <td>1</td>
+      <td>Chicken Burrito</td>
+      <td>[[Tomatillo-Green Chili Salsa (Medium), Tomati...</td>
+      <td>10.98</td>
+      <td>10.98</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>12</td>
+      <td>1</td>
+      <td>Izze</td>
+      <td>[Grapefruit]</td>
+      <td>3.39</td>
+      <td>3.39</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>13</td>
+      <td>1</td>
+      <td>Chips and Fresh Tomato Salsa</td>
+      <td>NaN</td>
+      <td>2.39</td>
+      <td>2.39</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>13</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Roasted Chili Corn Salsa (Medium), [Pinto Bea...</td>
+      <td>8.49</td>
+      <td>8.49</td>
+    </tr>
+    <tr>
+      <th>27</th>
+      <td>14</td>
+      <td>1</td>
+      <td>Carnitas Burrito</td>
+      <td>[[Tomatillo-Green Chili Salsa (Medium), Roaste...</td>
+      <td>8.99</td>
+      <td>8.99</td>
+    </tr>
+    <tr>
+      <th>28</th>
+      <td>14</td>
+      <td>1</td>
+      <td>Canned Soda</td>
+      <td>[Dr. Pepper]</td>
+      <td>1.09</td>
+      <td>1.09</td>
+    </tr>
+    <tr>
+      <th>29</th>
+      <td>15</td>
+      <td>1</td>
+      <td>Chicken Burrito</td>
+      <td>[Tomatillo-Green Chili Salsa (Medium), [Pinto ...</td>
+      <td>8.49</td>
+      <td>8.49</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4592</th>
+      <td>1825</td>
+      <td>1</td>
+      <td>Barbacoa Burrito</td>
+      <td>[Tomatillo Red Chili Salsa, [Rice, Fajita Vege...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>4593</th>
+      <td>1825</td>
+      <td>1</td>
+      <td>Carnitas Bowl</td>
+      <td>[Roasted Chili Corn Salsa, [Rice, Sour Cream, ...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>4594</th>
+      <td>1825</td>
+      <td>1</td>
+      <td>Barbacoa Bowl</td>
+      <td>[Roasted Chili Corn Salsa, [Pinto Beans, Sour ...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>4595</th>
+      <td>1826</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Tomatillo Green Chili Salsa, [Rice, Black Bea...</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>4596</th>
+      <td>1826</td>
+      <td>1</td>
+      <td>Chips and Guacamole</td>
+      <td>NaN</td>
+      <td>4.45</td>
+      <td>4.45</td>
+    </tr>
+    <tr>
+      <th>4597</th>
+      <td>1826</td>
+      <td>1</td>
+      <td>Canned Soft Drink</td>
+      <td>[Nestea]</td>
+      <td>1.25</td>
+      <td>1.25</td>
+    </tr>
+    <tr>
+      <th>4598</th>
+      <td>1826</td>
+      <td>1</td>
+      <td>Bottled Water</td>
+      <td>NaN</td>
+      <td>1.50</td>
+      <td>1.50</td>
+    </tr>
+    <tr>
+      <th>4599</th>
+      <td>1827</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Roasted Chili Corn Salsa, [Cheese, Lettuce]]</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>4600</th>
+      <td>1827</td>
+      <td>1</td>
+      <td>Chips and Guacamole</td>
+      <td>NaN</td>
+      <td>4.45</td>
+      <td>4.45</td>
+    </tr>
+    <tr>
+      <th>4601</th>
+      <td>1827</td>
+      <td>1</td>
+      <td>Canned Soft Drink</td>
+      <td>[Diet Coke]</td>
+      <td>1.25</td>
+      <td>1.25</td>
+    </tr>
+    <tr>
+      <th>4602</th>
+      <td>1827</td>
+      <td>1</td>
+      <td>Barbacoa Burrito</td>
+      <td>[Tomatillo Green Chili Salsa]</td>
+      <td>9.25</td>
+      <td>9.25</td>
+    </tr>
+    <tr>
+      <th>4603</th>
+      <td>1827</td>
+      <td>1</td>
+      <td>Barbacoa Burrito</td>
+      <td>[Tomatillo Green Chili Salsa]</td>
+      <td>9.25</td>
+      <td>9.25</td>
+    </tr>
+    <tr>
+      <th>4604</th>
+      <td>1828</td>
+      <td>1</td>
+      <td>Chicken Bowl</td>
+      <td>[Fresh Tomato Salsa, [Rice, Black Beans, Chees...</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>4605</th>
+      <td>1828</td>
+      <td>1</td>
+      <td>Chips and Guacamole</td>
+      <td>NaN</td>
+      <td>4.45</td>
+      <td>4.45</td>
+    </tr>
+    <tr>
+      <th>4606</th>
+      <td>1828</td>
+      <td>1</td>
+      <td>Canned Soft Drink</td>
+      <td>[Coke]</td>
+      <td>1.25</td>
+      <td>1.25</td>
+    </tr>
+    <tr>
+      <th>4607</th>
+      <td>1829</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Tomatillo Green Chili Salsa, [Rice, Cheese, S...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>4608</th>
+      <td>1829</td>
+      <td>1</td>
+      <td>Veggie Burrito</td>
+      <td>[Tomatillo Red Chili Salsa, [Fajita Vegetables...</td>
+      <td>11.25</td>
+      <td>11.25</td>
+    </tr>
+    <tr>
+      <th>4609</th>
+      <td>1829</td>
+      <td>1</td>
+      <td>Canned Soft Drink</td>
+      <td>[Sprite]</td>
+      <td>1.25</td>
+      <td>1.25</td>
+    </tr>
+    <tr>
+      <th>4610</th>
+      <td>1830</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Fresh Tomato Salsa, [Rice, Sour Cream, Cheese...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>4611</th>
+      <td>1830</td>
+      <td>1</td>
+      <td>Veggie Burrito</td>
+      <td>[Tomatillo Green Chili Salsa, [Rice, Fajita Ve...</td>
+      <td>11.25</td>
+      <td>11.25</td>
+    </tr>
+    <tr>
+      <th>4612</th>
+      <td>1831</td>
+      <td>1</td>
+      <td>Carnitas Bowl</td>
+      <td>[Fresh Tomato Salsa, [Fajita Vegetables, Rice,...</td>
+      <td>9.25</td>
+      <td>9.25</td>
+    </tr>
+    <tr>
+      <th>4613</th>
+      <td>1831</td>
+      <td>1</td>
+      <td>Chips</td>
+      <td>NaN</td>
+      <td>2.15</td>
+      <td>2.15</td>
+    </tr>
+    <tr>
+      <th>4614</th>
+      <td>1831</td>
+      <td>1</td>
+      <td>Bottled Water</td>
+      <td>NaN</td>
+      <td>1.50</td>
+      <td>1.50</td>
+    </tr>
+    <tr>
+      <th>4615</th>
+      <td>1832</td>
+      <td>1</td>
+      <td>Chicken Soft Tacos</td>
+      <td>[Fresh Tomato Salsa, [Rice, Cheese, Sour Cream]]</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>4616</th>
+      <td>1832</td>
+      <td>1</td>
+      <td>Chips and Guacamole</td>
+      <td>NaN</td>
+      <td>4.45</td>
+      <td>4.45</td>
+    </tr>
+    <tr>
+      <th>4617</th>
+      <td>1833</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Fresh Tomato Salsa, [Rice, Black Beans, Sour ...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>4618</th>
+      <td>1833</td>
+      <td>1</td>
+      <td>Steak Burrito</td>
+      <td>[Fresh Tomato Salsa, [Rice, Sour Cream, Cheese...</td>
+      <td>11.75</td>
+      <td>11.75</td>
+    </tr>
+    <tr>
+      <th>4619</th>
+      <td>1834</td>
+      <td>1</td>
+      <td>Chicken Salad Bowl</td>
+      <td>[Fresh Tomato Salsa, [Fajita Vegetables, Pinto...</td>
+      <td>11.25</td>
+      <td>11.25</td>
+    </tr>
+    <tr>
+      <th>4620</th>
+      <td>1834</td>
+      <td>1</td>
+      <td>Chicken Salad Bowl</td>
+      <td>[Fresh Tomato Salsa, [Fajita Vegetables, Lettu...</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+    <tr>
+      <th>4621</th>
+      <td>1834</td>
+      <td>1</td>
+      <td>Chicken Salad Bowl</td>
+      <td>[Fresh Tomato Salsa, [Fajita Vegetables, Pinto...</td>
+      <td>8.75</td>
+      <td>8.75</td>
+    </tr>
+  </tbody>
+</table>
+<p>4622 rows × 6 columns</p>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">revenue_per_order</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s2">&quot;order_id&quot;</span><span class="p">)[</span><span class="s1">&#39;revenue&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">revenue_per_order</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+order_id
+1       11.56
+2       33.96
+3       12.67
+4       21.00
+5       13.70
+6       17.50
+7       15.70
+8       10.88
+9       12.85
+10      13.20
+11      12.38
+12      14.37
+13      10.88
+14      10.08
+15      10.88
+16      10.68
+17      10.08
+18      24.90
+19      13.90
+20      36.20
+21      23.36
+22      12.98
+23      13.35
+24      12.07
+25      11.38
+26      20.50
+27      13.90
+28      33.70
+29      17.98
+30      23.36
+        ...
+1805    20.00
+1806    13.00
+1807    18.64
+1808    13.70
+1809    14.45
+1810    23.00
+1811    29.25
+1812    25.00
+1813    35.00
+1814    13.70
+1815    12.50
+1816    13.20
+1817    13.00
+1818    18.14
+1819    13.20
+1820    12.50
+1821    13.70
+1822    26.00
+1823    12.15
+1824    26.95
+1825    66.50
+1826    15.95
+1827    32.95
+1828    14.45
+1829    24.25
+1830    23.00
+1831    12.90
+1832    13.20
+1833    23.50
+1834    28.75
+Name: revenue, Length: 1834, dtype: float64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">revenue_per_order</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+21.394231188658654
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

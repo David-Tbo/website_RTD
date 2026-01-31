@@ -1,0 +1,927 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comprendre le chômage en France &mdash; website Machine Learning 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            website Machine Learning
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../02_machine_learning/index.html">Machine Leanring</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">website Machine Learning</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Comprendre le chômage en France</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/01_data_and_tools/python/Matplotlib/2-Comprendre_le_chomage_en_France_SOLUTION.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Comprendre-le-chômage-en-France">
+<h1>Comprendre le chômage en France<a class="headerlink" href="#Comprendre-le-chômage-en-France" title="Permalink to this heading"></a></h1>
+<p>Vous êtes vous déjà demandé d’où sortaient les chiffres qu’annoncent les politiques ou les medias lorsqu’ils parlent de chômage. Étant un sujet d’intérêt dans les pays occidentaux, tentons de comprendre ce qu’il se passe en terme de chômages en France. Pour cela, nous avons récupéré des données sur <a class="reference external" href="https://www.insee.fr/fr/statistiques/3555153#consulter">data.gouv</a>. Elles représentent les données du chômage en France en 2017.</p>
+<section id="Documentation-du-dataset">
+<h2>Documentation du dataset<a class="headerlink" href="#Documentation-du-dataset" title="Permalink to this heading"></a></h2>
+<p>Regarder la documentation du dataset <a class="reference external" href="https://www.insee.fr/fr/statistiques/3555153#documentation">ici</a></p>
+<ul class="simple">
+<li><p>Importez les librairies</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pandas</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">matplotlib</span></code> (et plus particulièrement le module <code class="docutils literal notranslate"><span class="pre">pyplot</span></code>)</p></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<ul class="simple">
+<li><p>Chargez le fichier <code class="docutils literal notranslate"><span class="pre">fdeec17.csv</span></code></p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../j1-data/fdeec17.csv&#39;</span><span class="p">)</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>ANNEE</th>
+      <th>TRIM</th>
+      <th>CATAU2010R</th>
+      <th>METRODOM</th>
+      <th>TYPMEN7</th>
+      <th>AGE3</th>
+      <th>AGE5</th>
+      <th>COURED</th>
+      <th>ENFRED</th>
+      <th>NFRRED</th>
+      <th>...</th>
+      <th>DIP11</th>
+      <th>CSTOTPRM</th>
+      <th>IDENTM</th>
+      <th>EXTRIAN</th>
+      <th>EMPNBH</th>
+      <th>HREC</th>
+      <th>HHCE</th>
+      <th>HPLUSA</th>
+      <th>JOURTR</th>
+      <th>NBTOTE</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2017</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>50</td>
+      <td>50</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>30.0</td>
+      <td>52.0</td>
+      <td>1</td>
+      <td>263.388752</td>
+      <td>37.0</td>
+      <td>NaN</td>
+      <td>37.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2017</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>15</td>
+      <td>15</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>42.0</td>
+      <td>52.0</td>
+      <td>1</td>
+      <td>263.388752</td>
+      <td>32.0</td>
+      <td>NaN</td>
+      <td>32.0</td>
+      <td>NaN</td>
+      <td>4.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2017</td>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>15</td>
+      <td>15</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>31.0</td>
+      <td>52.0</td>
+      <td>1</td>
+      <td>263.388752</td>
+      <td>38.0</td>
+      <td>NaN</td>
+      <td>38.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2017</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>50</td>
+      <td>50</td>
+      <td>2</td>
+      <td>1</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>30.0</td>
+      <td>52.0</td>
+      <td>2</td>
+      <td>176.893923</td>
+      <td>37.0</td>
+      <td>NaN</td>
+      <td>37.0</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2017</td>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>2</td>
+      <td>15</td>
+      <td>15</td>
+      <td>2</td>
+      <td>2</td>
+      <td>1.0</td>
+      <td>...</td>
+      <td>42.0</td>
+      <td>52.0</td>
+      <td>2</td>
+      <td>176.893923</td>
+      <td>40.0</td>
+      <td>NaN</td>
+      <td>32.0</td>
+      <td>NaN</td>
+      <td>4.0</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 125 columns</p>
+</div></div>
+</div>
+<ul class="simple">
+<li><p>En faisant un <a class="reference external" href="https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.pie.html">pie-chart</a>, montrez la part de chômeurs, d’inactifs et d’actifs occupés en France à partir de la variable ACTEU. Faites attention de faire apparaitre :</p>
+<ul>
+<li><p>Le pourcentage de chaque partie</p></li>
+<li><p>Une légende</p></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chomeurs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ACTEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span>
+                                  <span class="s2">&quot;Actif Occupé&quot;</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">1</span>
+                                  <span class="k">else</span> <span class="s2">&quot;Chômeur&quot;</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">2</span>
+                                  <span class="k">else</span> <span class="s2">&quot;Inactif&quot;</span> <span class="k">if</span> <span class="n">x</span><span class="o">==</span><span class="mi">3</span>
+                                  <span class="k">else</span> <span class="s2">&quot;Inconnu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># autre solution</span>
+<span class="n">chomeurs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ACTEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Actif Occupé&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Chômeur&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Inactif&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;Inconnu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chomeurs</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([&#39;Actif Occupé&#39;, &#39;Inactif&#39;, &#39;Chômeur&#39;, &#39;Inconnu&#39;], dtype=object)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pie_chart_data</span> <span class="o">=</span> <span class="n">chomeurs</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">pie_chart_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Inactif         207520
+Actif Occupé    198054
+Chômeur          21864
+Inconnu           1204
+Name: ACTEU, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">explode</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span>
+    <span class="n">pie_chart_data</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+    <span class="n">labels</span><span class="o">=</span><span class="n">pie_chart_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+    <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+    <span class="n">explode</span><span class="o">=</span><span class="n">explode</span><span class="p">,</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mf">1.5</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_12_0.png" src="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_12_0.png" />
+</div>
+</div>
+<p>—&gt; Le chiffre du chômage semble bas et, si on regarde l’explication des <em>inactifs</em>, celle-ci semble inclure beaucoup de monde (étudiants, personne ne cherchant pas d’emploi etc.)</p>
+<ul class="simple">
+<li><p>Faites le même graphique sur la variable ACTEU6 qui est plus précise sur le type d’actifs</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ACTEU6&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([ 1.,  6.,  3.,  5., nan,  4.])
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">acteu6_cat</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Actif Occupé&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Chômeur PSERE&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Autre Chômeur BIT&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Etudiant, élève, stagiaire en formation&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Autres inactifs (dont retraité)&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[11]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chomeurs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ACTEU6&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">acteu6_cat</span><span class="p">)</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;Inconnu&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># autre solution</span>
+<span class="n">chomeurs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ACTEU6&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">acteu6_cat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;Inconnu&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pie_chart_data</span> <span class="o">=</span> <span class="n">chomeurs</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">pie_chart_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Actif Occupé                               198054
+Autres inactifs (dont retraité)            172921
+Etudiant, élève, stagiaire en formation     34599
+Chômeur PSERE                               20854
+Inconnu                                      1204
+Autre Chômeur BIT                            1010
+Name: ACTEU6, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span>
+    <span class="n">pie_chart_data</span><span class="p">,</span>
+    <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">,</span>
+    <span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+    <span class="n">explode</span><span class="o">=</span><span class="p">(</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span><span class="mf">0.3</span><span class="p">,</span><span class="mf">0.6</span><span class="p">,</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">1.3</span><span class="p">),</span>
+    <span class="n">radius</span><span class="o">=</span><span class="mf">1.5</span>
+<span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">pie_chart_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_20_0.png" src="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_20_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>En créant un <a class="reference external" href="https://pythonmatplotlibtips.blogspot.com/2018/11/normalized-stacked-barplot-number-percentage-python-matplotlib.html">stacked bar chart</a>, comparez :</p>
+<ul>
+<li><p>le rapport <em>chômeurs</em> / <em>Actifs occupés</em></p></li>
+<li><p>Le rapport <em>chômeurs</em> / (<em>Actifs occupés</em> + <em>Inactifs</em>)</p></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On recréé les données dont on a besoin</span>
+<span class="n">chomeurs</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ACTEU&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Actif Occupé&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Chômeur&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Inactif&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s2">&quot;Inconnu&quot;</span><span class="p">)</span>
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">chomeurs</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">chart_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Inactif         207520
+Actif Occupé    198054
+Chômeur          21864
+Inconnu           1204
+Name: ACTEU, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On créé le rapport chômeurs / Actifs occupés et le rapport Chômeurs / (Actifs occupés + Inactifs)</span>
+<span class="n">chom_actif</span> <span class="o">=</span> <span class="n">chart_data</span><span class="p">[</span><span class="s1">&#39;Chômeur&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">chart_data</span><span class="p">[</span><span class="s1">&#39;Actif Occupé&#39;</span><span class="p">]</span>
+<span class="n">chom_actif_inactif</span> <span class="o">=</span> <span class="n">chart_data</span><span class="p">[</span><span class="s1">&#39;Chômeur&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">chart_data</span><span class="p">[</span><span class="s1">&#39;Actif Occupé&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">chart_data</span><span class="p">[</span><span class="s1">&#39;Inactif&#39;</span><span class="p">])</span>
+
+<span class="n">data_chom</span> <span class="o">=</span> <span class="p">[</span><span class="n">chom_actif</span><span class="p">,</span> <span class="n">chom_actif_inactif</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rapports de chômeurs:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">data_chom</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Rapports de chômeurs:
+ [0.11039413493289708, 0.05390878113488537]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pour la suite, on calcule le complémentaire des 2 rapports précédents</span>
+<span class="n">data_actifs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ratio</span> <span class="ow">in</span> <span class="n">data_chom</span><span class="p">:</span>
+    <span class="n">data_actifs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">ratio</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rapports d&#39;actifs:</span><span class="se">\n</span><span class="s2"> </span><span class="si">{</span><span class="n">data_actifs</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Rapports d&#39;actifs:
+ [0.8896058650671029, 0.9460912188651146]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On créé une liste legend qui contiendra les deux categories :</span>
+<span class="c1">## chômeurs / Actifs occupés</span>
+<span class="c1">## Chômeurs / (Actifs occupés + Inactifs)</span>
+<span class="n">legend</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Chômeurs / Actifs Occupés&quot;</span><span class="p">,</span> <span class="s2">&quot;Chômeurs / Actifs + Inactifs&quot;</span><span class="p">]</span>
+<span class="n">legend</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[&#39;Chômeurs / Actifs Occupés&#39;, &#39;Chômeurs / Actifs + Inactifs&#39;]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On créé deux bar charts qui seront superposés l&#39;un à l&#39;autre</span>
+<span class="c1">## N&#39;oubliez pas d&#39;utiliser deux plt.bar()</span>
+<span class="c1">## Pour créer les légendes, on peut utiliser plt.text()</span>
+<span class="c1">## Pour créer un titre, on peut utiliser plt.set_title()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="n">data_actifs</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Non-Chômeurs&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">legend</span><span class="p">,</span> <span class="n">data_chom</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">data_actifs</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Chômeurs&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">legend</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.6</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_actifs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">legend</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mf">0.95</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_chom</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">legend</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.6</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_actifs</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">legend</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.975</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">data_chom</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">:</span><span class="s2">.2%</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Répartition des chômeurs par rapport à la population active &amp; la population totale&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_26_0.png" src="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_26_0.png" />
+</div>
+</div>
+<p>Il semblerait que le chômage représentait 11% de la population active (travailleuse) en France en 2017 selon le BIT</p>
+<ul class="simple">
+<li><p>En créant à nouveau un <a class="reference external" href="https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.bar.html">bar chart</a>, regardez cette fois la répartition de l’ancienneté du chômage. Le nom de la variable est ANCCHOM</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ANCCHOM&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+array([nan,  2.,  3.,  4.,  1.,  8.,  7.,  5.,  6.])
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On renomme les catégories de notre colonne</span>
+<span class="n">ancchom_cat</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Moins d&#39;un mois&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;De 1 mois à moins de 3 mois&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;De 3 mois à moins de 6 mois&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;De 6 mois à moins d&#39;un an&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;De 1 an à moins d&#39;un an et demi&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;De 1 an et demi à moins de 2 ans&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;De 2 ans à moins de 3 ans&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;3 ans ou plus&quot;</span>
+<span class="p">}</span>
+
+<span class="n">duree_chomage</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;ANCCHOM&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">ancchom_cat</span><span class="p">)</span>
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">duree_chomage</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">chart_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+3 ans ou plus                       3906
+De 6 mois à moins d&#39;un an           3648
+De 1 an à moins d&#39;un an et demi     3398
+De 1 mois à moins de 3 mois         3270
+De 3 mois à moins de 6 mois         3193
+De 2 ans à moins de 3 ans           2289
+De 1 an et demi à moins de 2 ans    1132
+Moins d&#39;un mois                      902
+Name: ANCCHOM, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On créé maintenant notre bar chart</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">chart_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">chart_data</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+&lt;BarContainer object of 8 artists&gt;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_31_1.png" src="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_31_1.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>La répartition se voit assez mal sur le <em>bar chart</em>, tentez de le refaire sur un <em>pie chart</em></p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">pie</span><span class="p">(</span><span class="n">chart_data</span><span class="p">,</span>
+        <span class="n">autopct</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%1.1f%%</span><span class="s1">&#39;</span><span class="p">,</span>
+        <span class="n">shadow</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">startangle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+        <span class="n">radius</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">chart_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_33_0.png" src="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_33_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>Il serait intéressant de voir la répartition des personnes inscrites à Pôle Emploi ou dans un organisme de placement parmi ces personnes au chômage. Regardez cette répartition grâce à la colonne CONTACT</p>
+<ul>
+<li><p>Enlevez directement les NaN de votre graphique</p></li>
+</ul>
+</li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On renomme les catégories de notre colonne</span>
+<span class="n">contact</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;CONTACT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">({</span><span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Oui&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Non&quot;</span><span class="p">})</span>
+
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">contact</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="n">chart_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Non    15984
+Oui    13144
+Name: CONTACT, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On créé notre graphique</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">chart_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">chart_data</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Inscription dans un organisme de placement&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_36_0.png" src="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_36_0.png" />
+</div>
+</div>
+<ul class="simple">
+<li><p>Regardons ce qui pousse les français à changer d’emploi, grâce à la colonne CREACCP, crééz un bar chart horizontale qui va permettre de connaitre les principales raisons de changement d’emploi des français.</p></li>
+</ul>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On renomme les catégories de notre colonne</span>
+<span class="n">creaccp_cat</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="s2">&quot;Risque de perdre ou va perdre son emploi actuel (y compris fin de contrats courts)&quot;</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="s2">&quot;Désire un emploi plus intéressant&quot;</span><span class="p">,</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="s2">&quot;Veut un emploi plus stable (CDI)&quot;</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="s2">&quot;Veut travailler plus d&#39;heures&quot;</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="s2">&quot;Désire un travail avec un rythme horaire plus adapté ou plus modulable&quot;</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="s2">&quot;Désire des conditions de travail moins pénibles ou plus adaptées à sa santé&quot;</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="s2">&quot;Désire augmenter ses revenus&quot;</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="s2">&quot;Désire diminuer son temps de transport&quot;</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="s2">&quot;Doit ou veut déménager&quot;</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="s2">&quot;Veut s&#39;installer à son compte&quot;</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="s2">&quot;Veut changer de métier ou de secteur&quot;</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="s2">&quot;Trouve l&#39;ambiance de travail mauvaise, les relations de travail conflictuelles&quot;</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="kc">None</span>
+<span class="p">}</span>
+<span class="n">creaccp</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;CREACCP&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">creaccp_cat</span><span class="p">)</span>
+
+<span class="n">chart_data</span> <span class="o">=</span> <span class="n">creaccp</span><span class="o">.</span><span class="n">value_counts</span><span class="p">(</span><span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">chart_data</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Doit ou veut déménager                                                                 216
+Veut s&#39;installer à son compte                                                          354
+Désire diminuer son temps de transport                                                 598
+Désire un travail avec un rythme horaire plus adapté ou plus modulable                1102
+Trouve l&#39;ambiance de travail mauvaise, les relations de travail conflictuelles        1223
+Veut changer de métier ou de secteur                                                  1392
+Veut travailler plus d&#39;heures                                                         1404
+Risque de perdre ou va perdre son emploi actuel (y compris fin de contrats courts)    1582
+Désire des conditions de travail moins pénibles ou plus adaptées à sa santé           1820
+Veut un emploi plus stable (CDI)                                                      2462
+Désire un emploi plus intéressant                                                     2779
+Désire augmenter ses revenus                                                          6775
+Name: CREACCP, dtype: int64
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Nous avons besoin de faire une répartition par pourcentage</span>
+<span class="c1"># Calculons donc le nombre total de répondants</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">chart_data</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+21707
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculons maintenant la répartition de chacune des réponses</span>
+<span class="n">repartition</span> <span class="o">=</span> <span class="n">chart_data</span><span class="o">.</span><span class="n">values</span> <span class="o">/</span> <span class="n">s</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">repartition</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[0.00995071 0.0163081  0.02754872 0.05076703 0.05634127 0.06412678
+ 0.0646796  0.07287972 0.08384392 0.11341963 0.12802322 0.3121113 ]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Créons maintenant le graphique</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;classement des raisons pour lesquelles les français veulent changer de job&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">chart_data</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">repartition</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Répartition en Pourcentage&quot;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">repartition</span><span class="p">)):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">repartition</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">chart_data</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">repartition</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s1">.2%</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<img alt="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_41_0.png" src="../../../_images/01_data_and_tools_python_Matplotlib_2-Comprendre_le_chomage_en_France_SOLUTION_41_0.png" />
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

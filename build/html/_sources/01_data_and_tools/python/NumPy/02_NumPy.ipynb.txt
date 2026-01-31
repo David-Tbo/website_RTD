@@ -1,0 +1,5191 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "eb279c15-0c5c-464d-9a81-452050cba306",
+   "metadata": {},
+   "source": [
+    "<b style=\"font-size: 34px; color: black;\"> Python: NumPy </b> "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1f95f8fc",
+   "metadata": {},
+   "source": [
+    "<b style=\"font-size: 14px;\">Ce document sera rédigé en français et en anglais. We apologize for the inconvenience.</b> \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ce5a4ce8-32a1-490d-b072-86864792a322",
+   "metadata": {},
+   "source": [
+    "# Objectif de cette section\n",
+    "\n",
+    "L'un des facteurs de succès de Python réside dans ses bibliothèques spécialisées.  \n",
+    "\n",
+    "**L'objectif de cette section est de se familiariser avec les bibliothèques du language Python et notamment `Numpy` et `Pandas`.**\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3d2a56af",
+   "metadata": {},
+   "source": [
+    "# Vocabulaire\n",
+    "\n",
+    "**Bibliothèque**  \n",
+    "Une bibliothèque est une <u>collection de packages et de modules</u>. Par exemple la bibliothèque Numpy a pour package principal `numpy`.\n",
+    "\n",
+    "En Python, il existe deux types de structure pour organiser votre code: les **packages** et les **modules.**\n",
+    "\n",
+    "**Package**  \n",
+    "Un package d'une bibliothèque est un <u>dossier contenant un ou plusieurs modules et des sous-packages organisés hiérarchiquement</u>. Il facilite la programmation modulaire en permettant de découper une tâche de programmation complexe en sous-tâches plus gérables.Source [https://realpython.com/python-modules-packages/ ]  \n",
+    "\n",
+    "<u>Exemple de structure d'un package:</u>      \n",
+    "\n",
+    "mypackage/  \n",
+    "├── __init__.py  \n",
+    "├── module1.py  \n",
+    "├── module2.py  \n",
+    "└── ...\n",
+    "\n",
+    "Par exemple, le package numpy de la bibliothèque Numpy contient les modules numpy.core, numpy.linalg...  \n",
+    "Autre exemple, le package de calcul scientifique _scipy_ de la bibliothèque Scipy contient le module _stats_ de calcul statistique qui contient lui-même la fonction _chi2_contingency()_ qui permet d'effectuer un test du chi2.\n",
+    "\n",
+    "**Module**  \n",
+    "Le terme **module** désigne <u>un fichier Python</u> dans lequel sont stockés des fonctions, des classes des sous-modules et des variables. Cela peut être utile dans un contexte général, car cela permet de clarifier le type d'objet dont on parle.\n",
+    "\n",
+    "En pratique  \n",
+    "Les termes bibliothèques, package et modules sont souvent utilisés de manière interchangeable. Par exemple, on pourra dire \"le module NumPy\" ou \"la bibliothèque NumPy\".\n",
+    "\n",
+    "\n",
+    "<u>Les packages sont un moyen puissant d’organiser et de structurer votre code Python, ce qui facilite la gestion de projets complexes.   </u>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5f5df578",
+   "metadata": {},
+   "source": [
+    "# Les bibliothèqes classiques\n",
+    "\n",
+    "Pour obtenir un environnement de programmation scientifique, il est souvent nécessaire d'installer plusieurs bibliothèques très utiles:\n",
+    "\n",
+    "* [Numpy](http://www.numpy.org/): (_Numerical Python_) permet la définition et la manipulation de `tableaux` N-dimensionnel ainsi que des opérations d'`algèbre linéaire` de base.  \n",
+    "* [Pandas](https://pandas.pydata.org) : permet la gestion de données tabulaires (structurées) de type `DataFrame`.\n",
+    "* [Scipy](http://www.scipy.org/): bibliothèque de `calcul scientifique` pour le traitement de données (tests statistiques, optimisation, regression, interpolation, ...).\n",
+    "* [Matplotlib](http://matplotlib.org/): contient des outils de `Data visualization`.\n",
+    "* [Scikit-learn](https://scikit-learn.org/stable/index.html) : pour disposer des outils de `Machine Learning` (_sklearn_).\n",
+    "* Django: framwork de developpement web.\n",
+    "* Tensorflow/Pytorch: librairie dédiée aux Réseaux de Neurones.\n",
+    "* PyTest: librairie liée au test unitaire en python.\n",
+    "\n",
+    "De nombreux autres bibliothèques sont disponibles en fonction des besoins, tels que [keras](https://keras.io/) qui est une API de `réseau de neurones` de haut niveau (reconnaissance d'images...), [pytest](https://docs.pytest.org/en/latest/) pour les tests, ... "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "44b2dada",
+   "metadata": {},
+   "source": [
+    "# Gestion des packages"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "90ddf77c",
+   "metadata": {},
+   "source": [
+    "## Accéder aux packages"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "40e0dc0a",
+   "metadata": {},
+   "source": [
+    "### Installation d'un package\n",
+    "\n",
+    "Les packages classiques ont été développés par la communauté et partagés sur le Python Repository (PyPi).  \n",
+    "Le code source de ces packages est en général stocké et partagé dans GitHub (www.github.com)  \n",
+    "\n",
+    "Pour récupérer un package, il faut le télécharger (et parfois le compiler) comme suit:  \n",
+    "\n",
+    "* Si vous utilisez Anaconda, il est possible d'installer un package avec `conda` en lançant la commande `conda install -y nom_package`. Cette commande peut être lancée dans le `Anaconda Prompt` ou dans une cellule avec `!` pour signifier que la ligne est une ligne de commande.  \n",
+    "* Si vous n'utilisez pas Anaconda ou si le package ne se trouve pas sur le répertoire d'Anaconda, utilisez la commande:  `pip install nom_package`\n",
+    "\n",
+    "Il suffit d'installer un package une seule fois dans un environnement.  \n",
+    "Par exemple pour installer le package numpy depuis le répertoire des packages d'Anaconda:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "id": "8fd0a7ef",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# !conda install -y numpy"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ba6ce9a2",
+   "metadata": {},
+   "source": [
+    "NB: _-y_ pour confirmer directement l'installation."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cd1f88d0-3e0b-4237-a394-720c2fde3416",
+   "metadata": {},
+   "source": [
+    "<div style=\"width: 80%; padding: .5em 1.5em;\n",
+    "            margin: .5em 2em .5em 2em;\n",
+    "            border-radius: 12pt; border-color: black; \n",
+    "            border-style: solid;\">\n",
+    "<b style=\"font-variant: small-caps; text-decoration: underline;\">En savoir plus:</b><br>\n",
+    "    Python dans sa version classique est hébergé par le site de la Python Software Fundation (https://Python.org) \n",
+    "    <a href=https://python.org></a> PSF:  \n",
+    "        Ce site est couplé au répertoire PyPi [https://pypi.org] qui rassemble tous les packages (ensemble de classes / modeules) développés en Python.  \n",
+    "    Pour installer sur votre machine un package en utilisant le répertoire PyPi, on utilisera la commande `pip`.  \n",
+    "    Par exemple, pour installer Numpy, nous utiliserons:  \n",
+    "    pip install numpy  \n",
+    "\n",
+    "</br>\n",
+    "</div>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3f089d24-c5d3-468a-b2d7-531e0d3dc42d",
+   "metadata": {},
+   "source": [
+    "### Chargement d'un package"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bef1796a-dcfd-44f8-ae58-36e7016b62c3",
+   "metadata": {},
+   "source": [
+    "Pour charger un package ou vérifier si un package est installé, il suffit d'essayer de l'importer en `Python` avec la commande:\n",
+    "`import nom_package` et d'exécuter la cellule (CTRL+ENTREE).  Si le package est bien installé l'exécution ne provoque aucune erreur.  "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 334,
+   "id": "a10a558f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Exemple pour importer le module numpy\n",
+    "\n",
+    "import numpy"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "b94a1f0a-c51f-4e4d-8a9a-69b4b7a23cf2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Pour être plus concis et c'est devenu une convention on utilise l'alias np à la place de numpy:\n",
+    "\n",
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "508aecbd-944b-42fb-8635-173bc49b99e8",
+   "metadata": {},
+   "source": [
+    "Il existe une méthode pour importer des éléments d'un package sans avoir à utiliser un préfixe:  \n",
+    "**from pandas import DataFrame**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4b2c36d5",
+   "metadata": {},
+   "source": [
+    "Les [packages](http://conda.pydata.org/docs/using/pkgs.html) et les [environnements](http://conda.pydata.org/docs/using/envs.html) peuvent être gérés avec l'interface graphique de \n",
+    "ou avec la commande `conda` (`conda --help` et `conda env --help`).  Ci-après un récapitulatif des principales commandes:\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7c7ea7af-9a50-4867-abdf-155c65f8e412",
+   "metadata": {},
+   "source": [
+    "|Action|Commande|\n",
+    "|----------|---------------|\n",
+    "|Vérifier l'installation de conda|conda info|\n",
+    "|Mettre à jour conda|conda update conda|\n",
+    "|Obtenir la liste des packages disponibles dans votre environnement | `conda list` |\n",
+    "|Installer un package depuis le répertoire des packages d'Anaconda | conda install nom_package|\n",
+    "|Mettre à jour un package | conda update nom_package|\n",
+    "|Rechercher un package | conda search nom_package|\n",
+    "|Installer un package issu directement du PyPi| pip install nom_package|\n",
+    "|Récupérer des packages moins distribués et stockés sur conda-forge| conda install --channel|\n",
+    "||conda-forge nom_package|"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f33d75b9",
+   "metadata": {},
+   "source": [
+    "L'import des modules se fait en tête d'un script Python. Il est recommandé d'importer en premier les modules qui sont le plus bas niveau. \n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "dc760e1f",
+   "metadata": {},
+   "source": [
+    "### Chargement d'une fonction"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ef61b4d3",
+   "metadata": {},
+   "source": [
+    "L'exemple ci-dessous montre comment charger fonction _chi2_contingency()_ qui permet d'effectuer un test du chi-carré d’indépendance pour deux variables catégorielles. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "0a79a9b1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from scipy.stats import chi2_contingency"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a0b551de-4138-4766-bac8-7b007fc17b80",
+   "metadata": {},
+   "source": [
+    "## Créer un module (avancé)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e2a613cf-c7a6-4111-88b1-890d21ed9419",
+   "metadata": {},
+   "source": [
+    "Créer un module est extrêmement simple, il suffit de créer un fichier.py dans lequel vous allez stocker vos fonctions et vos classes."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "cc934b00",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Writing demo.py\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%writefile demo.py\n",
+    "\"\"\"A demo module.\"\"\"\n",
+    "\n",
+    "def print_b():\n",
+    "    \"Prints b.\"\n",
+    "    print('b')\n",
+    "\n",
+    "def print_a():\n",
+    "    \"Prints a.\"\n",
+    "    print('a')\n",
+    "\n",
+    "c = 2\n",
+    "d = 2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "48c9d14d-9867-4690-af1f-f6e82df94caa",
+   "metadata": {},
+   "source": [
+    "We hereafter open the file demo.py in reading  \n",
+    "and assign to the variables lines all the lines of the file  \n",
+    "then with a for loop on lines, we print each line  \n",
+    "NB: rstrip() method is used to remove the unusefull spaces"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "3fad35c0-9107-46e3-9360-12d26d2e7ea9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "\"\"\"A demo module.\"\"\"\n",
+      "\n",
+      "def print_b():\n",
+      "    \"Prints b.\"\n",
+      "    print('b')\n",
+      "\n",
+      "def print_a():\n",
+      "    \"Prints a.\"\n",
+      "    print('a')\n",
+      "\n",
+      "c = 2\n",
+      "d = 2\n"
+     ]
+    }
+   ],
+   "source": [
+    "with open(\"demo.py\", \"r\") as file:\n",
+    "    lines = file.readlines()  # Read all lines at once\n",
+    "\n",
+    "    # Access individual lines:\n",
+    "    for line in lines:\n",
+    "        print(line.rstrip())  # Remove trailing newline character if needed"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 350,
+   "id": "208f2afa",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# On peut ensuite utiliser ce module:\n",
+    "\n",
+    "import demo"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d4dbd3f0-8b35-42df-ac7f-a09053ac4770",
+   "metadata": {},
+   "source": [
+    "On a alors accès aux objets du module (variables, fonctions et classes):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 339,
+   "id": "8be2c904",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "demo"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 340,
+   "id": "6e454702",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "demo?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 341,
+   "id": "5715a6b7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "demo.print_a"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 342,
+   "id": "65e58aac",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "demo.print_a?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 343,
+   "id": "c4e19e37",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "demo.print_a()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d68e393c-6f68-446a-ab46-97c587a54189",
+   "metadata": {},
+   "source": [
+    "Afin d'exécuter du code directement quand un module est chargé, on peut utiliser **`__main__`**:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "ace02eb0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Writing demo2.py\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%writefile demo2.py\n",
+    "def print_b():\n",
+    "    \"Prints b.\"\n",
+    "    print('b')\n",
+    "\n",
+    "def print_a():\n",
+    "    \"Prints a.\"\n",
+    "    print('a')\n",
+    "\n",
+    "# print_b() runs on import\n",
+    "print_b()\n",
+    "\n",
+    "if __name__ == '__main__':\n",
+    "    # print_a() is only executed when the module is run directly.\n",
+    "    print_a()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "155660b6",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "b\n"
+     ]
+    }
+   ],
+   "source": [
+    "import demo2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "ed2b40bd",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "b\n",
+      "a\n"
+     ]
+    }
+   ],
+   "source": [
+    "%run demo2"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "471c329c-9ca3-4710-8a98-f998a39f21e6",
+   "metadata": {},
+   "source": [
+    "## Créer un package (avancé)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "129df344-5d6d-4ae2-8cd2-c70bb24f0fe7",
+   "metadata": {},
+   "source": [
+    "Quand les modules sont trop consistants ou que l'on souhaite les publier dans le PyPi ou GitHub il faut alors passer à la notion de package (ensemble de fichiers .py rassemblés et ordonnés dans un répertoire).  \n",
+    "\n",
+    "Le fichier d'initialisation du package __init.py__ est placé à la racine.  \n",
+    "Au chargement du package, Python lance le code qui se trouve dans le fichier.\n",
+    "Ce fichier peut être vide. On peut y ajouter la ligne de code 'from mypackage.mon_code import *'  cela permettra le préchargement des fichiers se trouvant dans le répertoire (oups le package :))\n",
+    "\n",
+    "Remarque: le nom du package est en minuscules et il faut éviter de lui donner un nom existant.\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "49296d51-b4cd-49a5-bd47-ce32f6f4935c",
+   "metadata": {},
+   "source": [
+    "mypackage/  \n",
+    "├── __init__.py  \n",
+    "├── module1.py  \n",
+    "├── module2.py  \n",
+    "└── ..."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9156dc59",
+   "metadata": {},
+   "source": [
+    "# Packages standards "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a25e3c74",
+   "metadata": {},
+   "source": [
+    "**Les packages de la biliothèque standard sont livrés lors de l'installation d'Anaconda.**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7d55848c-c791-45a3-90dd-2d113f176fca",
+   "metadata": {},
+   "source": [
+    "### `re`\n",
+    "\n",
+    "(avancé) Les expressions régulières _regular expressions(regexp)_"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7e7b25d9-7521-47df-9d6e-f8e11e2c660c",
+   "metadata": {},
+   "source": [
+    "Puissant outil pour faire des recherches ou des remplacements sur des chaînes de caractères.  \n",
+    "On utilise le package nommé _re_"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "81a37b18-9c1c-4f27-9e85-a82ffd710eae",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Faux\n"
+     ]
+    }
+   ],
+   "source": [
+    "import re\n",
+    "\n",
+    "chaine = \"d.thebault@intervenant-ggeedu.fr\"\n",
+    "regexp = \"(^[a-z0-9._-]+@[a-z0-9._-]+\\.[(com|fr)]+)\"\n",
+    "regexp = \"(com|de)\"\n",
+    "\n",
+    "if re.match(regexp, chaine) is not None:\n",
+    "    print(\"Vrai\")\n",
+    "else:\n",
+    "    print(\"Faux\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9aa67485-f789-41c8-9c3e-2e1f57698da7",
+   "metadata": {},
+   "source": [
+    "* ^[a-z0-9._-]   \n",
+    "  ^ signifie début de ligne. En d’autres termes, l'accent circonflexe indique que la correspondance doit commencer au début de la chaîne de caractères.  \n",
+    "  [a-z0-9._-]: signifie que l'on attend soit des lettres minuscules (de a à z), soit des chiffres (de 0 à 9), soit des points (.), soit des tirets bas (_), soit des tirets (-).\n",
+    "\n",
+    "* +@[a-z0-9._-]   \n",
+    "  @ signifie que l'on attend ensuite un @ puis des lettres, chiffres, tirets ou points  \n",
+    "\n",
+    "* +\\.[(com|fr)] finalement on attend .com ou .fr\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "de5b684d",
+   "metadata": {},
+   "source": [
+    "### `os`\n",
+    "\n",
+    "\n",
+    "**O**perating **S**ystem  \n",
+    "\n",
+    "Le module os en Python fournit une manière portable d’utiliser des fonctionnalités dépendantes du système d’exploitation telles que la gestion des répertoires."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 111,
+   "id": "e9ad332c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#os?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "e0cbb734",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 110,
+   "id": "900dc577-5d7e-41b6-8205-279f9c14b600",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#os.listdir?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 109,
+   "id": "4426ba2b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Return a list containing the names of the files in the directory.\n",
+    "\n",
+    "#os.listdir('.')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 108,
+   "id": "5062e4a6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#from os import listdir\n",
+    "#listdir('.')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 112,
+   "id": "a7e2f389-f217-4f64-8473-9d3ecfeadf60",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#os.getcwd?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "3847e90a-4a56-43ba-bc88-5f1c546d5d8e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'/Users/davidtbo/Documents/Data_Science/13_Python'"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# To return the current working directory:\n",
+    "\n",
+    "os.getcwd()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "f342d8f2-adfe-4685-ba53-7a7191134780",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# To move to another directory:\n",
+    "\n",
+    "os.chdir('../')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "3118af3d-9c20-4e3f-9c64-9883f73042b3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "os.chdir('./13_Python')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "5e507e1c-f905-446a-b9c3-9eed6d4fe664",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'/Users/davidtbo/Documents/Data_Science/13_Python'"
+      ]
+     },
+     "execution_count": 19,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "os.getcwd()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3c359671",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#\n",
+    "# Répertoire\n",
+    "#\n",
+    "\n",
+    "import os\n",
+    "\n",
+    "os.listdir()\n",
+    "path = os.getcwd() # récupération du chemin\n",
+    "path\n",
+    "os.path.basename(path) # récupération du nom du répertoire actuel\n",
+    "\n",
+    "# on va créer une liste avec tout ce qui'il y a dans listdir enfin que les fichiers\n",
+    "FichList = [ f for f in os.listdir('.') if os.path.isfile(os.path.join('.',f)) ]\n",
+    "\n",
+    "# On peut spécifier le nom du répertoire:\n",
+    "#path_data = './project-9/project-9-files'\n",
+    "#list = os.listdir(path_data)\n",
+    "#print(list)\n",
+    "\n",
+    "\n",
+    "import os\n",
+    "\n",
+    "# Se placer sur le répertoire de travail de l'apprentissage supervisé\n",
+    "\n",
+    "os.chdir('/Users/davidtbo/OneDrive/Documents/Data_Science/17_Apprentissage_supervisé')\n",
+    "\n",
+    "# Vérifier le répertoire sur lequel on travaille\n",
+    "\n",
+    "os.getcwd()\n",
+    "\n",
+    "# récupérer le chemin du répertoire courant\n",
+    "\n",
+    "path = os.getcwd()\n",
+    "print(\"Le chemin du répertoire courant est : \" + path)\n",
+    "\n",
+    "# récupérer le nom du répertoire courant\n",
+    "\n",
+    "repn = os.path.basename(path)\n",
+    "print(\"Le nom du répertoire est : \" + repn)\n",
+    "\n",
+    "# Lister le contenu du répertoire courant\n",
+    "\n",
+    "os.listdir()\n",
+    "\n",
+    "# Créer une liste des fichiers du répertoire\n",
+    "\n",
+    "FichList = [ f for f in os.listdir() if os.path.isfile(os.path.join('.',f)) ]\n",
+    "print(FichList)\n",
+    "\n",
+    "# Création d'un sous-path du répertoire courant\n",
+    "\n",
+    "path_data = './project-9/project-9-files'\n",
+    "\n",
+    "# Création d'une variable contenant les fichiers du répertoire\n",
+    "\n",
+    "list = os.listdir(path_data)\n",
+    "print(list)\n",
+    "\n",
+    "# Créer une liste des fichiers du répertoire\n",
+    "\n",
+    "FicList = [f for f in list if os.path.isfile(os.path.join('.',f))]\n",
+    "print(FicList)\n",
+    "\n",
+    "\n",
+    "import os\n",
+    "\n",
+    "\n",
+    "# Liste des noms des fichiers avec leur arborescence\n",
+    "\n",
+    "liste = [] # initialisation de la liste qui va nous servir à stocker les fichiers\n",
+    "for path, subdirs, files in os.walk(path_data): # os.walk() objet contenant le path, les subdirs et les files\n",
+    "    for name in files: # pour tous les fichiers\n",
+    "        if name[-4:] == '.csv': # si le fichier se termine par .csv\n",
+    "            liste = liste + [os.path.join(path, name)] # liste des fichiers .csv avec leur arborescence\n",
+    "#            print(name)\n",
+    "print(liste)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b52c18d3",
+   "metadata": {},
+   "source": [
+    "### `glob`\n",
+    "\n",
+    "Souvent utilisé pour filtrer des fichiers en fonction de motifs spécifiques"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "id": "76c9a2f0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import glob"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "f4d46596",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# retourne le nom de tous les fichiers qui se trouvent dans notre répertoire de travail\n",
+    "\n",
+    "#glob.glob(\"*\")\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ce827020",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# tous les fichiers .txt de mon répertoire\n",
+    "\n",
+    "glob.glob(\"*.txt\")\n",
+    "print(glob.glob('*.txt')) # pour imprimer même si là il n'y a qu'un fichier, pas grave c'est pour l'exemple"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0d2f6f60",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Récupérer la liste contenant le nom des fichiers se terminant par .txt\n",
+    "# Pour chaque fichier .txt, les ouvrir en lecture et les imprimer:\n",
+    "\n",
+    "filenames = glob.glob(\"*.txt\") # liste des fichiers se terminant par .txt\n",
+    "for file in filenames: # pour chaque fichier de filenames\n",
+    "    with open(file, 'r') as f: # ouverture du fichier en lecture\n",
+    "        print(f.read()) # imprime à l'écran le fichier !! sans oublier le .read()!!\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a209bcc7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# exo\n",
+    "# utiliser cette dernière technique afin d'enregistrer le contenu de chaque fichier dans une variable\n",
+    "# astuce: utiliser les dictionnaires\n",
+    "filenames = glob.glob(\"*.txt\") # pour récupérer la liste contenant le nom des fichiers se terminant par .txt\n",
+    "d = {} # initialisation d'un dictionnaire qui comprendra en clé le nom du fichier et en valeur le contenu du fichier dans une liste\n",
+    "for file in filenames: # pour chaque fichier de filenames\n",
+    "    with open(file, 'r') as f: # j'ouvre le fichier en lecture\n",
+    "        d[file] = f.read().splitlines() # dans le dictionnaire la valeur de la clé file est la liste contenant les lignes du fichier\n",
+    "d"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "88038301",
+   "metadata": {},
+   "source": [
+    "### `math`\n",
+    "\n",
+    "Module pour les mathématiques"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "fa759404",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import math"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5cd8872f",
+   "metadata": {},
+   "source": [
+    "Le nombre $ \\pi $"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "69d92856",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3.141592653589793"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "math.pi\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b5fd2c65",
+   "metadata": {},
+   "source": [
+    "$ cosinus(\\pi)$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "377bfc0c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-1.0"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "math.cos(math.pi)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f5f9a53f",
+   "metadata": {},
+   "source": [
+    "### `statistics`\n",
+    "\n",
+    "Module pour les statistiques"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "cbacd2ef",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import statistics as st"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "1c318f4f",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2.5"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Moyenne arithmétique des valeurs de la liste\n",
+    "\n",
+    "liste = [1,2,3,4]\n",
+    "\n",
+    "st.mean(liste)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d187d201",
+   "metadata": {},
+   "source": [
+    "### `scipy`\n",
+    "\n",
+    "Module pour les calculs scientifiques"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "10b21424",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Chi-squared statistic: 0.0117\n",
+      "P-value: 0.9140\n",
+      "Degrees of freedom: 1\n",
+      "Expected frequencies:\n",
+      "[[10.71428571 19.28571429]\n",
+      " [14.28571429 25.71428571]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "import numpy as np\n",
+    "from scipy.stats import chi2_contingency\n",
+    "\n",
+    "# Create a 2x2 contingency table\n",
+    "observed = np.array([[10, 20], [15, 25]])\n",
+    "\n",
+    "# Perform the chi-squared test\n",
+    "chi2, p, dof, expected = chi2_contingency(observed)\n",
+    "\n",
+    "print(f\"Chi-squared statistic: {chi2:.4f}\")\n",
+    "print(f\"P-value: {p:.4f}\")\n",
+    "print(f\"Degrees of freedom: {dof}\")\n",
+    "print(\"Expected frequencies:\")\n",
+    "print(expected)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "aa472992",
+   "metadata": {},
+   "source": [
+    "### `random`\n",
+    "\n",
+    "Le module **random** en Python permet de générer des nombres pseudo-aléatoires pour différentes distributions."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "4d38bb58",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import random"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "98ad9559-adb9-4cf8-9d86-5cfe0c91b3d4",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Tirer un élément au hasard dans la liste = [1,2,3,4]: \n",
+      " np.random.choice(liste) = 4 \n",
+      "\n",
+      "Tirer nombre entier aléatoirement entre 1 et 5: \n",
+      " random.randint(1,5) = 4 \n",
+      "\n",
+      "Tirer nombre entier aléatoirement entre 0 et 100:\n",
+      " random.randrange(100) = 5 \n",
+      "\n",
+      "Tirer un nombre réel aléatoirement dans l'intervalle [0, 1]: \n",
+      " random.random() =  0.25891675029296335 \n",
+      "\n",
+      "Tirer un échantillon de taille 6 d'entiers compris entre 0 à 99: \n",
+      " random.sample(range(100), 6) =  [65, 62, 51, 38, 61, 45] \n",
+      "\n",
+      "Tirer un échantillon de taille aléatoire comprise entre 0 et 4 d'entiers aléatoires entre 0 à 99: \n",
+      " random.sample(range(100), random.randrange(5)) =  [27, 64, 17, 36] \n",
+      "\n",
+      "Mélanger les éléments d'une liste: \n",
+      " random.shuffle([1,2,3,4]) \n",
+      "  None \n",
+      "\n",
+      "Pour fixer les aléas qui seront les mêmes si je repasse par ici: \n",
+      " random.seed(0) \n",
+      " None\n"
+     ]
+    }
+   ],
+   "source": [
+    "print('Tirer un élément au hasard dans la liste = [1,2,3,4]: \\n np.random.choice(liste) =',\n",
+    "      random.choice([1,2,3,4]), '\\n')\n",
+    "\n",
+    "print('Tirer nombre entier aléatoirement entre 1 et 5: \\n random.randint(1,5) =', \n",
+    "      random.randint(1,5), '\\n')\n",
+    "\n",
+    "print('Tirer nombre entier aléatoirement entre 0 et 100:\\n random.randrange(100) =', \n",
+    "      random.randrange(100), '\\n')\n",
+    "\n",
+    "print(\"Tirer un nombre réel aléatoirement dans l'intervalle [0, 1]: \\n random.random() = \", \n",
+    "      random.random(), '\\n')\n",
+    "\n",
+    "# Echantillonnage\n",
+    "\n",
+    "print(\"Tirer un échantillon de taille 6 d'entiers compris entre 0 à 99: \\n random.sample(range(100), 6) = \",\n",
+    "      random.sample(range(100), 6), '\\n')\n",
+    "\n",
+    "print(\"Tirer un échantillon de taille aléatoire comprise entre 0 et 4 d'entiers aléatoires entre 0 à 99: \\n random.sample(range(100), random.randrange(5)) = \",\n",
+    "      random.sample(range(100), random.randrange(5)), '\\n')\n",
+    "\n",
+    "print(\"Mélanger les éléments d'une liste: \\n random.shuffle([1,2,3,4]) \\n \",\n",
+    "      random.shuffle([1,2,3,4]), '\\n')\n",
+    "\n",
+    "print(\"Pour fixer les aléas qui seront les mêmes si je repasse par ici: \\n random.seed(0) \\n\", \n",
+    "      random.seed(0))\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8464ffaa-dfb0-4796-95fc-acea46f3cd85",
+   "metadata": {},
+   "source": [
+    "**NB:** randint() permet de spécifier une plage incluant les deux extrémités, tandis que randrange() permet de spécifier une plage excluant"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6a3e8e76",
+   "metadata": {},
+   "source": [
+    "### `rpy2` (package non standard)\n",
+    "\n",
+    "accéder à R avec Python"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "95a7c2b3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#import rpy2.robjects as robjects\n",
+    "#import rpy2.robjects.packages as rpackage\n",
+    "#from rpy2.robjects.vectors import StrVector"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4190eb67",
+   "metadata": {},
+   "source": [
+    "# La bibliothèque  `NumPy`\n",
+    "\n",
+    "Numerical Python - module d'algèbre linéaire (vecteurs, matrices, tenseurs...)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4a09f881-d6d1-4376-bed6-4e8d8cd2f795",
+   "metadata": {},
+   "source": [
+    "On voit apparaître le mot **`ndarray`** pour structure à __n dimensions__.  \n",
+    "\n",
+    "* on ne stocke des données que d'un seul type dans un ndarray.\n",
+    "* les ndarray prennent autant de dimensions que nécessaires.\n",
+    "* les ndarray constituent un format \"minimal\" pour stocker des données.  \n",
+    "* Ils possèdent des **méthodes** spécifiques optimisées (calcul extrêmement rapide).\n",
+    "* Il est possible de les stocker dans des fichiers.  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "22e42e0c",
+   "metadata": {},
+   "source": [
+    "En machine learning on utilisera souvent la class numpy.ndarray pour créer des objets tableaux (n_dimensional_array)[https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html]  \n",
+    "* les attributs vont être la taille du tableau (size), les dimensions du tableau (ndim)...\n",
+    "* les méthodes sont p.ex. la sum(), sort(), reshape()  \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "3e45ff1a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7fb0014f-72f3-4763-84ea-2443019f4868",
+   "metadata": {},
+   "source": [
+    "# Les tableaux `numpy`\n",
+    "\n",
+    "Dans la terminologie `numpy`, vecteurs, matrices et autres tenseurs sont appelés `arrays`.\n",
+    "Pour créer un `array`, il existe plusieurs possibilités:\n",
+    "\n",
+    " * à partir de listes ou tuples.\n",
+    " * en utilisant des fonctions dédiées, telles que `arange`, `linspace`, etc.\n",
+    " * par chargement à partir de fichiers.\n",
+    "\n",
+    "\n",
+    "## Tableaux \"standards\"\n",
+    "\n",
+    "Pour créer un tableau il y a un constructeur array.  \n",
+    "On peut créer un `array` en une dimension à partir d'une **liste** python classique, au moyen de la fonction `numpy.array()` :"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7aad722c",
+   "metadata": {},
+   "source": [
+    "### Tableau uni-dimensionel 1D\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 113,
+   "id": "e2600586-44c2-4063-aa77-3cb88e645ce8",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0, 1, 2, 3])"
+      ]
+     },
+     "execution_count": 113,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.array([0, 1, 2, 3])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "df670776-db74-40ee-82e5-5f052a18ea8f",
+   "metadata": {},
+   "source": [
+    "À la création de l'`array`, on peut préciser de quelle type de donnée il s'agit avec l'argument `dtype`:\n",
+    " * Types possibles avec `dtype` : `int`, `float`, `complex`, `bool`, `object`, etc."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "242cb8b7-85e8-4ea7-8901-1bc2a30deff6",
+   "metadata": {},
+   "source": [
+    "On peut aussi créé des tableaux avec des types de données différents:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "875d1521-10ba-45cc-b2df-4b82df9fdb6f",
+   "metadata": {},
+   "source": [
+    " * On peut aussi spécifier la précision en bits: `int64`, `int16`, `float128`, `complex128`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "a8ddaf52-f487-4ca5-9c60-4ff16be8dd0e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1.  3.1 2.5 4.  0.  8. ]\n",
+      "Type de donnée du vecteur v_int: float32\n",
+      "Taille en bytes vecteur v_int: 6 x 4 = 24\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# On peut les convertirs en float32 -> moins précis mais moins gros en mémoire\n",
+    "v_int32 = np.array([1., 3.1, 2.5, 4., 0., 8.], dtype=np.float32)\n",
+    "print(v_int32)\n",
+    "print(\"Type de donnée du vecteur v_int: {}\".format(v_int32.dtype))\n",
+    "print(\"Taille en bytes vecteur v_int: 6 x 4 = {}\\n\".format(v_int32.nbytes))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9068a707-3ad1-479d-97a9-3e2ccda6491c",
+   "metadata": {},
+   "source": [
+    "**Attention !** Une fois le type fixé, les données qui sont stockées dans le vecteur sont toutes du même type."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "id": "5a829e78-431d-4377-b945-813d2711042a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[3 2 3 4]\n",
+      "dtype de v: int64\n"
+     ]
+    }
+   ],
+   "source": [
+    "v = np.array([1, 2, 3, 4])\n",
+    "v[0] = 3.2\n",
+    "print(v)\n",
+    "print(\"dtype de v:\", v.dtype)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "34c98065-8ccc-4561-ac06-a3d2c8368e3a",
+   "metadata": {},
+   "source": [
+    "Le type des éléments doit rester le même lors de l'assignement. On ne peut donc pas assigner un élément qui ne peut pas être converti dans le `dtype` du tableau."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "id": "b917f52c-3b32-4890-a7e6-da3e77fee610",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# v[0] = \"heloo\""
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "aaaedbc9-1430-4a20-9ccb-f49e18c79cd2",
+   "metadata": {},
+   "source": [
+    "On peut cependant obtenir une copie l'`array` avec le bon type grace à la méthode `astype`:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "id": "0190d046-cb3b-4607-a67c-34737cee28ed",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[3.2 2.  3.  4. ] dtype = float64\n"
+     ]
+    }
+   ],
+   "source": [
+    "v_float = v.astype(float)\n",
+    "v_float[0] = 3.2\n",
+    "print(v_float, \"dtype =\", v_float.dtype)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bfbefadb-8bb8-4896-a372-a9758096d20e",
+   "metadata": {},
+   "source": [
+    "### Tableau multi-dimensionels\n",
+    "\n",
+    "On peut aussi créer de tableau en plus grande dimension, comme des matrices ou des tenseurs, avec des listes imbriquées:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "8ea98623-d346-4d10-a55d-17adbb33ff01",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1 0]\n",
+      " [3 2]]\n",
+      "<class 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Matrice 2D\n",
+    "\n",
+    "M = np.array([[1, 0], [3, 2]])\n",
+    "print(M)\n",
+    "print(type(M))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d246cca0",
+   "metadata": {},
+   "source": [
+    "**Exercice**:  \n",
+    "Créer une fonction inicialisation(n,m) qui retourne une matrice (m, n+1) avec une colonne remplie de 1 à droite avec:  \n",
+    "* m: nombre de lignes\n",
+    "* n:nombre de colonnes\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "53a1a7ac",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 0.3069512 , -0.17019447,  1.        ],\n",
+       "       [-0.21982196, -0.1263836 ,  1.        ],\n",
+       "       [ 1.24599921,  0.2399226 ,  1.        ],\n",
+       "       [ 0.35335922,  0.11156658,  1.        ],\n",
+       "       [-0.6738837 ,  0.63455922,  1.        ],\n",
+       "       [-0.95961262,  0.77803352,  1.        ],\n",
+       "       [-0.89276463,  2.09929675,  1.        ],\n",
+       "       [-0.70092189,  2.0926105 ,  1.        ]])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "def inicialisation(m,n):\n",
+    "    X = np.random.randn(m,n)\n",
+    "    X = np.concatenate((X,np.ones((X.shape[0], 1))), axis =1)\n",
+    "    return X\n",
+    "\n",
+    "inicialisation(8,2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "7d7a5f35-ae90-4b1b-9c69-a7f7f1ed2e18",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[[1 0]\n",
+      "  [3 2]]\n",
+      "\n",
+      " [[1 0]\n",
+      "  [3 2]]\n",
+      "\n",
+      " [[1 0]\n",
+      "  [3 2]]\n",
+      "\n",
+      " [[1 0]\n",
+      "  [3 2]]]\n",
+      "<class 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Tenseur 3D (4, 2, 2)\n",
+    "\n",
+    "T = np.array([M,M,M,M])\n",
+    "print(T)\n",
+    "print(type(T))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "51f18072",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<zip object at 0x108970280>\n",
+      "[1, 1]\n"
+     ]
+    }
+   ],
+   "source": [
+    "u = [0,1]\n",
+    "v = [1,0]\n",
+    "z = []\n",
+    "\n",
+    "print(zip(u,v))\n",
+    "\n",
+    "for n,m in zip(u,v):\n",
+    "    z.append(n+m)\n",
+    "print(z)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1fd6a4d7-50d9-4a27-89fd-ace5fbbd12e3",
+   "metadata": {},
+   "source": [
+    "## Tableaux constants\n",
+    "On peut créer des `array` à partir de fonctions spéciales:  \n",
+    "`np.zeros`, `np.ones`, `np.empty`, `np.eye`, ...\n",
+    "\n",
+    "Toutes ces fonctions prennent comme premier argument `shape`.  \n",
+    "\n",
+    "**Exercice 3 :** (*Générer des tableaux de constantes*)  \n",
+    "Utiliser les fonctions `np.zeros`, `np.ones` et `np.eye` pour répondre au question suivante:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9191b621",
+   "metadata": {},
+   "source": [
+    "##### np.ones()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "56988ba6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# np.ones() est une fonction de numpy permetttant de créer des vecteurs de une:\n",
+    "\n",
+    "#np.ones?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "aedbf29d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Exercice: avec la fontion np.ones() créer un vecteur de 1 de longeur dix:\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bd2e4f02",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# np.zeros (avec des zéros)\n",
+    "C = np.ones((3,4))\n",
+    "C.size"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0431b6a2",
+   "metadata": {},
+   "source": [
+    "##### np.zeros()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "5c58eee5",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "tuple"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# initialisation d'un tableau\n",
+    "# np.ones (avec des 1)\n",
+    "B = np.zeros((3,2)) # pour initialiser un tableau (3,2) avec des zéros, np.zeros() attend en argument shape qui est un tuple (3,2) d'où double paranthèses\n",
+    "B.shape\n",
+    "B.size\n",
+    "type(B.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "291757fa",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Exercice: avec la fontion np.ones() créer une matrice (5, 5) de 1:\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c0c51f25",
+   "metadata": {},
+   "source": [
+    "##### np.eye()\n",
+    "\n",
+    "Matrice Identité $I_n$"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5d144bfc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[1., 0., 0., 0.],\n",
+       "       [0., 1., 0., 0.],\n",
+       "       [0., 0., 1., 0.],\n",
+       "       [0., 0., 0., 1.]])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "np.eye(4) # pour avoir la matrice identité Id4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0b1553e4",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Identity matrix of size: (4, 4)\n",
+      " [[1. 0. 0. 0.]\n",
+      " [0. 1. 0. 0.]\n",
+      " [0. 0. 1. 0.]\n",
+      " [0. 0. 0. 1.]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "i = np.eye(4)\n",
+    "print(\"Identity matrix of size: {}\\n\".format(i.shape), i)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "367e74c4",
+   "metadata": {},
+   "source": [
+    "## L'infini\n",
+    "\n",
+    "`np.inf` est un objet de la bibliothèque NumPy en Python, qui représente l'infini positif $+ \\infty$. Il est de type float."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "id": "af0ab1e9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "inf"
+      ]
+     },
+     "execution_count": 83,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.inf"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "id": "2c3e0fb8",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "float"
+      ]
+     },
+     "execution_count": 84,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "type(np.inf)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5b1ea725-a6cd-4371-9173-1bb3357dc4dc",
+   "metadata": {},
+   "source": [
+    "## Tableaux de nombres tirés aléatoirement\n",
+    "\n",
+    "Pour générer des tableaux plus complexes, on peut utiliser le module `np.random` de `numpy`.  \n",
+    "Ce module dispose sous-modules générateurs de nombre aléatoire parmi lesquels:\n",
+    "\n",
+    "* **Loi discrète:** `np.random.randint` génère des nombres entiers tirés aléatoirement entre des bornes à définir$.\n",
+    "* **Loi uniforme:** `np.random.rand` génère des nombres tirés uniformément dans $[0, 1]$.\n",
+    "* **Loi normale:** `np.random.randn` génère des nombres tirés selon une loi normale $\\mathcal N(0, 1)$.\n",
+    "* **Loi normale:** `np.random.randn` génère des nombres tirés selon une loi normale $\\mathcal N(loc, scale, size)$.\n",
+    "\n",
+    "Il expose aussi des fonctions de plus haut niveau pour différentes lois de probabilité."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b09fbe43",
+   "metadata": {},
+   "source": [
+    "##### np.random.randint()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a5745ec6",
+   "metadata": {},
+   "source": [
+    "La fonction **np.random.randint(low, high, size)** du sous-module np.random de Python renvoie un nombre entier aléatoire compris entre deux bornes\n",
+    "\n",
+    "La fonction prend trois arguments :\n",
+    "\n",
+    "* **low** (optionnel): la borne inférieure de la plage de nombres aléatoires qui est incluse. Si elle n'est pas spécifiée sa valeur par défaut sera 0.  \n",
+    "* **high** : la borne supérieure de la plage de nombres aléatoires qui est **excluse**.\n",
+    "* **size** (optionnel): la taille de l'échantillon. Par ex. size=(4,3). Si size n'est pas spécifiée, par défaut l'échantillon est réduit à une seule valeur.\n",
+    "\n",
+    "Exemple: le code suivant renvoie un nombre entier aléatoire compris entre 1 et 10 :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "30259dd9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Pour obtenir de l'aide:\n",
+    "\n",
+    "#np.random.randint?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "e1a692ff",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "6"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Générer un nombre entier aléatoire entre 0 et 9 (exclus) [donc entre 0 à 8]\n",
+    "# Nb: quand un seul paramètre est entré (ici 9), par défaut la borne low=0 et la borne high=9\n",
+    "np.random.randint(9)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "a00c4e59",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "6"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Générer un nombre entier aléatoire compris entre 1 (inclus) et 10 (exclus) [donc entre 1 et 8]\n",
+    "\n",
+    "np.random.randint(1, 10)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1e1d73b3",
+   "metadata": {},
+   "source": [
+    "Il est possible de rajouter un troisième argument permettant de spécifier la taille du tableau à générer. \n",
+    "* size : la forme du tableau à générer.  \n",
+    "\n",
+    "Exemple: créer un tableau d'entiers tirés aléatoirement entre 0 et 9 sur 5 lignes 2 colonnes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9440339e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[7, 5],\n",
+       "       [6, 6],\n",
+       "       [5, 5],\n",
+       "       [4, 6],\n",
+       "       [5, 5]])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "np.random.randint(0, 10, size=(5, 2))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "10ea9a9b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Coder avec des constantes:\n",
+    "\n",
+    "MAX = 100\n",
+    "N = 7\n",
+    "P = 3"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "49836f83",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "np.random.randint(0, MAX+1, size=(N, P))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bed18a49",
+   "metadata": {},
+   "source": [
+    "##### np.random.uniform()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "65f5fc83",
+   "metadata": {},
+   "source": [
+    "Même principe que pour la fonction np.random.randint() mais avec cette fois ci des réels compris entre _low_ et _high_. Si _low_ et _high_ ne sont pas spécifiés leur valeur par défaut est resp. 0 et 1 (loi uniforme)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1e3e0db5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Pour obtenir de l'aide:\n",
+    "\n",
+    "#np.random.uniform?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a9e8296f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "np.random.uniform()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2abefb7f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "np.random.uniform(size=(5,1))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3525dfa9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([10.11478559, 10.37143922, 10.54478647, 10.23406548, 10.34515366])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "# Exercice: écrivez un vecteur de 5 réels compris entre 10 et 11\n",
+    "\n",
+    "np.random.uniform(low=10, high=11,size=(5,1))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "199595d9",
+   "metadata": {},
+   "source": [
+    "##### np.random.randn()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8ea24a8b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Return a sample (or samples) from the \"standard normal\" distribution."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f624a211",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Aide\n",
+    "\n",
+    "#np.random.randn?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "094beff6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# np.random.randn(4,3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "33b0b9b2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# # Generated 5 random numbers between 1 to 1000.\n",
+    "\n",
+    "# for i in range(5):\n",
+    "#     print(np.random.randint(1, 1000)) "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2dce8b0a-d5ff-4dd8-a1b2-74eb3c447c68",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.random.randn(100000)\n",
+    "hh = plt.hist(a, bins=100)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 114,
+   "id": "d2b9b2ff-b483-4b14-a13f-c8355c4a205e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#np.random.rand?"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2e49c3a4-a365-4834-a5d6-8fcd855b12b4",
+   "metadata": {},
+   "source": [
+    "Contrairement à la fonction np.random.uniform() qui peut générer des nombres entre low et high, la fonction np.random.rand() génère toujours des nombres aléatoires entre 0 (inclus) et 1 (exclu)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "53282343-f3c1-40a2-807a-888f0a1d1292",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0.0206108 , 0.48833486, 0.18796434, 0.2602788 , 0.47323146],\n",
+       "       [0.91113907, 0.82499294, 0.25479978, 0.91624523, 0.31952346],\n",
+       "       [0.40604282, 0.47813096, 0.21129681, 0.0888535 , 0.12941348],\n",
+       "       [0.51128158, 0.72524907, 0.4665243 , 0.06003219, 0.4070475 ],\n",
+       "       [0.25229646, 0.67352086, 0.74229135, 0.76685715, 0.26291658]])"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.random.rand(5, 5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a1efb0e0",
+   "metadata": {},
+   "source": [
+    "##### np.random.seed()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c9f82dcb",
+   "metadata": {},
+   "source": [
+    "Pour la DataScience il est souvent utile de fixer le générateur aléatoire (la graine _seed_) pour pouvoir reproduire les résultats."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9b007366",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Generated 5 random numbers between 1 to 1000 when the seed is fixed\n",
+    "# The random numbers generated in this cell will always be the same\n",
+    "\n",
+    "np.random.seed(0) # Any number can be used in place of '0'.\n",
+    "\n",
+    "for i in range(5):\n",
+    "    print(np.random.randint(1, 1000)) "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "db69172e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Whereas the following random numbers generated in this cell will always change\n",
+    "\n",
+    "for i in range(5):\n",
+    "    print(np.random.randint(1, 1000)) "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5e93438f-41b1-4c64-8ed0-2a27f22bce25",
+   "metadata": {},
+   "source": [
+    "## Tableaux d'intervalles\n",
+    "\n",
+    "Les fonctions `arange` et `linspace` peuvent être utilisée pour générer des données séquentielles:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e68b4e7e",
+   "metadata": {},
+   "source": [
+    "##### `np.linspace()`\n",
+    "\n",
+    " _Equally spaced_\n",
+    "\n",
+    "np.linspace(début, fin, quantité)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "923aad5d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 0.        ,  0.52631579,  1.05263158,  1.57894737,  2.10526316,\n",
+       "        2.63157895,  3.15789474,  3.68421053,  4.21052632,  4.73684211,\n",
+       "        5.26315789,  5.78947368,  6.31578947,  6.84210526,  7.36842105,\n",
+       "        7.89473684,  8.42105263,  8.94736842,  9.47368421, 10.        ])"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.linspace(0,10,20) # pour avoir 20 points entre 0 et 10"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "051c2e79",
+   "metadata": {},
+   "source": [
+    "<u>NB</u>: logarithmic spaced (`np.logspace`)."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d3022b09",
+   "metadata": {},
+   "source": [
+    "##### `np.arange()`\n",
+    "\n",
+    "**np.arange(début(inclus), fin(excluse), pas)**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "8eeb6f7e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0, 1, 2, 3, 4, 5, 6, 7, 8, 9])"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.arange(0,10,1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "1d204003-06d2-49b9-b89b-62af0be5cf6b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Exercice créer un tableau contenant les nombres pairs de 0 à 20"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "a0eed1f3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Valeurs paires de 0 à 20: [ 0  2  4  6  8 10 12 14 16 18 20]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Solution:\n",
+    "\n",
+    "x1 = np.arange(0, 21, 2)\n",
+    "print(\"Valeurs paires de 0 à 20:\", x1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7193788c-0980-4a29-8576-e6d25c5b2cb3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# un tableau avec un pas non entier:\n",
+    "x2 = np.arange(-1, 1, 0.1)\n",
+    "print(\"Valeurs entre -1 et 1, tous les .1:\", x2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c01bf378-a98c-4db4-9be9-e538ea9db28b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# un tableau avec un pas négatif:\n",
+    "x3 = np.arange(100, -1, -1)\n",
+    "print(\"Valeurs de 100 à 0\", x3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "51ded5eb-c0ba-4cfa-9339-d5b4f7fba2a4",
+   "metadata": {},
+   "source": [
+    "**Exercice:** Recréer les mêmes tableaux avec la fonction `np.linspace`"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "ee48b20b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([100.,  99.,  98.,  97.,  96.,  95.,  94.,  93.,  92.,  91.,  90.,\n",
+       "        89.,  88.,  87.,  86.,  85.,  84.,  83.,  82.,  81.,  80.,  79.,\n",
+       "        78.,  77.,  76.,  75.,  74.,  73.,  72.,  71.,  70.,  69.,  68.,\n",
+       "        67.,  66.,  65.,  64.,  63.,  62.,  61.,  60.,  59.,  58.,  57.,\n",
+       "        56.,  55.,  54.,  53.,  52.,  51.,  50.,  49.,  48.,  47.,  46.,\n",
+       "        45.,  44.,  43.,  42.,  41.,  40.,  39.,  38.,  37.,  36.,  35.,\n",
+       "        34.,  33.,  32.,  31.,  30.,  29.,  28.,  27.,  26.,  25.,  24.,\n",
+       "        23.,  22.,  21.,  20.,  19.,  18.,  17.,  16.,  15.,  14.,  13.,\n",
+       "        12.,  11.,  10.,   9.,   8.,   7.,   6.,   5.,   4.,   3.,   2.,\n",
+       "         1.,   0.])"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Solution\n",
+    "\n",
+    "np.linspace(100, 0, 101)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7d02b3b1",
+   "metadata": {},
+   "source": [
+    "## Tableaux générés à partir d'un fichier\n",
+    "\n",
+    "#### I/O pour les `array`. Fichiers séparés par des virgules (CSV)\n",
+    "\n",
+    "Un format fichier classique est le format CSV (comma-separated values), ou bien TSV (tab-separated values). Pour lire de tels fichiers, on peut utiliser `numpy.genfromtxt`. Par exemple:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1a11149f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Writing data/3_numpy_data.csv\n"
+     ]
+    }
+   ],
+   "source": [
+    "%%writefile data/3_numpy_data.csv\n",
+    "\n",
+    "1,2,3,5\n",
+    "5,6,7,8\n",
+    "9,9,9,9"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0b3c311c",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "1, 2, 3, 4\n",
+      "5, 6, 7, 8\n",
+      "9, 10, 11, 12\n"
+     ]
+    }
+   ],
+   "source": [
+    "!cat data/2_numpy_data.csv"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8f726084",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 1.,  2.,  3.,  4.],\n",
+       "       [ 5.,  6.,  7.,  8.],\n",
+       "       [ 9., 10., 11., 12.]])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "data = np.genfromtxt('data/2_numpy_data.csv', delimiter=',')\n",
+    "data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5fca6011",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[1., 2., 3., 5.],\n",
+       "       [5., 6., 7., 8.],\n",
+       "       [9., 9., 9., 9.]])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "data = np.genfromtxt('data/3_numpy_data.csv', delimiter=',')\n",
+    "data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5c569968",
+   "metadata": {},
+   "source": [
+    "A l'aide de `numpy.savetxt` on peut enregistrer un *array* `numpy` dans un fichier txt:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4ac8a941",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[0.78705461 0.22604582 0.21911249]\n",
+      " [0.1880175  0.42046724 0.16157611]\n",
+      " [0.65406722 0.8397647  0.21048727]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "M = np.random.rand(3,3)\n",
+    "print(M)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "03ddfa78",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "7.870546109845751870e-01;2.260458178310537081e-01;2.191124906084124246e-01\n",
+      "1.880175032687547709e-01;4.204672379668531468e-01;1.615761055540780866e-01\n",
+      "6.540672228436542612e-01;8.397647009084837633e-01;2.104872666792322322e-01\n"
+     ]
+    }
+   ],
+   "source": [
+    "np.savetxt(\"data/random-matrix.txt\", M, delimiter=';')\n",
+    "!cat data/random-matrix.txt"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0ba7fdd3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0.78705;0.22605;0.21911\n",
+      "0.18802;0.42047;0.16158\n",
+      "0.65407;0.83976;0.21049\n"
+     ]
+    }
+   ],
+   "source": [
+    "np.savetxt(\"data/random-matrix.csv\", M, fmt='%.5f', delimiter=';') # fmt spécifie le format\n",
+    "\n",
+    "!cat data/random-matrix.csv"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "6ab1ff97",
+   "metadata": {},
+   "source": [
+    "# Attribut d'un `array`\n",
+    "\n",
+    "**L'objet `array` dispose de plusieurs attributs qui renseignent des informations sur son contenu.**  \n",
+    "\n",
+    "* `shape`: forme du vecteur \n",
+    "* `ndim`: dimension du vecteur \n",
+    "* `size`: taille total du vecteur \n",
+    "* `dtype`: type d'élément dans le vecteur \n",
+    "* `nbytes`: au nombre total d'octets utilisés pour stocker les données du tableau en mémoire."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "5534ca37",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Forme du vecteur v: (3,)\n",
+      "Dimension du vecteur v: 1\n",
+      "Taille du vecteur v: 3\n",
+      "Type de donnée du vecteur v: int64\n",
+      "Taille en bytes du vecteur v: 24\n"
+     ]
+    }
+   ],
+   "source": [
+    "v = np.array([1,2,3])\n",
+    "print(\"Forme du vecteur v: {}\".format(v.shape))\n",
+    "print(\"Dimension du vecteur v: {}\".format(v.ndim))\n",
+    "print(\"Taille du vecteur v: {}\".format(v.size))\n",
+    "print(\"Type de donnée du vecteur v: {}\".format(v.dtype))\n",
+    "print(\"Taille en bytes du vecteur v: {}\".format(v.nbytes))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "37f3829d",
+   "metadata": {},
+   "source": [
+    "La `shape` d'un tableau peut être manipuler à grace à la fonction `reshape`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "ef08d45f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "The shape of v is: (12,)\n",
+      "The shape of v in a more comprehensive way is : (12, 1)\n",
+      "The shape of M is (3, 4) while the shape of v is still (12,)\n",
+      "The shape of M is: (3, 4)\n",
+      "The shape of T is: (1, 2, 3, 2, 1)\n",
+      "The dimension of T is:  5\n"
+     ]
+    }
+   ],
+   "source": [
+    "v = np.array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])\n",
+    "print(\"The shape of v is:\", v.shape)\n",
+    "\n",
+    "v = np.array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])\n",
+    "print(\"The shape of v in a more comprehensive way is :\", v.reshape(-1,1).shape)\n",
+    "\n",
+    "M = v.reshape(3, 4)\n",
+    "print(\"The shape of M is {} while the shape of v is still {}\".format(M.shape, v.shape))\n",
+    "\n",
+    "M = v.reshape(3, -1)\n",
+    "print(\"The shape of M is:\", M.shape)\n",
+    "\n",
+    "T = v.reshape(1, 2, 3, 2, 1) # 1*2*3*2*1=12\n",
+    "print(\"The shape of T is:\", T.shape)\n",
+    "print(\"The dimension of T is: \", T.ndim)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "7fe3303b",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Nombre de lignes de la matrice M:  3\n",
+      "Nombre de colonnes de la matrice M:  4\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"Nombre de lignes de la matrice M: \", M.shape[0])\n",
+    "print(\"Nombre de colonnes de la matrice M: \", M.shape[1])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0ebdcbd7",
+   "metadata": {},
+   "source": [
+    "**Fonctions `len()`, `np.shape()`.**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "2a68de05",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "3\n",
+      "(3, 4)\n"
+     ]
+    }
+   ],
+   "source": [
+    "M = np.array([[2, 3, 4, 5], [3, 5, 6, 6], [2, 4, 5, 9]])\n",
+    "\n",
+    "print(len(M))\n",
+    "print(np.shape(M))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7317e26b",
+   "metadata": {},
+   "source": [
+    "**Exercice: quelle relation existe-t-il entre les fonctions `len()`, `np.shape()` et les attributs `.ndim` et `.shape`?**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ea61a94d",
+   "metadata": {},
+   "source": [
+    "#### Attribut d'un `array`\n",
+    "\n",
+    "L'object `array` dispose de plusieurs attributs qui renseignent des informations sur son contenu. On peut ainsi accéder à la taille total du vecteur et au type d'élément dans le vecteur à partir des attributs `size`, `nbytes` et `dtype`:"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "eaf5f755",
+   "metadata": {},
+   "source": [
+    "Sometimes, we want our array to be in particular way: only zeros (`np.zeros`), only ones (`np.ones`), equally spaced (`np.linspace`) or logarithmic spaced (`np.logspace`), etc."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "dece4bf1",
+   "metadata": {},
+   "source": [
+    "#### Type de donnée"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9e543fba",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1.  3.1 2.5 4.  0.  8. ]\n",
+      "Type de donnée du vecteur v_float: float64\n",
+      "Taille en bytes vecteur v_float: 6 x 8 = 48\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Par default, le type des données est float64\n",
+    "v_float = np.array([1., 3.1, 2.5, 4., 0., 8.])\n",
+    "print(v_float)\n",
+    "print(\"Type de donnée du vecteur v_float: {}\"\n",
+    "      .format(v_float.dtype))\n",
+    "print(\"Taille en bytes vecteur v_float: 6 x 8 = {}\\n\"\n",
+    "      .format(v_float.nbytes))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b18d11cf",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "C.shape\n",
+    "# reshape()\n",
+    "D = C.reshape((2,6)) # on transforme la matrice (3,4) en matrice (2,6)\n",
+    "D.shape[0]\n",
+    "A = np.array([1,2,3])\n",
+    "A.shape\n",
+    "A.reshape((A.shape[0],1)) # pour ne pas avoir une dimension (3,) mais (3,1)\n",
+    "A.squeeze() # pour revenir à (3,)\n",
+    "A.shape\n",
+    "D.ravel() # pour \"applatir\" un tableau sur une ligne\n",
+    "D.ravel().shape"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "57263ed3-d8a3-4e9a-964b-fa830e839bc2",
+   "metadata": {},
+   "source": [
+    "# Accès aux éléments d'un tableau\n",
+    "\n",
+    "**Comme pour les séquences, l'_indexing_ et le _slicing_ sont utilisés pour accéder aux éléments des tableaux.**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ad165e55",
+   "metadata": {},
+   "source": [
+    "## _Indexing_\n",
+    "\n",
+    "Comme pour les listes, on utilise les crochets pour accéder à un élément du tableau. L'indexation commence à `0` aussi. On peut aussi assigner des éléments directements:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "id": "1f18e7ad-c32c-437a-a455-3ba10a6a73e2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "v = np.array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "id": "0071e948-4f5f-47fb-b49d-74b514f79f17",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 0  1  2  3  4  5  6  7  8  9 10 11]\n",
+      "0 1\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(v)\n",
+    "print(v[0], v[1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "id": "ec182647-4eb0-4c4d-9309-ececaf4c19f0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 0  1 42  3  4  5  6  7  8  9 10 11]\n"
+     ]
+    }
+   ],
+   "source": [
+    "v[2] = 42\n",
+    "print(v)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f6959bc7",
+   "metadata": {},
+   "source": [
+    "#### Indexation avancée (*fancy indexing*)\n",
+    "\n",
+    "Lorsque qu'on utilise des listes ou des *array* pour définir des tranches : "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "2519c8d7",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0\n",
+      "1\n",
+      "2\n",
+      "3\n",
+      "4\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Reminder:\n",
+    "for i in range(5):\n",
+    "    print(i)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "ba8505e9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 0,  1,  2,  3,  4],\n",
+       "       [10, 11, 12, 13, 14],\n",
+       "       [20, 21, 22, 23, 24],\n",
+       "       [30, 31, 32, 33, 34],\n",
+       "       [40, 41, 42, 43, 44]])"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "A = np.array([[n + m * 10 for n in range(5)]\n",
+    "               for m in range(5)])\n",
+    "A"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "id": "1da95f75",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[10 11 12 13 14]\n",
+      " [20 21 22 23 24]\n",
+      " [30 31 32 33 34]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "row_indices = [1, 2, 3]\n",
+    "print(A[row_indices])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "id": "c11bf5af",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[13 10]\n",
+      " [23 20]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(A[[1, 2]][:, [3, 0]])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "id": "f8e0aca4",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[ 0  1  2  3  4]\n",
+      " [10 11 12 13 14]\n",
+      " [20 21 22 23 24]\n",
+      " [30 31 32 33 34]\n",
+      " [40 41 42 43 44]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "A[[1, 2]][:, [3, 4]] = 0  # ATTENTION !\n",
+    "print(A)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "id": "da21e36e",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[ 0  1  2  3  4]\n",
+      " [10 11 12  0  0]\n",
+      " [20 21 22  0  0]\n",
+      " [30 31 32 33 34]\n",
+      " [40 41 42 43 44]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "A[np.ix_([1, 2], [3, 4])] = 0\n",
+    "print(A)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e0df459b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data = np.random.randn(10000, 5)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "baad007b",
+   "metadata": {},
+   "source": [
+    "We can also assign the element with a new value:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e9132ef6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data[0, 2] = 100.\n",
+    "print(data[0, 2])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "cea6d09e",
+   "metadata": {},
+   "source": [
+    "Finally, we can ask for several elements at once:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "55f2068c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 1.19375418, -0.92409256])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "data[0, [0, 3]]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f0245719",
+   "metadata": {},
+   "source": [
+    "You can even pass a negative index. It will go from the end of the array."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "63f9e5a7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "-0.7151021181025516"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "data[-1, -1]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "dbdf1434",
+   "metadata": {},
+   "source": [
+    "## _Slicing_\n",
+    "\n",
+    "Comme pour les listes, on utilise les crochets pour accéder à un élément du tableau. L'indexation commence à `0` aussi.  \n",
+    "On peut aussi assigner des éléments directement. La syntaxe pour _slicer_ est\n",
+    "\n",
+    "**M[début_ligne:nbr_lignes, début_colonne:nbr_colonnes]**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "55671808",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Se déplacer sur un tableau\n",
+    "\n",
+    "A = np.array([[1,2,3],[4,5,6],[7,8,9]])\n",
+    "\n",
+    "A[0:3,0:3] # tout le tableau\n",
+    "A[:,:] # tout le tableau\n",
+    "A[:,] # tout le tableau\n",
+    "A[:] # tout le tableau\n",
+    "A[:,0] # toutes les lignes de la 1ère colonne (i.e. toute la 1ère colonne)\n",
+    "A[0,:] # toutes les colonnes de la 1ère ligne (i.e. la 1ère ligne) \n",
+    "A[0] # donne la même chose i.e. la 1ère ligne\n",
+    "A[0:2,0:2] # le bloc choisi (subseting)\n",
+    "A[0:2,0:2] = 10 # On transforme A les valeurs du bloc deviennent 10\n",
+    "A[:,1:3] # affiche les deux dernières colonnes\n",
+    "A[:,1:] # même résultat car toutes les lignes et de 1: signifie de la colonne 1 à la fin\n",
+    "A[:,-2:] # toutes les lignes de l'avant de -2: à la fin\n",
+    "A[:,:-3]\n",
+    "A = np.zeros((4,4))\n",
+    "A[1:3,1:3] = 1 # pour modifier les valeurs du bloc du milieu"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "id": "5dde6260",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1 2 3]\n",
+      " [4 5 6]\n",
+      " [7 8 9]]\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([[1, 2],\n",
+       "       [4, 5]])"
+      ]
+     },
+     "execution_count": 52,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "A = np.array([[1,2,3],[4,5,6],[7,8,9]])\n",
+    "print(A)\n",
+    "A[0:2,0:2] # le bloc choisi (subseting)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "23a86cb1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# slicing avec le pas\n",
+    "# A[début_ligne:fin_ligne:pas, début_colonne:fin_colonne:pas]\n",
+    "C = np.zeros((5,5))\n",
+    "C[::2,::2] = 1 # on met des 1 une fois sur deux"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "af66dd4e-d7b2-4e86-8b0e-00af57d87785",
+   "metadata": {},
+   "source": [
+    "# Filtering or boolean indexing\n",
+    "\n",
+    "Pour sélectionner des sous-ensembles (_subsets_) de tableaux on peut aussi utiliser des masques binaires.  \n",
+    "Les éléments du tableau vérifiant une condition seront conservés."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "5e7c88c8-7498-4331-bf7c-55dfb35295ad",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[  2   5 -10  -7  -7]\n",
+      " [ -3  -1   9   8  -6]\n",
+      " [ -4   2  -9  -4  -3]\n",
+      " [  4   7  -5   3  -2]\n",
+      " [ -1   9   6   9  -5]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Fixons la graine pour avoir le même array:\n",
+    "np.random.seed(0)\n",
+    "\n",
+    "# Générons un tableau des nombres entiers tirés aléatoirement entre -10 et 9 inclus rangés dans un tableau 5 x 5:\n",
+    "data = np.random.randint(-10, 10, size=(5, 5))\n",
+    "\n",
+    "print(data)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "We can produce a boolean array when using comparison operators."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "79923de9-d7f4-4146-a408-65ee52348d71",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[False False  True  True  True]\n",
+      " [ True  True False False  True]\n",
+      " [ True False  True  True  True]\n",
+      " [False False  True False  True]\n",
+      " [ True False False False  True]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(data < 0)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2737a255",
+   "metadata": {},
+   "source": [
+    "This condition called `mask` can be used to select some specific data."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2de16465",
+   "metadata": {},
+   "source": [
+    "This mask can also be used to affect some new values"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "id": "c2091df3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[2 5 0 0 0]\n",
+      " [0 0 9 8 0]\n",
+      " [0 2 0 0 0]\n",
+      " [4 7 0 3 0]\n",
+      " [0 9 6 9 0]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "data[data < 0] = 0\n",
+    "\n",
+    "print(data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "12a82f49",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[-10  -7  -7  -3  -1  -6  -4  -9  -4  -3  -5  -2  -1  -5]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(data[data < 0])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "58ef0dee",
+   "metadata": {},
+   "source": [
+    "Nb: in a DataFrame the dimensions will be kept."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "7a00877a",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[6 3 7 4 6]\n",
+      " [9 2 6 7 4]\n",
+      " [3 7 7 2 5]\n",
+      " [4 1 7 5 1]\n",
+      " [4 0 9 5 8]] \n",
+      "\n",
+      "[[6 0 7 0 6]\n",
+      " [9 2 6 7 0]\n",
+      " [0 7 7 2 5]\n",
+      " [0 1 7 5 1]\n",
+      " [0 0 9 5 8]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Fixons la graine pour avoir le même vecteur:\n",
+    "np.random.seed(42)\n",
+    "\n",
+    "A = np.random.randint(0,10, [5,5])\n",
+    "print(A, '\\n')\n",
+    "\n",
+    "A[(A>2) & (A<5)] = 0 # on peut faire des doubles conditions (très utiles pour remplacer une valeur)\n",
+    "print(A)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "78f63fb7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "A = np.random.randint(0,255, [1024,720])  # imaginons qu'on ait un tableau de pixels\n",
+    "A[A>200] = 255 # Tous les pixels qui ont déjà une luminosité importante > 200 sont remplacés par le pixel 255 \n",
+    "\n",
+    "B = A[A<5] # on réduit notre tablaeu en ne consservant que les valeurs < 5\n",
+    "B.shape # forcément cela détruit notre structure de tableau initial. Toute est mis sur une ligne\n",
+    "\n",
+    "A = np.random.randint(0,10, [5,5])\n",
+    "B = np.random.randn(5,5)\n",
+    "B[A<5] # on applique le filtre provenant de A sur B"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b7286e31",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0.  0.5 1.  1.5 2.  2.5 3.  3.5 4.  4.5 5.  5.5 6.  6.5 7.  7.5 8.  8.5\n",
+      " 9.  9.5]\n"
+     ]
+    }
+   ],
+   "source": [
+    "x = np.arange(0, 10, 0.5)\n",
+    "print(x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "dbd74192",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(20,)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a97462e6",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[False False False False False False False False False False False  True\n",
+      "  True  True  True False False False False False]\n"
+     ]
+    }
+   ],
+   "source": [
+    "mask = (x > 5) & (x < 7.5)\n",
+    "print(mask)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bfd973e4",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(array([11, 12, 13, 14]),)"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "indices = np.where(mask)\n",
+    "indices"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "214b1287",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([5.5, 6. , 6.5, 7. ])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "x[indices] # équivalent à x[mask]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9aa21dbb-83d5-46d9-ac29-59a3764b8243",
+   "metadata": {},
+   "source": [
+    "**Exercice**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 120,
+   "id": "b9859bf0-d7cf-43bb-859c-80914deecb55",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 1.76405235,  0.40015721,  0.97873798,  2.2408932 ,  1.86755799],\n",
+       "       [-0.97727788,  0.95008842, -0.15135721, -0.10321885,  0.4105985 ],\n",
+       "       [ 0.14404357,  1.45427351,  0.76103773,  0.12167502,  0.44386323]])"
+      ]
+     },
+     "execution_count": 120,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.random.seed(0)\n",
+    "data = np.random.randn(3, 5)\n",
+    "\n",
+    "data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "878ffbcb",
+   "metadata": {},
+   "source": [
+    "* Afficher les éléments de la $1^{ère}$ ligne $3^{ème}$ colonne.\n",
+    "* Afficher les éléments de la $3^{ème}$ ligne $3^{ème}$ et $5^{ème}$ colonne.\n",
+    "* Remplacer les éléments négatifs par 0."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "51dac2f4-148b-4608-bf7e-04befb010f0f",
+   "metadata": {},
+   "source": [
+    "**Exercice:** (*Fancy indexing*)  \n",
+    "* Générer un tableau contenant  contenant 100 éléments tirés au hasard selon $\\mathcal U([0, 1])$ (~ `np.random.rand`).\n",
+    "* En utilisant l'indexation avancée, sélectionnez au hasard avec répétition 10 éléments de ce tableau.\n",
+    "\n",
+    "(*Astuce: `np.random.randint(max_int, size=n)` génère n nombres au hasard de 0 à `max_int`*)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 83,
+   "id": "2c195fec-e24a-4a1e-9680-6b33fcda0e42",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[11 37 75 29 24 35 22 83 30 61]\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([0.2233575 , 0.1393465 , 0.11569473, 0.91448452, 0.461794  ,\n",
+       "       0.27865449, 0.86947191, 0.59586702, 0.12243889, 0.48754186])"
+      ]
+     },
+     "execution_count": 83,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "X = np.random.rand(100)\n",
+    "idx = np.random.randint(100, size=10)\n",
+    "print(idx)\n",
+    "X[idx]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 84,
+   "id": "c1a8a51d-c74e-46b9-8477-5768b30b93c1",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0.39501924, 0.08506151, 0.75372717, 0.21307041, 0.61342603,\n",
+       "       0.28273775, 0.21081883, 0.01616927, 0.91300771, 0.44502244])"
+      ]
+     },
+     "execution_count": 84,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.random.choice(X, size=10, replace=False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "id": "27485db3-ed11-4048-9504-71abbdd84246",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "M = np.array([[ 0,  1,  2,  3],\n",
+    "              [ 4,  5,  6,  7],\n",
+    "              [ 8,  9, 10, 11]])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "893848fd-c533-42dc-bf13-4d682bad0e1f",
+   "metadata": {},
+   "source": [
+    "Pour les tableaux multi-dimensionnels, l'indexation renvoie aussi un `array` qui peut lui même être indexé. Une notation rapide avec des virgules est aussi possible:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "id": "34b93eab-6b69-475e-ad66-8be632d06006",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 1 2 3]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(M[0])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "id": "8484a73a-fa9c-4b87-9852-9eeaa8cc6d94",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "type(M[0]) = <class 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"type(M[0]) = {}\".format(type(M[0])))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 52,
+   "id": "c63608c9-eac6-4678-8cf2-4ec67a373cb0",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "M[0][1] = 1\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"M[0][1] = {}\".format(M[0][1]))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "84786eae-8b1b-445f-bb1d-1010e3f8604c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(M[1])\n",
+    "print(\"M[1, 0] = {}\".format(M[1, 0]))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "8d50bef6-d067-4101-988d-373bc902730b",
+   "metadata": {},
+   "source": [
+    "**Exercice :** (*Indexation des donnés*)  \n",
+    "* Modifier le tableau `v` pour que son 3e élément soit égale à 0.\n",
+    "* Modifier le tableau `v` pour que son dernier élément soit égale à 10."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 53,
+   "id": "c2c7c2f3-d8c4-45b4-831a-878f8969ce4c",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 10]\n"
+     ]
+    }
+   ],
+   "source": [
+    "v = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]\n",
+    "v[2] = 0\n",
+    "v[-1] = 10\n",
+    "print(v)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2f343d7e-e0ed-47d0-9fcc-3f145a0cca00",
+   "metadata": {},
+   "source": [
+    "# Opérations sur les tableaux\n",
+    "\n",
+    "Maintenant que l'on a vu comment créér des tableaux et accéder à leur élément, on va voir les opérations mathématique que l'on peut faire dessus:\n",
+    "\n",
+    "## Opérations scalaires et terme-à-terme\n",
+    "\n",
+    "On peut effectuer les opérations arithmétiques habituelles pour multiplier, additionner, soustraire et diviser des arrays avec/par des **scalaires** (_Scalar-array operations_):"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 92,
+   "id": "3be5a8d8-7d5a-4c26-a63f-3e9ffa94ecaf",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1. 1. 1. 1. 1. 1. 1. 1. 1. 1.]\n",
+      "[2. 2. 2. 2. 2. 2. 2. 2. 2. 2.]\n",
+      "[11. 11. 11. 11. 11. 11. 11. 11. 11. 11.]\n"
+     ]
+    }
+   ],
+   "source": [
+    "v1 = np.ones(10)\n",
+    "print(v1)\n",
+    "print(v1 * 2)\n",
+    "print(v1 + 10)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3627da82-5631-444b-8c6e-f8b7fa54f311",
+   "metadata": {},
+   "source": [
+    "On peut aussi appliqué des fonctions mathématiques terme-à-terme comme `np.exp`, `np.log`, `np.sqrt`, `np.abs`, `np.sin`, `np.cos`, `np.arctan`, ..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "319c84ee",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([0.84147098, 0.90929743, 0.14112001])"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.sin([1, 2, 3])  # np.log(A), np.arctan(A),..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5021e549",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# docs.scipy.org/doc/numpy-1.13.0/reference/routines.math.html\n",
+    "# sin(), cos(), exp()\n",
+    "# pour accéder à la fonction il faut taper np.nom_de_la_fonction(A)\n",
+    "np.exp(A)\n",
+    "np.log(A)\n",
+    "# statistiques (méthode de notre objet ndarray)\n",
+    "\n",
+    "A.mean()\n",
+    "A.var()\n",
+    "A.sd()\n",
+    "np.corrcoef(A) # routine qui retourne les coefficients de corrélation des lignes (sur la 1ère ligne r(L1,L1), r(L1,L2), r(L1,L3))\n",
+    "np.corrcoed(A)[0,1] # pour accéder aux coefficients\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a4d1fa38",
+   "metadata": {},
+   "source": [
+    "## _Element-wise array-array operations_"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d545bf79-86ac-414d-a9f8-4b0116d67e8d",
+   "metadata": {},
+   "source": [
+    "Les opérations par défaut entre 2 `array` sont aussi terme-à-terme."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "5fdb4102-8cff-44c6-b137-bdf5313f532d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[ 0  1  2  3  4]\n",
+      " [ 5  6  7  8  9]\n",
+      " [10 11 12 13 14]\n",
+      " [15 16 17 18 19]\n",
+      " [20 21 22 23 24]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "A = np.arange(25).reshape(5, 5)\n",
+    "print(A)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "21e849e6-4cb3-484b-9cc7-ee76202e99ca",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[  0   1   4   9  16]\n",
+      " [ 25  36  49  64  81]\n",
+      " [100 121 144 169 196]\n",
+      " [225 256 289 324 361]\n",
+      " [400 441 484 529 576]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(A * A)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0e4979b5-d3d8-402c-a3b3-70f18991bfe1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print((A + A.T)/ 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6303bc87-a426-4dc8-9fec-579cc1a07da4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "A = np.zeros((2, 3))\n",
+    "B = np.zeros((4, 3))\n",
+    "print(A, B)\n",
+    "A.dot(B.T)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "168bbc17-3e4f-4b2b-bef7-da4efc3569cb",
+   "metadata": {},
+   "source": [
+    "En multipliant des *arrays* de tailles compatibles, on obtient des multiplications terme-à-terme par ligne :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "91544563-c09c-4e9e-b25b-24984e06a072",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "v1 = np.arange(6)\n",
+    "A = np.ones((5, 6))\n",
+    "print(A.shape, v1.shape)\n",
+    "print(A)\n",
+    "print(v1)\n",
+    "print(A * v1)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "475361a3",
+   "metadata": {},
+   "source": [
+    "## _Calculations_"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e14531ba-f1d6-4618-8c98-5c2103de1e48",
+   "metadata": {},
+   "source": [
+    "Often it is useful to store datasets in NumPy arrays. NumPy provides a number of functions to calculate statistics of datasets in arrays. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "c01cdd52",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a = np.random.random(40)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0d22d938",
+   "metadata": {},
+   "source": [
+    "Different frequently used operations can be done:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "0c06148d",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Mean value is 0.5864178400429367\n",
+      "Median value is 0.6000638304855939\n",
+      "Std is 0.28539199669195203\n",
+      "Variance is 0.08144859177581917\n",
+      "Min is 0.035589050695352564\n",
+      "Element of minimum value is 37\n",
+      "Max is 0.9679533854655388\n",
+      "Sum is 23.45671360171747\n",
+      "Prod 5.579187305588534e-14\n",
+      "Cumsum is 23.456713601717475\n",
+      "CumProd of 5 first elements is 0.26969401512059044\n",
+      "Unique values in this array are: [1 2 3 4 5]\n",
+      "85% Percentile value is:  0.9229877754959501\n"
+     ]
+    }
+   ],
+   "source": [
+    "print ('Mean value is {:.4f}'.format(np.mean(a)))\n",
+    "print ('Median value is {:.4f}'.format(np.median(a)))\n",
+    "print ('Std value is {:.4f}'.format(np.std(a)))\n",
+    "print ('Variance value is {:.4f}'.format(np.var(a)))\n",
+    "print ('Min value is {:.4f}'.format(np.min(a)))\n",
+    "print ('Index of minimum value is {}'.format(int(a.argmin())))\n",
+    "print ('Max value is {:.4f}'.format(np.max(a)))\n",
+    "print ('Sum is {:.4f}'.format(np.sum(a)))\n",
+    "print ('Prod is {}'.format(np.prod(a)))\n",
+    "print ('Cumsum is {:.4f}'.format(np.cumsum(a)[-1]))\n",
+    "print ('CumProd of 5 first elements is {:.4f}'.format(np.cumprod(a)[4]))\n",
+    "print ('Unique values in this array are:', np.unique(np.random.randint(1, 6, 10)))\n",
+    "print ('85% Percentile value is: {:.4f}'.format(np.percentile(a, 85)))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "18570a70",
+   "metadata": {},
+   "source": [
+    "## _Calculations with higher-dimensional data_"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "bab471e3",
+   "metadata": {},
+   "source": [
+    "When functions such as `min`, `max`, etc., is applied to a multidimensional arrays, it is sometimes useful to apply the calculation to the entire array, and sometimes only on a row or column basis. Using the `axis` argument we can specify how these functions should behave: "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "38f31378",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1 2 3]\n",
+      " [4 5 6]\n",
+      " [7 8 9]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "m = np.array([[1,2,3],[4,5,6],[7,8,9]])\n",
+    "\n",
+    "print(m)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "id": "3e0096b1",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "9"
+      ]
+     },
+     "execution_count": 43,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# global max\n",
+    "m.max()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "id": "860a3414",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([7, 8, 9])"
+      ]
+     },
+     "execution_count": 44,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# max in each column\n",
+    "m.max(axis=0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "id": "67ec60c9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([3, 6, 9])"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# max in each row\n",
+    "m.max(axis=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "id": "68f885a6",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[12 15 18] \n",
+      "\n",
+      "[ 6 15 24] \n",
+      "\n",
+      "[ 1  3  6 10 15 21 28 36 45] \n",
+      "\n",
+      "[[ 1  2  3]\n",
+      " [ 5  7  9]\n",
+      " [12 15 18]] \n",
+      "\n",
+      "362880 \n",
+      "\n",
+      "[     1      2      6     24    120    720   5040  40320 362880] \n",
+      "\n",
+      "[0 0 0] \n",
+      "\n",
+      "[2 2 2] \n",
+      "\n",
+      "None \n",
+      "\n",
+      "[[0 1 2]\n",
+      " [0 1 2]\n",
+      " [0 1 2]] \n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "# docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html\n",
+    "print(m.sum(axis=0),'\\n') # retourne la somme de chaque colonne\n",
+    "print(m.sum(axis=1),'\\n') # retourne la somme de chaque ligne\n",
+    "print(m.cumsum(),'\\n') # retourne un tableau à 9 cellules correspondantes au cumul des valeurs\n",
+    "print(m.cumsum(axis=0),'\\n') # somme cumulée des colonnes\n",
+    "print(m.prod(),'\\n') # produit de toutes les cellules\n",
+    "print(m.cumprod(),'\\n') # produit cumulé\n",
+    "print(m.argmin(axis=0),'\\n') # retourne 1 pour la position du min\n",
+    "print(m.argmax(axis=1),'\\n') # retourne 1 pour la position du max par colonne\n",
+    "print(m.sort(),'\\n') # va ordonner les lignes du plus petit au plus grand\n",
+    "print(m.argsort(),'\\n') # retourne la matrice des rangs (position par ligne)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4432b034",
+   "metadata": {},
+   "source": [
+    "Many other functions and methods in the `array` and `matrix` classes accept the same (optional) `axis` keyword argument."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "964194b4",
+   "metadata": {},
+   "source": [
+    "## Data reshaping"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "38bb773c",
+   "metadata": {},
+   "source": [
+    "* How could you change the shape of the 8-element array you created previously to have shape (2, 2, 2)?  \n",
+    "Hint: this can be done without creating a new array."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "id": "3a4bb1a8",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 1 2 3 4 5 6 7]\n"
+     ]
+    }
+   ],
+   "source": [
+    "arr = np.arange(8)\n",
+    "\n",
+    "print(arr)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "a81f4036",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[[0, 1],\n",
+       "        [2, 3]],\n",
+       "\n",
+       "       [[4, 5],\n",
+       "        [6, 7]]])"
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "arr.reshape(2,2,2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "b251459d",
+   "metadata": {},
+   "source": [
+    "* Could you reshape the same 8-element array to a column vector. Do the same, to get a row vector. You can use `np.reshape` or `np.newaxis`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "96d35e25",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0],\n",
+       "       [1],\n",
+       "       [2],\n",
+       "       [3],\n",
+       "       [4],\n",
+       "       [5],\n",
+       "       [6],\n",
+       "       [7]])"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Using .reshape()\n",
+    "arr.reshape(8,1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2192a345",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Using np.newaxis\n",
+    "arr[:, np.newaxis]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "82f573fb",
+   "metadata": {},
+   "source": [
+    "## Data merging"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "3f269332",
+   "metadata": {},
+   "source": [
+    "`np.hstack()` / `np.vstack()` \n",
+    "\n",
+    "assemblage horizontal / vertical de tableaux"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "9fe50dac",
+   "metadata": {},
+   "source": [
+    "* Stack vertically two 1D NumPy array of size 10. Then, stack them horizontally. You can use the function [np.hstack](https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.hstack.html) and [np.vstack](https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.vstack.html). Repeat those two operations using the function [np.concatenate](https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.concatenate.html) with two 2D NumPy arrays of size 5 x 2."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d3a9bb49",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0., 0., 1., 1.],\n",
+       "       [0., 0., 1., 1.],\n",
+       "       [0., 0., 1., 1.]])"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "A = np.zeros((3,2))\n",
+    "B = np.ones((3,2))\n",
+    "\n",
+    "C = np.hstack([A,B]) # hstack: Assemblage horizontal\n",
+    "\n",
+    "C.shape\n",
+    "\n",
+    "np.vstack((A,B)) # vstack: Assemblage vertical\n",
+    "np.concatenate((A,B),axis=0) # empilement vertical. L'un en dessous de l'autre.\n",
+    "np.concatenate((A,B),axis=1) # empilement horizontal. L'un à côté de l'autre."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a42b76ab",
+   "metadata": {},
+   "source": [
+    "## Broadcasting"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "2f06e09c",
+   "metadata": {},
+   "source": [
+    "En langage C pour faire l'addition entre deux matrices A et B on écrirait l'algorithme suivant:  \n",
+    "\n",
+    "for i in ligne:\n",
+    "    for j in colonnes:\n",
+    "        c[i,j] = a[i,j]+b[i,j] # c'est juste une addition pas un produit matriciel qui serait cij = aik*bkj\n",
+    "\n",
+    "Alors que dans numpy on écrit: **A + B**\n",
+    "\n",
+    "En algèbre linéaire, on ne peut pas ajouter des matrices dont les dimensions ne sont pas égales.  \n",
+    "Alors que la bibliothèque python de NumPy permet dans certains cas de faire des opérations sur des tableaux de différentes tailles.  \n",
+    "En effet, dans certains cas, NumPy peut transformer les tableaux pour qu'ils aient la même taille, cette conversion s'appelle le **\"Broadcasting\"**.  \n",
+    "\n",
+    "<img src=\"png/numpy_broadcasting.png\" width=600>"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "895b2049",
+   "metadata": {},
+   "source": [
+    "BROADCASTING: une façon dont numpy a été créé pour faire des calculs entre deux tableaux\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 51,
+   "id": "ae41fdbd",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1]\n",
+      " [4]\n",
+      " [2]\n",
+      " [1]] \n",
+      "\n",
+      "[[0.60276338 0.54488318 0.4236548  0.64589411]] \n",
+      "\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([[1.60276338, 1.54488318, 1.4236548 , 1.64589411],\n",
+       "       [4.60276338, 4.54488318, 4.4236548 , 4.64589411],\n",
+       "       [2.60276338, 2.54488318, 2.4236548 , 2.64589411],\n",
+       "       [1.60276338, 1.54488318, 1.4236548 , 1.64589411]])"
+      ]
+     },
+     "execution_count": 51,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "np.random.seed(0)\n",
+    "\n",
+    "A = np.random.randint(1,5,[4,1])\n",
+    "print(A, '\\n')\n",
+    "\n",
+    "B = np.random.rand(1,4) # np.aleatoire uniforme[0,1] dans un vecteur 1 ligne 4 colonnes\n",
+    "print(B, '\\n')\n",
+    "\n",
+    "A+B # le broadcasting va soit réaliser l'opération en créant de nouvelles dimensions"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 55,
+   "id": "951bad57",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1 2]\n",
+      " [2 2]] \n",
+      "\n",
+      "Calcul impossible les dimensions ne sont pas compatibles\n"
+     ]
+    }
+   ],
+   "source": [
+    "C = np.random.randint(1,5, [2,2])\n",
+    "\n",
+    "print(C, '\\n')\n",
+    "\n",
+    "try:\n",
+    "    A+C\n",
+    "except:\n",
+    "    print(\"Calcul impossible les dimensions ne sont pas compatibles\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "id": "241cdf1c",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[1 2 3] \n",
+      "\n",
+      "A.shape  (3,)\n",
+      "[[0.41466194]\n",
+      " [0.26455561]\n",
+      " [0.77423369]] \n",
+      "\n",
+      "B.shape  (3, 1)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([[0.58533806, 1.58533806, 2.58533806],\n",
+       "       [0.73544439, 1.73544439, 2.73544439],\n",
+       "       [0.22576631, 1.22576631, 2.22576631]])"
+      ]
+     },
+     "execution_count": 61,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "A = np.array([1,2,3]) # shape (3,)\n",
+    "print(A, '\\n')\n",
+    "print(\"A.shape \", A.shape)\n",
+    "B = np.random.rand(3,1) # shape (3,1)\n",
+    "print(B, '\\n')\n",
+    "print(\"B.shape \", B.shape)\n",
+    "\n",
+    "# En faisant A - B on s'attend à avoir un vecteur de dimension (3,1) alors que\n",
+    "(A - B) # créé un vecteur de dimension (3,3). \n",
+    "# CCL: Attention au broadcasting !!! Toujours contrôler avec shape et corriger si besoin avec reshape."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "03e685cc",
+   "metadata": {},
+   "source": [
+    "De façon plus générale, on peut faire des opérations sur des tableaux de différentes tailles. Dans certains cas, NumPy peut transformer les tableaux pour qu'ils aient la même taille, cette conversion s'appelle le **\"Broadcasting\"**."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "b1be4223-815a-49b6-8f9d-d99ad30bf321",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[0 1 2 3] (4,)\n",
+      "[0 1 2 3 4] (5,)\n"
+     ]
+    },
+    {
+     "ename": "ValueError",
+     "evalue": "operands could not be broadcast together with shapes (4,) (5,) ",
+     "output_type": "error",
+     "traceback": [
+      "\u001b[0;31m---------------------------------------------------------------------------\u001b[0m",
+      "\u001b[0;31mValueError\u001b[0m                                Traceback (most recent call last)",
+      "Cell \u001b[0;32mIn[12], line 5\u001b[0m\n\u001b[1;32m      3\u001b[0m \u001b[38;5;28mprint\u001b[39m(a, a\u001b[38;5;241m.\u001b[39mshape)\n\u001b[1;32m      4\u001b[0m \u001b[38;5;28mprint\u001b[39m(b, b\u001b[38;5;241m.\u001b[39mshape)\n\u001b[0;32m----> 5\u001b[0m a \u001b[38;5;241m*\u001b[39m b\n",
+      "\u001b[0;31mValueError\u001b[0m: operands could not be broadcast together with shapes (4,) (5,) "
+     ]
+    }
+   ],
+   "source": [
+    "a = np.arange(4)\n",
+    "b = np.arange(5)\n",
+    "print(a, a.shape)\n",
+    "print(b, b.shape)\n",
+    "a * b"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "049badb6-4206-451e-90d4-79f6246e8517",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "B = b[np.newaxis, :]\n",
+    "A = a[:, None]\n",
+    "c = A * B\n",
+    "print(c)\n",
+    "print(A.shape, B.shape, c.shape)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "66044a78-e0ec-42fa-b8e0-a666f58b35db",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "db1260b8-9500-4380-8524-0b2e0f4e9c4d",
+   "metadata": {},
+   "source": [
+    "Il existe une règle pour savoir dans quel cas on peut faire du \"broadcasting\":\n",
+    "**Dans une opération, la taille des axex des deux tableaux doit être soit la même, soit une des deux doit être 1**.\n",
+    "Dans la figure ci-dessus, cette règle est respectée:\n",
+    "```\n",
+    "a:      4 x 3   \n",
+    "b:      4 x 3\n",
+    "result: 4 x 3\n",
+    "\n",
+    "a:      4 x 3\n",
+    "b:          3\n",
+    "result: 4 x 3\n",
+    "\n",
+    "a:      4 x 1\n",
+    "b:          3\n",
+    "result: 4 x 3\n",
+    "```\n",
+    "\n",
+    "Que donnerait les deux cas suivant?\n",
+    "\n",
+    "```\n",
+    "Image  (3d array): 256 x 256 x 3\n",
+    "Scale  (1d array):             3\n",
+    "Result (3d array): \n",
+    "\n",
+    "A      (4d array):  8 x 1 x 6 x 1\n",
+    "B      (3d array):      7 x 1 x 5\n",
+    "Result (4d array):  \n",
+    "```"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "19abfeb9-dcdc-48f2-8186-a49562d81f33",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "08d5caed-1e05-43fe-9d29-d6f4fb17018d",
+   "metadata": {},
+   "source": [
+    "**Exercice 8 :** (*Opération terme-à-terme*)\n",
+    "\n",
+    "Sans utiliser de boucles (`for/while`) :\n",
+    "\n",
+    " * Créer une matrice (5x6) aléatoire\n",
+    " * Remplacer une colonne sur deux par sa valeur moins le double de la colonne suivante\n",
+    " * Remplacer les valeurs négatives par 0 en utilisant un masque binaire\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 95,
+   "id": "04463cad-77b2-477a-8ec8-70e0298d77db",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "M = np.random.randn(5, 6)\n",
+    "M[:, ::2] -= 2* M[:, 1::2]\n",
+    "M[M < 0] = 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 96,
+   "id": "f7b053ec-41aa-4243-8737-e1054cee6b94",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0.        , 0.52272941, 0.        , 0.84109059, 5.5126078 ,\n",
+       "        0.        ],\n",
+       "       [0.        , 0.48297585, 0.        , 1.37428906, 2.9574613 ,\n",
+       "        0.        ],\n",
+       "       [0.        , 1.0414717 , 0.        , 0.7192737 , 2.59908169,\n",
+       "        0.        ],\n",
+       "       [0.08918586, 0.06429263, 0.        , 0.        , 0.52040745,\n",
+       "        0.        ],\n",
+       "       [0.        , 0.        , 1.97105079, 0.        , 0.        ,\n",
+       "        1.25164016]])"
+      ]
+     },
+     "execution_count": 96,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "M"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "14095495-51e2-42be-97b0-9abe180f3701",
+   "metadata": {},
+   "source": [
+    "## Algèbre matricielle\n",
+    "\n",
+    "Comment transposer une matrice ? :\n",
+    "* en utilisant l'opérateur .T  \n",
+    "\n",
+    "Comment faire des multiplications de matrices ? Deux façons :\n",
+    " \n",
+    " * en utilisant les fonctions `dot`; (recommandé)\n",
+    " * en utiliser l'opérateur `@`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "eafcd50c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[11, 12],\n",
+       "       [21, 22],\n",
+       "       [31, 32]])"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "A = np.array([[11,12], [21,22], [31,32]])\n",
+    "A"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "52204281",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[11, 21, 31],\n",
+       "       [12, 22, 32]])"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Transposée de A:\n",
+    "B = A.T\n",
+    "B"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "cb057b62",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[ 265,  495,  725],\n",
+       "       [ 495,  925, 1355],\n",
+       "       [ 725, 1355, 1985]])"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# Produit matriciel A.dot(B):\n",
+    "A.dot(B)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 97,
+   "id": "b3acf0cb-a38c-4de8-b4d9-8f9c0107bde9",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "(5, 5) (5,)\n",
+      "[[ 0  1  2  3  4]\n",
+      " [10 11 12 13 14]\n",
+      " [20 21 22 23 24]\n",
+      " [30 31 32 33 34]\n",
+      " [40 41 42 43 44]]\n",
+      "[0 1 2 3 4]\n",
+      "<class 'numpy.ndarray'> <class 'numpy.ndarray'>\n"
+     ]
+    }
+   ],
+   "source": [
+    "A = np.array([[n + m * 10 for n in range(5)] for m in range(5)])\n",
+    "v1 = np.arange(5)\n",
+    "print(A.shape, v1.shape)\n",
+    "print(A)\n",
+    "print(v1)\n",
+    "print(type(A), type(v1))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 98,
+   "id": "51935284-07e6-45f7-98fd-20169ef79cd5",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 0  1  4  9 16]\n",
+      "30\n",
+      "30\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(v1 * v1)  # multiplication élément par élément\n",
+    "print(np.dot(v1, v1))  # multiplication matrice\n",
+    "print(v1 @ v1)  # multiplication matrice"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 99,
+   "id": "b63bfc57-5e13-48a6-a8cc-da6f9795873b",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([ 30, 130, 230, 330, 430])"
+      ]
+     },
+     "execution_count": 99,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "A.dot(v1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 100,
+   "id": "911ee2b3-cec6-495d-9128-806d4c143fe3",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[   0    1    4    9   16]\n",
+      " [ 100  121  144  169  196]\n",
+      " [ 400  441  484  529  576]\n",
+      " [ 900  961 1024 1089 1156]\n",
+      " [1600 1681 1764 1849 1936]]\n",
+      "[[ 300  310  320  330  340]\n",
+      " [1300 1360 1420 1480 1540]\n",
+      " [2300 2410 2520 2630 2740]\n",
+      " [3300 3460 3620 3780 3940]\n",
+      " [4300 4510 4720 4930 5140]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(A * A)  # multiplication élément par élément\n",
+    "print(A @ A)  # multiplication matrice"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "86fbff51-5b6e-4206-bdb4-213db331a69c",
+   "metadata": {},
+   "source": [
+    "Voir également les fonctions : `inner`, `outer`, `cross`, `kron`, `tensordot`. Utiliser par exemple `help(kron)` ou `kron?`.\n",
+    "\n",
+    "## Algébre de plus haut niveau\n",
+    "\n",
+    "`numpy` expose aussi des fonctionalités de plus haut niveau telles que les décompositions classique en valeurs propres/singulières, factorisation de Cholesky/QP, ...  \n",
+    "Ces fonctionalités sont regroupées dans le module `np.linalg`.  \n",
+    "Beaucoup d'outils du calcul scientifique en python, compatible avec `numpy` sont aussi accessibles dans la librairie [`scipy`](https://docs.scipy.org/doc/). Pour plus, d'information, voir [tutorial scipy](http://scipy-lectures.org/).\n",
+    "\n",
+    "**Exercice 9 :** (*Résolution d'un système linéaire*)  \n",
+    "Résoudre le systeme d'équation: $\\begin{cases}3x -2y +z &= 10\\\\x +5y + 10z &= 21\\\\y - z &= -5\\\\\\end{cases}$.  \n",
+    "(*Astuce:* utiliser la fonction `np.linalg.inv`)."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 102,
+   "id": "8da52a82-b105-456a-89e6-dcff40820445",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[ 1. -2.  3.]\n",
+      "[10 21 -5]\n"
+     ]
+    }
+   ],
+   "source": [
+    "A = np.array([[3, -2, 1], [1, 5, 10], [0, 1, -1]])\n",
+    "b = np.array([10, 21, -5])\n",
+    "\n",
+    "x = np.linalg.inv(A) @ b\n",
+    "print(x)\n",
+    "x = [1, -2, 3]\n",
+    "print(A @ x)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "daa44370",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "la valeur 2 apparaît 1 fois\n",
+      "la valeur 6 apparaît 1 fois\n",
+      "la valeur 7 apparaît 1 fois\n",
+      "la valeur 3 apparaît 2 fois\n",
+      "la valeur 4 apparaît 3 fois\n",
+      "la valeur 8 apparaît 3 fois\n",
+      "la valeur 0 apparaît 4 fois\n",
+      "la valeur 5 apparaît 4 fois\n",
+      "la valeur 1 apparaît 6 fois\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "array([1., 1., 1., 1., 1.])"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# np.unique()\n",
+    "A = np.random.randint(0,10, [5,5])\n",
+    "np.unique(A,return_counts=True) # retourne un tablau des différentes valeurs du tableau et un tableau de leurs occurences (nombre de répétition)\n",
+    "values, counts = np.unique(A,return_counts=True) # on stocke les deux tableaux de np.unique dans deux variables values et counts\n",
+    "counts.argsort() # retourne les indexes triés de counts. Donc si je réinjecte dans valeues[] je vais avoir les valeurs du tableau triées allant de celle apparaissant le moins à celle apparaissant le plusvalues[counts.argsort()] \n",
+    "\n",
+    "for i, j in zip(values[counts.argsort()],counts[counts.argsort()]):\n",
+    "    print(f'la valeur {i} apparaît {j} fois')\n",
+    "\n",
+    "# NaN Not A Number\n",
+    "A = np.random.randn(3,3) # np.échantillon de loi normale dans un tableau (3,3)\n",
+    "A[1,2] = np.nan\n",
+    "np.mean(A) # on ne peut calculer la moyenne\n",
+    "np.nanmean(A) # fonction spéciale qui permet de calculer la moyenne en ignorant des NaN\n",
+    "np.isnan(A) # retourne un masque avec True s'il y a un NaN\n",
+    "np.isnan(A).sum() # permet de compter le nombre de valeurs NaN\n",
+    "np.isnan(A).sum()/A.size # pourcentage de NaN\n",
+    "A[np.isnan(A)] = 0 # remplacer les NaN par 0\n",
+    "\n",
+    "# Algèbre linéaire avec numpy (cf.numpy.linalg)\n",
+    "\n",
+    "A = np.random.randn(3,2) # np.échantillon de loi normale dans un tableau (3,2)\n",
+    "B = np.random.randn(2,3) # np.échantillon de loi normale dans un tableau (2,3)\n",
+    "A.T # Transposée: Attribut .T\n",
+    "A.dot(B) # produit matriciel de A%*%B\n",
+    "# docs.scipy.org/doc/numpy-1.13.0/reference/routines.linalg.html\n",
+    "A = np.random.randint(0,10,[3,3])\n",
+    "np.linalg.det(A) # calcul du déterminant de A\n",
+    "np.linalg.inv(A) # matrice inverse (possible car det(A)<>0)\n",
+    "np.linalg.pinv(A) # pseudo inverse au cas où les lignes ou les colonnes sont liées (combin.linéaire)\n",
+    "np.linalg.eig(A) # retourne les valeurs propres et les vecteurs propres\n",
+    "\n",
+    "# exo\n",
+    "# standardisez les colonnes de la matrice A i.e. pour chaque xij -> (xij - x)/s(x)\n",
+    "np.random.seed(0)\n",
+    "A = np.random.randint(0,100,[10,5])\n",
+    "A\n",
+    "moy = np.mean(A, axis=0) # on calcule la moyenne par colonne [la méthode A.mean(axis=0) donne le même résultat]\n",
+    "ect = np.std(A, axis=0) # on calcule l'écart-type par colonne\n",
+    "A_std = (A - moy)/ect # on normalise\n",
+    "np.mean(A_std,axis=0) # on vérifie la moyenne des colonnes = 0\n",
+    "A_std.mean(axis=0) # on vérifie la moyenne des colonnes = 0 (autre écriture)\n",
+    "np.std(A_std, axis=0) # on vérifie que l'écart type = 1\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "924e1a72-be53-4698-90cf-4e91fd45664f",
+   "metadata": {},
+   "source": [
+    "## Opérations de réduction\n",
+    "\n",
+    "Enfin, `numpy` propose de opération de réduction sur les tableaux.  \n",
+    "Ces opérations calculent une quantité selon un axe en aggrégeant l'information comme par exemple: `np.max`, `np.min`, `np.sum`, `np.mean`, `np.std`, `np.argmax`, ..."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "41a45e63-f244-4599-996e-5a1edb4d7b24",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data = np.arange(20)\n",
+    "print(data.sum())\n",
+    "print(\"Moyenne:\", np.mean(data), \"Std:\", data.std(), \"Var:\", data.var())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "f6ab2383-1389-45ee-9e55-eb88209ae3e3",
+   "metadata": {},
+   "source": [
+    "Par défault, la quantité est évaluer pour le tableau en entier.  \n",
+    "Mais pour les tableau multi-dimensionels, il est aussi possible de spécifier la direction de l'opération:"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fde11c7c-246e-4e7e-9f48-036f1d0b6562",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data = np.arange(20).reshape((5, 4))\n",
+    "data[3, :] = 9\n",
+    "print(data)\n",
+    "\n",
+    "# Moyenne globale:\n",
+    "print(\"Moyenne globale:\", data.mean())\n",
+    "print(\"Moyennes par colone:\", data.mean(axis=1))\n",
+    "print(\"Moyennes par ligne:\", data.mean(axis=0))\n",
+    "\n",
+    "# la moyenne de la troisième colonne\n",
+    "print(\"Moyenne de la 3e ligne\", np.mean(data[3, :]), data.mean(axis=0)[3])"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5f6382c8-eaa7-4708-9985-e420ca967f39",
+   "metadata": {},
+   "source": [
+    "**Exercice 10 :** (*Blanchiment de donnée*)  \n",
+    "Créer un tableau X de taille `100x5` selon une loi normale.  \n",
+    "Soustrayer à chaque colone sa moyenne et ladiviser par son écart type."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 103,
+   "id": "8f884042-e019-4ebe-bc65-94c868f5970f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[-4.44089210e-18  4.44089210e-18  2.10942375e-17 -7.88258347e-17\n",
+      "  3.55271368e-17] [1. 1. 1. 1. 1.]\n"
+     ]
+    }
+   ],
+   "source": [
+    "X = np.random.randn(100, 5)\n",
+    "X -= X.mean(axis=0)\n",
+    "X /= X.std(axis=0)\n",
+    "\n",
+    "print(X.mean(axis=0), X.std(axis=0))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "daee5634-644b-4c06-a973-8de67a162c16",
+   "metadata": {},
+   "source": [
+    "## Concaténer, répéter des `arrays`\n",
+    "\n",
+    "En utilisant les fonctions `repeat`, `tile`, `vstack`, `hstack`, et `concatenate`, on peut créer des vecteurs/matrices plus grandes à partir de vecteurs/matrices plus petites :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 104,
+   "id": "3c0d9354-36ba-4b01-98d4-4efad1c0c219",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1 2]\n",
+      " [3 4]]\n",
+      "[1 1 1 2 2 2 3 3 3 4 4 4]\n",
+      "[[1 1 1 2 2 2]\n",
+      " [3 3 3 4 4 4]]\n",
+      "[[1 2 1 2 1 2]\n",
+      " [3 4 3 4 3 4]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Repeat et tile:\n",
+    "a = np.array([[1, 2], [3, 4]])\n",
+    "print(a)\n",
+    "# répéter chaque élément 3 fois\n",
+    "print(np.repeat(a, 3)) # résultat 1-d\n",
+    "\n",
+    "# on peut spécifier l'argument axis\n",
+    "print(np.repeat(a, 3, axis=1))\n",
+    "\n",
+    "# répéter la matrice 3 fois\n",
+    "print(np.tile(a, 3))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 105,
+   "id": "57369c05-ed7b-4a7c-a575-f8275412cbd7",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Add a line\n",
+      " [[1 2]\n",
+      " [3 4]\n",
+      " [5 6]]\n",
+      "Vertical\n",
+      " [[1 2]\n",
+      " [3 4]\n",
+      " [5 6]]\n",
+      "Add a column\n",
+      " [[1 2 5]\n",
+      " [3 4 6]]\n",
+      "Horizontal\n",
+      " [[1 2 5]\n",
+      " [3 4 6]]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# Concatenate\n",
+    "b = np.array([[5, 6]])\n",
+    "print(\"Add a line\\n\", np.concatenate((a, b), axis=0))\n",
+    "print(\"Vertical\\n\", np.vstack((a, b)))\n",
+    "\n",
+    "# stacking horizontal ou vertical\n",
+    "print(\"Add a column\\n\", np.concatenate((a, b.T), axis=1))\n",
+    "print(\"Horizontal\\n\", np.hstack((a, b.T)))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "a1bb00fe-09b3-4919-875c-741bd3883f9c",
+   "metadata": {},
+   "source": [
+    "## Itérer sur les éléments d'un array\n",
+    "\n",
+    " * Dans la mesure du possible, il faut éviter l'itération sur les éléments d'un *array* : c'est beaucoup plus lent que les opérations vectorisées\n",
+    " * Mais il arrive que l'on n'ait pas le choix...\n",
+    " \n",
+    " * Pour obtenir les indices des éléments sur lesquels on itère (par exemple, pour pouvoir les modifier en même temps) on peut utiliser `enumerate` :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 106,
+   "id": "b570de29-b0a5-4e9d-a1f5-a3cc02966c36",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "row [1 2]\n",
+      "Element 0 -> 1\n",
+      "Element 1 -> 2\n",
+      "row [3 4]\n",
+      "Element 0 -> 3\n",
+      "Element 1 -> 4\n"
+     ]
+    }
+   ],
+   "source": [
+    "M = np.array([[1, 2], [3, 4]])\n",
+    "\n",
+    "for row in M:\n",
+    "    print(\"row\", row)\n",
+    "    \n",
+    "    for i, element in enumerate(row):\n",
+    "        print(f\"Element {i} ->\", element)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7f54edfe-d371-4fb0-bd04-ea46052a3202",
+   "metadata": {},
+   "source": [
+    "## Utilisation d'`arrays` dans des conditions\n",
+    "\n",
+    "Losqu'on s'intéresse à des conditions sur tout on une partie d'un `array`, on peut utiliser `any` ou `all` :"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 107,
+   "id": "f1cc960e-ebbb-43ea-99f1-572ad5743c21",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "[[1 2]\n",
+      " [3 4]]\n",
+      "aucun élément de M n'est plus grand que 5\n",
+      "tous les éléments de M sont plus petits que 5\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(M)\n",
+    "\n",
+    "if (M > 5).any():\n",
+    "    print(\"au moins un élément de M est plus grand que 5\")\n",
+    "else:\n",
+    "    print(\"aucun élément de M n'est plus grand que 5\")\n",
+    "\n",
+    "\n",
+    "if (M > 5).all():\n",
+    "    print(\"tous les éléments de M sont plus grands que 5\")\n",
+    "else:\n",
+    "    print(\"tous les éléments de M sont plus petits que 5\")"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "fee596ee",
+   "metadata": {},
+   "source": [
+    "<b style=\"font-size: 28px; color: blue;\"> Fin de la section </b>  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "73d06b0d",
+   "metadata": {},
+   "source": [
+    "<b style=\"font-size: 28px; color: blue;\"> Remerciements </b>  "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5910d1f7",
+   "metadata": {},
+   "source": [
+    "Parmi les sources ayant contribué à l'élaboration de cette section citons: "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "5b1e343d",
+   "metadata": {},
+   "source": [
+    "\n",
+    "* Scipy lecture notes [\"Getting started with Python for science\"](http://www.scipy-lectures.org/intro)  \n",
+    "* Algorithmique et programmation en Python de Jean-Baptiste Civet et Boris Hanus.  \n",
+    "* Python pour le Data Scientist d'Emmanuel Jakobowicz.  \n",
+    "* Machine Learnia (youtube)  \n",
+    "* https://github.com/SciTools/courses  \n",
+    "* https://github.com/paris-saclay-cds/python-workshop/blob/master/Day_1_Scientific_Python/01-numpy-introduction.ipynb  \n",
+    "\n"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.11.10"
+  },
+  "toc": {
+   "base_numbering": 1,
+   "nav_menu": {},
+   "number_sections": true,
+   "sideBar": true,
+   "skip_h1_title": false,
+   "title_cell": "Table of Contents",
+   "title_sidebar": "Contents",
+   "toc_cell": false,
+   "toc_position": {},
+   "toc_section_display": true,
+   "toc_window_display": false
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

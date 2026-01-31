@@ -1,0 +1,3485 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lire et manipuler des données avec la librairie pandas &mdash; website Machine Learning 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="../../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            website Machine Learning
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../02_machine_learning/index.html">Machine Leanring</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">website Machine Learning</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lire et manipuler des données avec la librairie pandas</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/01_data_and_tools/python/Pandas/D1-Manipuler_des_donnees_avec_Pandas.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Lire-et-manipuler-des-données-avec-la-librairie-pandas">
+<h1>Lire et manipuler des données avec la librairie pandas<a class="headerlink" href="#Lire-et-manipuler-des-données-avec-la-librairie-pandas" title="Permalink to this heading"></a></h1>
+<section id="Utiliser-des-librairies-en-Python">
+<h2>Utiliser des librairies en Python<a class="headerlink" href="#Utiliser-des-librairies-en-Python" title="Permalink to this heading"></a></h2>
+<section id="Qu’est-ce-qu’une-librairie-?">
+<h3>Qu’est ce qu’une librairie ?<a class="headerlink" href="#Qu’est-ce-qu’une-librairie-?" title="Permalink to this heading"></a></h3>
+<p>Maintenant que vous avez une idée de ce qu’est le programmation orientée objet, utiliser des librairies ne devrait pas vous paraître trop complexe. En effet, une librairie est un module dans lequel il y a plusieurs classes que vous pouvez utiliser à votre discrétion.</p>
+<p>Vous avez surement déjà vu ou entendu parler de <em>pandas, numpy et scikit-learn.</em> Ce sont trois librairies très populaires chez les data scientists, qui mettent à disposition des classes qui sont des boîtes à outil pour faire de la manipulation de données et du machine learning.</p>
+<section id="Comment-importer-une-librairie-?">
+<h4>Comment importer une librairie ?<a class="headerlink" href="#Comment-importer-une-librairie-?" title="Permalink to this heading"></a></h4>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nom_du_module</span>
+</pre></div>
+</div>
+<p>C’est aussi simple que cela pour importer une librairie. En revanche, en faisant cela vous avez importé l’intégralité de votre librairie d’un coup. Parfois, ce n’est pas utile voire contre-productif de faire cela car cela va ralentir considérablement votre code.</p>
+<p>De ce fait, on décide souvent de n’importer qu’une classe du module. On le fait de la manière suivante :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">nom_du_module</span> <span class="kn">import</span> <span class="n">nom_de_la_classe</span>
+</pre></div>
+</div>
+</section>
+<section id="Comment-utiliser-une-librairie-?">
+<h4>Comment utiliser une librairie ?<a class="headerlink" href="#Comment-utiliser-une-librairie-?" title="Permalink to this heading"></a></h4>
+<p>Une librairie s’utilise exactement de la même qu’une classe. Vous allez créer une instance de la classe que vous avez choisi de la manière suivante :</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">nom_du_module</span>
+<span class="n">Une_variable</span> <span class="o">=</span> <span class="n">nom_du_module</span><span class="o">.</span><span class="n">nom_de_la_classe</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Une dernière chose à comprendre : il y a plein de librairies différentes et celles-ci ne fonctionnent pas de la même manière. Il faudra donc se référer à la documentation de la librairie en question pour avoir plus d’informations. Au cours du programme, nous verrons plein de librairies différentes pour que vous vous familiarisiez avec le concept. Nous allons d’ailleurs voir <em>Datetime</em> dans la prochaine partie, qui vous permettra de gérer des données temporelles.</p>
+</section>
+</section>
+</section>
+<section id="Les-structures-de-données-en-Pandas">
+<h2>Les structures de données en Pandas<a class="headerlink" href="#Les-structures-de-données-en-Pandas" title="Permalink to this heading"></a></h2>
+<p>Nous avons déjà vu un certain nombre de types de données en Python. Avec Pandas, nous introduisons deux nouvelles structures de données qu’il faut bien comprendre pour pouvoir bien avancer.</p>
+</section>
+<section id="Importer-la-librairie-et-découvrir-les-classes">
+<h2>Importer la librairie et découvrir les classes<a class="headerlink" href="#Importer-la-librairie-et-découvrir-les-classes" title="Permalink to this heading"></a></h2>
+<p>Avant de commencer, n’oublions pas que pour toutes les opérations que nous montrons dans ce cours, nous avons importé la librairie Pandas comme suit. L’instruction as permet de créer un alias : dans la suite on fera référence à la librairie par “pd”</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="s1">&#39;b&#39;</span><span class="p">,</span><span class="s1">&#39;c&#39;</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+a
+b
+c
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+</pre></div>
+</div>
+</div>
+<section id="La-classe-Series">
+<h3>La classe Series<a class="headerlink" href="#La-classe-Series" title="Permalink to this heading"></a></h3>
+<p>Un DataFrame qui ne possède qu’une seule dimension (une seule colonne) est une Series.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Classe Series : équivalent d&#39;une colonne Excel/SQL</span>
+pd.Series<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<section id="Créer-une-instance-de-la-classe-Series-et-l'initialiser">
+<h4>Créer une instance de la classe Series et l’initialiser<a class="headerlink" href="#Créer-une-instance-de-la-classe-Series-et-l'initialiser" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On crée une instance de la classe Series qu&#39;on initialise avec une liste de valeurs</span>
+<span class="n">data1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">[</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">3.4</span><span class="p">,</span> <span class="mf">4.7</span><span class="p">,</span> <span class="mf">6.7</span><span class="p">],</span> <span class="n">name</span><span class="o">=</span><span class="s2">&quot;values&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0    1.2
+1    3.4
+2    4.7
+3    6.7
+Name: values, dtype: float64
+</pre></div></div>
+</div>
+</section>
+<section id="L'attribut-%22index%22">
+<h4>L’attribut “index”<a class="headerlink" href="#L'attribut-%22index%22" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Les séries ont un index comme attribut</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data1</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+RangeIndex(start=0, stop=4, step=1)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[5]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Accéder à un élément de la série par l&#39;index : fonctionnement similaire aux listes</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data1</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4.7
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4.7
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+4.7
+</pre></div></div>
+</div>
+</section>
+<section id="Itérer-sur-une-série">
+<h4>Itérer sur une série<a class="headerlink" href="#Itérer-sur-une-série" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[8]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Itérer sur les valeurs d&#39;une série</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Itérer sur les valeurs directement&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">data1</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Il est aussi possible d&#39;utiliser l&#39;index de la série pour les itérations</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;La même chose, mais en utilisant l&#39;index : &quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">data1</span><span class="o">.</span><span class="n">index</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;index : </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">, valeur: </span><span class="si">{</span><span class="n">data1</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="c1"># print(&quot;index : {}, valeur: {}&quot;.format(i, data1[i]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Itérer sur les valeurs directement
+1.2
+3.4
+4.7
+6.7
+
+La même chose, mais en utilisant l&#39;index :
+index : 0, valeur: 1.2
+index : 1, valeur: 3.4
+index : 2, valeur: 4.7
+index : 3, valeur: 6.7
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data1</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[9]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(4,)
+</pre></div></div>
+</div>
+</section>
+</section>
+<section id="La-classe-DataFrame">
+<h3>La classe DataFrame<a class="headerlink" href="#La-classe-DataFrame" title="Permalink to this heading"></a></h3>
+<p>Un DataFrame est une succession de Series. C’est un objet à deux dimensions comportant des lignes et des colonnes. On peut aussi penser un DataFrame comme une feuille excel.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[10]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Un DataFrame est constitué de plusieurs colonnes :</span>
+pd.DataFrame<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<section id="Déclarer-une-instance-de-la-classe-DataFrame-et-l'initialiser">
+<h4>Déclarer une instance de la classe DataFrame et l’initialiser<a class="headerlink" href="#Déclarer-une-instance-de-la-classe-DataFrame-et-l'initialiser" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="c1"># On crée une instance de la classe DataFrame qu&#39;on initialise avec des valeurs</span>
+<span class="n">data_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Agnes&#39;</span><span class="p">,</span> <span class="s1">&#39;Sidi&#39;</span><span class="p">,</span> <span class="s1">&#39;Thibault&#39;</span><span class="p">,</span> <span class="s1">&#39;Samia&#39;</span><span class="p">,</span> <span class="s1">&#39;Henry&#39;</span><span class="p">,</span> <span class="s1">&#39;Georges&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">28</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">29</span><span class="p">,</span> <span class="mi">57</span><span class="p">],</span>
+    <span class="s1">&#39;job&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;web analyst&#39;</span><span class="p">,</span> <span class="s1">&#39;sales director&#39;</span><span class="p">,</span> <span class="s1">&#39;web analyst&#39;</span><span class="p">,</span> <span class="s1">&#39;sales director&#39;</span><span class="p">,</span>
+                   <span class="s1">&#39;web analyst&#39;</span><span class="p">,</span> <span class="s1">&#39;developer&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">data2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_dict</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="p">)</span>  <span class="c1"># Equivalent de print() mais avec un meilleur rendu</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>job</th>
+      <th>name</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>28</td>
+      <td>web analyst</td>
+      <td>Agnes</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>37</td>
+      <td>sales director</td>
+      <td>Sidi</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>43</td>
+      <td>web analyst</td>
+      <td>Thibault</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>33</td>
+      <td>sales director</td>
+      <td>Samia</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>29</td>
+      <td>web analyst</td>
+      <td>Henry</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>57</td>
+      <td>developer</td>
+      <td>Georges</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[12]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">data2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+       name  age             job
+0     Agnes   28     web analyst
+1      Sidi   37  sales director
+2  Thibault   43     web analyst
+3     Samia   33  sales director
+4     Henry   29     web analyst
+5   Georges   57       developer
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[13]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<p>Ici, nous avons construit un DataFrame qui comporte six lignes et trois colonnes <em>name, age</em> et <em>job</em>. A partir d’un DataFrame, on peut faire énormément d’opérations différentes, nous décrirons les principales plus loin dans le cours.</p>
+</section>
+<section id="Les-attributs-%22index%22,-%22columns%22,-%22shape%22,-%22values%22">
+<h4>Les attributs “index”, “columns”, “shape”, “values”<a class="headerlink" href="#Les-attributs-%22index%22,-%22columns%22,-%22shape%22,-%22values%22" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[14]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tout comme les Series, les DataFrame ont un attribut &#39;index&#39; :</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+RangeIndex(start=0, stop=6, step=1)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[15]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L&#39;attribut &#39;columns&#39; permet de récupérer la liste des noms de colonnes :</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Index([&#39;name&#39;, &#39;age&#39;, &#39;job&#39;], dtype=&#39;object&#39;)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[16]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L&#39;attribut shape renvoie le nombre de lignes et de colonnes sous forme de tuple :</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+(6, 3)
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[17]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># L&#39;attribut &#39;values&#39; permet de récupérer les valeurs stockées dans le DataFrame au format numpy.array :</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+[[&#39;Agnes&#39; 28 &#39;web analyst&#39;]
+ [&#39;Sidi&#39; 37 &#39;sales director&#39;]
+ [&#39;Thibault&#39; 43 &#39;web analyst&#39;]
+ [&#39;Samia&#39; 33 &#39;sales director&#39;]
+ [&#39;Henry&#39; 29 &#39;web analyst&#39;]
+ [&#39;Georges&#39; 57 &#39;developer&#39;]]
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">type</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[18]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+numpy.ndarray
+</pre></div></div>
+</div>
+</section>
+<section id="Afficher-un-aperçu-du-DataFrame">
+<h4>Afficher un aperçu du DataFrame<a class="headerlink" href="#Afficher-un-aperçu-du-DataFrame" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Voir un aperçu des 5 premières lignes du DataFrame</span>
+<span class="n">data2</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[19]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Voir un aperçu des 5 dernières lignes du DataFrame</span>
+<span class="n">data2</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[20]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Sélectionner-des-données">
+<h4>Sélectionner des données<a class="headerlink" href="#Sélectionner-des-données" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[21]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sélectionner une colonne</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">])</span>
+<span class="c1"># display(data2.loc[:, &#39;name&#39;]</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Sélectionner plusieurs colonnes</span>
+<span class="n">liste_col</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;job&#39;</span><span class="p">]</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="p">[</span><span class="n">liste_col</span><span class="p">])</span>
+<span class="c1"># display(data2[[&#39;name&#39;, &#39;job&#39;]])</span>
+<span class="c1"># display(data2.loc[:, [&#39;name&#39;, &#39;job&#39;]]</span>
+<span class="nb">print</span><span class="p">()</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0       Agnes
+1        Sidi
+2    Thibault
+3       Samia
+4       Henry
+5     Georges
+Name: name, dtype: object
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[22]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sélectionner une sous-partie du DataFrame avec les slices</span>
+<span class="c1"># Sélectionner les trois premières lignes du DataFrame</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;trois premières lignes du DataFrame, toutes les colonnes&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="p">:])</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Sélectionner les trois premières lignes de la colonne &#39;age&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;trois premières lignes de la colonne &#39;age&#39;&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;age&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">()</span>
+
+<span class="c1"># Sélectionner la dernière ligne des colonnes &#39;age&#39; et &#39;profession&#39;</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;4ème ligne des colonnes &#39;age&#39; et &#39;profession&#39;&quot;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">3</span><span class="p">,[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;job&#39;</span><span class="p">]])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+trois premières lignes du DataFrame, toutes les colonnes
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+trois premières lignes de la colonne &#39;age&#39;
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0    28
+1    37
+2    43
+Name: age, dtype: int64
+</pre></div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+
+4ème ligne des colonnes &#39;age&#39; et &#39;profession&#39;
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+age                33
+job    sales director
+Name: 3, dtype: object
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[23]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">3</span><span class="p">:,</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;job&#39;</span><span class="p">]]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[24]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[25]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Utiliser iloc pour accéder aux colonnes via leur position :</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">])</span>
+
+<span class="c1"># Avec iloc, on peut aussi utiliser des indices négatifs :</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0       web analyst
+1    sales director
+2       web analyst
+3    sales director
+4       web analyst
+5         developer
+Name: job, dtype: object
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0       web analyst
+1    sales director
+2       web analyst
+3    sales director
+4       web analyst
+5         developer
+Name: job, dtype: object
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data2</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">3</span><span class="p">:,</span> <span class="p">:]</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[26]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[27]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Utiliser les masques pour sélectionner des lignes en fonction d&#39;une certaine condition :</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">30</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">~</span><span class="n">mask</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[28]:
+</pre></div>
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+0     True
+1    False
+2    False
+3    False
+4     True
+5    False
+Name: age, dtype: bool
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[29]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Utiliser un masque pour sélectionner les lignes pour lesquelles *age* a certaines valeurs précises :</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="mi">33</span><span class="p">,</span> <span class="mi">37</span><span class="p">])</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="o">~</span><span class="n">mask</span><span class="p">,</span> <span class="p">:])</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+</section>
+<section id="Lire-un-fichier-de-données">
+<h2>Lire un fichier de données<a class="headerlink" href="#Lire-un-fichier-de-données" title="Permalink to this heading"></a></h2>
+<p>Placez le fichier S1-3B/Datasets/chipotle.csv dans le dossier où se trouve ce notebook</p>
+<p>(Si vous travaillez sur J.U.L.I.E. uploadez le fichier sur votre workspace)</p>
+<section id="Lire-un-fichier-CSV">
+<h3>Lire un fichier CSV<a class="headerlink" href="#Lire-un-fichier-CSV" title="Permalink to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[30]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Lire le fichier avec read_csv()</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;chipotle.csv&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Unnamed: 0</th>
+      <th>order_id</th>
+      <th>quantity</th>
+      <th>item_name</th>
+      <th>choice_description</th>
+      <th>item_price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Fresh Tomato Salsa</td>
+      <td>NaN</td>
+      <td>$2.39</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Izze</td>
+      <td>[Clementine]</td>
+      <td>$3.39</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Nantucket Nectar</td>
+      <td>[Apple]</td>
+      <td>$3.39</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Tomatillo-Green Chili Salsa</td>
+      <td>NaN</td>
+      <td>$2.39</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4</td>
+      <td>2</td>
+      <td>2</td>
+      <td>Chicken Bowl</td>
+      <td>[Tomatillo-Red Chili Salsa (Hot), [Black Beans...</td>
+      <td>$16.98</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[31]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Il y a plein d&#39;arguments que l&#39;on peut passer à read_csv() pour améliorer la lecture du fichier</span>
+pd.read_csv<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dans notre fichier, la première colonne contient l&#39;index. Utilisons l&#39;argument &quot;index_col&quot; pour le spécifier</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;src/chipotle.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">dataset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[59]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>order_id</th>
+      <th>quantity</th>
+      <th>item_name</th>
+      <th>choice_description</th>
+      <th>item_price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Fresh Tomato Salsa</td>
+      <td>NaN</td>
+      <td>$2.39</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Izze</td>
+      <td>[Clementine]</td>
+      <td>$3.39</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Nantucket Nectar</td>
+      <td>[Apple]</td>
+      <td>$3.39</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1</td>
+      <td>1</td>
+      <td>Chips and Tomatillo-Green Chili Salsa</td>
+      <td>NaN</td>
+      <td>$2.39</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2</td>
+      <td>2</td>
+      <td>Chicken Bowl</td>
+      <td>[Tomatillo-Red Chili Salsa (Hot), [Black Beans...</td>
+      <td>$16.98</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Lire-d'autres-types-de-fichiers">
+<h3>Lire d’autres types de fichiers<a class="headerlink" href="#Lire-d'autres-types-de-fichiers" title="Permalink to this heading"></a></h3>
+<p>Pandas peut gérer d’autres types de fichiers que des csv. Il suffira simplement d’utiliser la même logique avec la bonne méthode. Voici donc un tableau récapitulatif des différents types de fichiers que vous pouvez lire avec Pandas :</p>
+<table><tr><td><p>Fichier</p>
+</td><td><p>Méthode</p>
+</td></tr><tr><td><p>CSV</p>
+</td><td><p>read_csv()</p>
+</td></tr><tr><td><p>JSON</p>
+</td><td><p>read_json()</p>
+</td></tr><tr><td><p>HTML</p>
+</td><td><p>read_html()</p>
+</td></tr><tr><td><p>Local clipboard</p>
+</td><td><p>read_clipboard()</p>
+</td></tr><tr><td><p>MS Excel</p>
+</td><td><p>read_excel()</p>
+</td></tr><tr><td><p>HDF5 Format</p>
+</td><td><p>read_hdf()</p>
+</td></tr><tr><td><p>Feather Format</p>
+</td><td><p>read_feather()</p>
+</td></tr><tr><td><p>Parquet Format</p>
+</td><td><p>read_parquet()</p>
+</td></tr><tr><td><p>Msgpack</p>
+</td><td><p>read_msgpack()</p>
+</td></tr><tr><td><p>Stata</p>
+</td><td><p>read_stata()</p>
+</td></tr><tr><td><p>SAS</p>
+</td><td><p>read_sas()</p>
+</td></tr><tr><td><p>Python Pickle Format</p>
+</td><td><p>read_pickle()</p>
+</td></tr><tr><td><p>SQL</p>
+</td><td><p>read_sql()</p>
+</td></tr><tr><td><p>Google Big Query</p>
+</td><td><p>read_gbq()</p>
+</td></tr></table><p>Vous devriez pouvoir trouver votre bonheur dans tous les types de fichiers proposés.</p>
+</section>
+<section id="Exporter-un-fichier">
+<h3>Exporter un fichier<a class="headerlink" href="#Exporter-un-fichier" title="Permalink to this heading"></a></h3>
+<p>Une fois que vous savez importer un fichier, il est très simple de pouvoir exporter car la logique est similaire. Par exemple, nous allons créer une variable que nous allons exporter en CSV :</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[32]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;prénoms&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Lucien&quot;</span><span class="p">,</span> <span class="s2">&quot;Jocelyne&quot;</span><span class="p">,</span> <span class="s2">&quot;Brigitte&quot;</span><span class="p">],</span> <span class="s2">&quot;Age&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">29</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">32</span><span class="p">]})</span>
+<span class="n">data</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s2">&quot;temp/data.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Ici, nous avons créé un DataFrame que nous avons appelé <em>data</em> puis nous l’avons exporté en csv dans le dossier Téléchargement de notre machine. D’ailleurs, nous avons appelé le fichier “data.csv” en précisant le chemin par la même occasion.</p>
+<p>De la même manière que pour l’importation, vous pouvez exporter en plusieurs types de fichiers, voici les principaux :</p>
+<table><tr><td><p>Fichier</p>
+</td><td><p>Méthode</p>
+</td></tr><tr><td><p>CSV</p>
+</td><td><p>to_csv()</p>
+</td></tr><tr><td><p>JSON</p>
+</td><td><p>to_json()</p>
+</td></tr><tr><td><p>HTML</p>
+</td><td><p>to_html()</p>
+</td></tr><tr><td><p>Local clipboard</p>
+</td><td><p>to_clipboard()</p>
+</td></tr><tr><td><p>MS Excel</p>
+</td><td><p>to_excel()</p>
+</td></tr><tr><td><p>HDF5 Format</p>
+</td><td><p>to_hdf()</p>
+</td></tr><tr><td><p>Feather Format</p>
+</td><td><p>to_feather()</p>
+</td></tr><tr><td><p>Parquet Format</p>
+</td><td><p>to_parquet()</p>
+</td></tr><tr><td><p>Msgpack</p>
+</td><td><p>to_msgpack()</p>
+</td></tr><tr><td><p>Stata</p>
+</td><td><p>to_stata()</p>
+</td></tr><tr><td><p>Python Pickle Format</p>
+</td><td><p>to_pickle()</p>
+</td></tr><tr><td><p>SQL</p>
+</td><td><p>to_sql()</p>
+</td></tr><tr><td><p>Google Big Query</p>
+</td><td><p>to_gbq()</p>
+</td></tr></table></section>
+</section>
+<section id="Manipuler-des-données">
+<h2>Manipuler des données<a class="headerlink" href="#Manipuler-des-données" title="Permalink to this heading"></a></h2>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[33]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[34]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ajouter une nouvelle colonne à un DataFrame</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">,</span> <span class="s1">&#39;M&#39;</span><span class="p">]</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+      <th>gender</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+      <td>M</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[35]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ajouter une nouvelle ligne à la fin d&#39;un DataFrame</span>
+<span class="n">new_row</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Joséphine&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;age&#39;</span><span class="p">:</span> <span class="mi">43</span><span class="p">,</span>
+    <span class="s1">&#39;job&#39;</span><span class="p">:</span> <span class="s1">&#39;developer&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;gender&#39;</span><span class="p">:</span> <span class="s1">&#39;F&#39;</span>
+<span class="p">}</span>
+
+<span class="n">data2</span> <span class="o">=</span> <span class="n">data2</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+      <th>gender</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+      <td>F</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+      <td>M</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Joséphine</td>
+      <td>43</td>
+      <td>developer</td>
+      <td>F</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[36]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ajouter une colonne dont les valeurs sont calculées en fonction d&#39;une autre colonne : les fonctions apply/lambda</span>
+
+<span class="c1"># Nouvelle colonne contenant le carré de l&#39;age</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;age_squared&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1"># data2[&#39;age_squared&#39;] = data2[&#39;age&#39;] ** 2</span>
+
+<span class="c1"># Nouvelle colonne contenant : age si age &gt; 30, 0 sinon</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;age_changed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span> <span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">30</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Nouvelle colonne indiquant que la personne n&#39;est PAS web analyste</span>
+<span class="n">data2</span><span class="p">[</span><span class="s1">&#39;not_web_analyst&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data2</span><span class="p">[</span><span class="s1">&#39;job&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span> <span class="p">:</span> <span class="n">x</span> <span class="o">!=</span> <span class="s1">&#39;web analyst&#39;</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>name</th>
+      <th>age</th>
+      <th>job</th>
+      <th>gender</th>
+      <th>age_squared</th>
+      <th>age_changed</th>
+      <th>not_web_analyst</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Agnes</td>
+      <td>28</td>
+      <td>web analyst</td>
+      <td>F</td>
+      <td>784</td>
+      <td>0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Sidi</td>
+      <td>37</td>
+      <td>sales director</td>
+      <td>M</td>
+      <td>1369</td>
+      <td>37</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Thibault</td>
+      <td>43</td>
+      <td>web analyst</td>
+      <td>M</td>
+      <td>1849</td>
+      <td>43</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Samia</td>
+      <td>33</td>
+      <td>sales director</td>
+      <td>F</td>
+      <td>1089</td>
+      <td>33</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Henry</td>
+      <td>29</td>
+      <td>web analyst</td>
+      <td>M</td>
+      <td>841</td>
+      <td>0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Georges</td>
+      <td>57</td>
+      <td>developer</td>
+      <td>M</td>
+      <td>3249</td>
+      <td>57</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Joséphine</td>
+      <td>43</td>
+      <td>developer</td>
+      <td>F</td>
+      <td>1849</td>
+      <td>43</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<section id="Réarranger-une-base-de-données">
+<h3>Réarranger une base de données<a class="headerlink" href="#Réarranger-une-base-de-données" title="Permalink to this heading"></a></h3>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[37]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data2.groupby<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[38]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aggréger des lignes avec groupby :</span>
+
+<span class="c1"># Grouper par &#39;job&#39; puis calculer la valeur moyenne des autres colonnes</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;job&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="c1"># Grouper par &#39;job&#39; puis calculer la valeur moyenne de la colonne &#39;age&#39;</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;job&#39;</span><span class="p">)[</span><span class="s1">&#39;age&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+<span class="c1"># Grouper par &#39;job&#39; puis &#39;gender&#39; et calculer la valeur médiane des autres colonnes</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;job&#39;</span><span class="p">,</span> <span class="s1">&#39;gender&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>age</th>
+      <th>age_squared</th>
+      <th>age_changed</th>
+      <th>not_web_analyst</th>
+    </tr>
+    <tr>
+      <th>job</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>developer</th>
+      <td>50.000000</td>
+      <td>2549.0</td>
+      <td>50.000000</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>sales director</th>
+      <td>35.000000</td>
+      <td>1229.0</td>
+      <td>35.000000</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>web analyst</th>
+      <td>33.333333</td>
+      <td>1158.0</td>
+      <td>14.333333</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+job
+developer         50.000000
+sales director    35.000000
+web analyst       33.333333
+Name: age, dtype: float64
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>age</th>
+      <th>age_squared</th>
+      <th>age_changed</th>
+      <th>not_web_analyst</th>
+    </tr>
+    <tr>
+      <th>job</th>
+      <th>gender</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">developer</th>
+      <th>F</th>
+      <td>43.0</td>
+      <td>1849.0</td>
+      <td>43.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>M</th>
+      <td>57.0</td>
+      <td>3249.0</td>
+      <td>57.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">sales director</th>
+      <th>F</th>
+      <td>33.0</td>
+      <td>1089.0</td>
+      <td>33.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>M</th>
+      <td>37.0</td>
+      <td>1369.0</td>
+      <td>37.0</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th rowspan="2" valign="top">web analyst</th>
+      <th>F</th>
+      <td>28.0</td>
+      <td>784.0</td>
+      <td>0.0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>M</th>
+      <td>36.0</td>
+      <td>1345.0</td>
+      <td>21.5</td>
+      <td>False</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>data2.pivot_table<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-intense-fg ansi-bold">Signature:</span>
+data2<span class="ansi-yellow-intense-fg ansi-bold">.</span>pivot_table<span class="ansi-yellow-intense-fg ansi-bold">(</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    values<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    index<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    columns<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    aggfunc<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">&#39;mean&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    fill_value<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">None</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    margins<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    dropna<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">True</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    margins_name<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-blue-intense-fg ansi-bold">&#39;All&#39;</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span>    observed<span class="ansi-yellow-intense-fg ansi-bold">=</span><span class="ansi-green-intense-fg ansi-bold">False</span><span class="ansi-yellow-intense-fg ansi-bold">,</span><span class="ansi-yellow-intense-fg ansi-bold">
+</span><span class="ansi-yellow-intense-fg ansi-bold">)</span> <span class="ansi-yellow-intense-fg ansi-bold">-&gt;</span> <span class="ansi-blue-intense-fg ansi-bold">&#39;DataFrame&#39;</span>
+<span class="ansi-red-intense-fg ansi-bold">Docstring:</span>
+Create a spreadsheet-style pivot table as a DataFrame.
+
+The levels in the pivot table will be stored in MultiIndex objects
+(hierarchical indexes) on the index and columns of the result DataFrame.
+
+Parameters
+----------
+values : column to aggregate, optional
+index : column, Grouper, array, or list of the previous
+    If an array is passed, it must be the same length as the data. The
+    list can contain any of the other types (except list).
+    Keys to group by on the pivot table index.  If an array is passed,
+    it is being used as the same manner as column values.
+columns : column, Grouper, array, or list of the previous
+    If an array is passed, it must be the same length as the data. The
+    list can contain any of the other types (except list).
+    Keys to group by on the pivot table column.  If an array is passed,
+    it is being used as the same manner as column values.
+aggfunc : function, list of functions, dict, default numpy.mean
+    If list of functions passed, the resulting pivot table will have
+    hierarchical columns whose top level are the function names
+    (inferred from the function objects themselves)
+    If dict is passed, the key is column to aggregate and value
+    is function or list of functions.
+fill_value : scalar, default None
+    Value to replace missing values with (in the resulting pivot table,
+    after aggregation).
+margins : bool, default False
+    Add all row / columns (e.g. for subtotal / grand totals).
+dropna : bool, default True
+    Do not include columns whose entries are all NaN.
+margins_name : str, default &#39;All&#39;
+    Name of the row / column that will contain the totals
+    when margins is True.
+observed : bool, default False
+    This only applies if any of the groupers are Categoricals.
+    If True: only show observed values for categorical groupers.
+    If False: show all values for categorical groupers.
+
+    .. versionchanged:: 0.25.0
+
+Returns
+-------
+DataFrame
+    An Excel style pivot table.
+
+See Also
+--------
+DataFrame.pivot : Pivot without aggregation that can handle
+    non-numeric data.
+
+Examples
+--------
+&gt;&gt;&gt; df = pd.DataFrame({&#34;A&#34;: [&#34;foo&#34;, &#34;foo&#34;, &#34;foo&#34;, &#34;foo&#34;, &#34;foo&#34;,
+...                          &#34;bar&#34;, &#34;bar&#34;, &#34;bar&#34;, &#34;bar&#34;],
+...                    &#34;B&#34;: [&#34;one&#34;, &#34;one&#34;, &#34;one&#34;, &#34;two&#34;, &#34;two&#34;,
+...                          &#34;one&#34;, &#34;one&#34;, &#34;two&#34;, &#34;two&#34;],
+...                    &#34;C&#34;: [&#34;small&#34;, &#34;large&#34;, &#34;large&#34;, &#34;small&#34;,
+...                          &#34;small&#34;, &#34;large&#34;, &#34;small&#34;, &#34;small&#34;,
+...                          &#34;large&#34;],
+...                    &#34;D&#34;: [1, 2, 2, 3, 3, 4, 5, 6, 7],
+...                    &#34;E&#34;: [2, 4, 5, 5, 6, 6, 8, 9, 9]})
+&gt;&gt;&gt; df
+     A    B      C  D  E
+0  foo  one  small  1  2
+1  foo  one  large  2  4
+2  foo  one  large  2  5
+3  foo  two  small  3  5
+4  foo  two  small  3  6
+5  bar  one  large  4  6
+6  bar  one  small  5  8
+7  bar  two  small  6  9
+8  bar  two  large  7  9
+
+This first example aggregates values by taking the sum.
+
+&gt;&gt;&gt; table = pd.pivot_table(df, values=&#39;D&#39;, index=[&#39;A&#39;, &#39;B&#39;],
+...                     columns=[&#39;C&#39;], aggfunc=np.sum)
+&gt;&gt;&gt; table
+C        large  small
+A   B
+bar one    4.0    5.0
+    two    7.0    6.0
+foo one    4.0    1.0
+    two    NaN    6.0
+
+We can also fill missing values using the `fill_value` parameter.
+
+&gt;&gt;&gt; table = pd.pivot_table(df, values=&#39;D&#39;, index=[&#39;A&#39;, &#39;B&#39;],
+...                     columns=[&#39;C&#39;], aggfunc=np.sum, fill_value=0)
+&gt;&gt;&gt; table
+C        large  small
+A   B
+bar one      4      5
+    two      7      6
+foo one      4      1
+    two      0      6
+
+The next example aggregates by taking the mean across multiple columns.
+
+&gt;&gt;&gt; table = pd.pivot_table(df, values=[&#39;D&#39;, &#39;E&#39;], index=[&#39;A&#39;, &#39;C&#39;],
+...                     aggfunc={&#39;D&#39;: np.mean,
+...                              &#39;E&#39;: np.mean})
+&gt;&gt;&gt; table
+                D         E
+A   C
+bar large  5.500000  7.500000
+    small  5.500000  8.500000
+foo large  2.000000  4.500000
+    small  2.333333  4.333333
+
+We can also calculate multiple types of aggregations for any given
+value column.
+
+&gt;&gt;&gt; table = pd.pivot_table(df, values=[&#39;D&#39;, &#39;E&#39;], index=[&#39;A&#39;, &#39;C&#39;],
+...                     aggfunc={&#39;D&#39;: np.mean,
+...                              &#39;E&#39;: [min, max, np.mean]})
+&gt;&gt;&gt; table
+                D    E
+            mean  max      mean  min
+A   C
+bar large  5.500000  9.0  7.500000  6.0
+    small  5.500000  9.0  8.500000  8.0
+foo large  2.000000  5.0  4.500000  4.0
+    small  2.333333  6.0  4.333333  2.0
+<span class="ansi-red-intense-fg ansi-bold">File:</span>      c:\users\admis\anaconda3\lib\site-packages\pandas\core\frame.py
+<span class="ansi-red-intense-fg ansi-bold">Type:</span>      method
+
+</pre></div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[39]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Ré-arranger les lignes et colonnes avec pivot_table :</span>
+
+<span class="c1"># DataFrame avec :</span>
+<span class="c1"># - autant de lignes qu&#39;il y a de &#39;job&#39;</span>
+<span class="c1"># - autant de colonnes qu&#39;il y a de &#39;gender&#39;</span>
+<span class="c1"># - les valeurs sont la moyenne de &#39;age&#39;</span>
+<span class="n">display</span><span class="p">(</span><span class="n">data2</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;job&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;gender&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>gender</th>
+      <th>F</th>
+      <th>M</th>
+    </tr>
+    <tr>
+      <th>job</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>developer</th>
+      <td>43</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <th>sales director</th>
+      <td>33</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>web analyst</th>
+      <td>28</td>
+      <td>36</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Manipuler-des-dates-et-heures">
+<h3>Manipuler des dates et heures<a class="headerlink" href="#Manipuler-des-dates-et-heures" title="Permalink to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Fichier contenant des données qui représentent des dates et des heures</span>
+<span class="n">data3</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;src/datetime_data.csv&#39;</span><span class="p">)</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[40]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Datetime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015-02-28 15:55:09</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015-04-17 05:42:51</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015-04-09 01:04:27</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015-08-19 15:47:05</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015-10-01 17:55:59</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[41]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Il faut veiller à convertir la colonne au bon format</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Type avant conversion : &#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]))</span>
+<span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Type avant conversion : &#39;</span><span class="p">,</span> <span class="nb">type</span><span class="p">(</span><span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]))</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Type avant conversion :  &lt;class &#39;str&#39;&gt;
+Type avant conversion :  &lt;class &#39;pandas._libs.tslibs.timestamps.Timestamp&#39;&gt;
+</pre></div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[42]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pd.to_datetime<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># On peut ensuite extraire des informations utiles de cette colonne grâce au module &quot;.dt&quot;</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Annee&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">year</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Mois&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">month</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Jour&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">day</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Jour_de_la_semaine&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">weekday</span>  <span class="c1"># 0: lundi, 1: mardi etc...</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Heure&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">hour</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Minute&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">minute</span>
+<span class="n">data3</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;Seconde&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data3</span><span class="p">[</span><span class="s1">&#39;Datetime&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">second</span>
+
+<span class="n">data3</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[43]:
+</pre></div>
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Datetime</th>
+      <th>Annee</th>
+      <th>Mois</th>
+      <th>Jour</th>
+      <th>Jour_de_la_semaine</th>
+      <th>Heure</th>
+      <th>Minute</th>
+      <th>Seconde</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2015-02-28 15:55:09</td>
+      <td>2015</td>
+      <td>2</td>
+      <td>28</td>
+      <td>5</td>
+      <td>15</td>
+      <td>55</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2015-04-17 05:42:51</td>
+      <td>2015</td>
+      <td>4</td>
+      <td>17</td>
+      <td>4</td>
+      <td>5</td>
+      <td>42</td>
+      <td>51</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2015-04-09 01:04:27</td>
+      <td>2015</td>
+      <td>4</td>
+      <td>9</td>
+      <td>3</td>
+      <td>1</td>
+      <td>4</td>
+      <td>27</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2015-08-19 15:47:05</td>
+      <td>2015</td>
+      <td>8</td>
+      <td>19</td>
+      <td>2</td>
+      <td>15</td>
+      <td>47</td>
+      <td>5</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2015-10-01 17:55:59</td>
+      <td>2015</td>
+      <td>10</td>
+      <td>1</td>
+      <td>3</td>
+      <td>17</td>
+      <td>55</td>
+      <td>59</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+<section id="Assembler-des-bases-de-données">
+<h3>Assembler des bases de données<a class="headerlink" href="#Assembler-des-bases-de-données" title="Permalink to this heading"></a></h3>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[44]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pour la suite, nous allons manipuler les bases de données suivantes :</span>
+<span class="n">data_sales1</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;sales_id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;001&#39;</span><span class="p">,</span> <span class="s1">&#39;002&#39;</span><span class="p">,</span> <span class="s1">&#39;003&#39;</span><span class="p">,</span> <span class="s1">&#39;004&#39;</span><span class="p">],</span> <span class="c1">#&#39;005&#39;, &#39;006&#39;, &#39;007&#39;],</span>
+    <span class="s1">&#39;people_id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>  <span class="c1"># 0, 3, 2],</span>
+    <span class="s1">&#39;product_id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;X789&#39;</span><span class="p">,</span> <span class="s1">&#39;X999&#39;</span><span class="p">,</span> <span class="s1">&#39;X789&#39;</span><span class="p">,</span> <span class="s1">&#39;X990&#39;</span><span class="p">],</span> <span class="c1">#&#39;X789&#39;, &#39;X999&#39;, &#39;X789&#39;]</span>
+<span class="p">}</span>
+
+<span class="n">data_sales2</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;sales_id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;005&#39;</span><span class="p">,</span> <span class="s1">&#39;006&#39;</span><span class="p">,</span> <span class="s1">&#39;007&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;people_id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+    <span class="s1">&#39;product_id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;X789&#39;</span><span class="p">,</span> <span class="s1">&#39;X999&#39;</span><span class="p">,</span> <span class="s1">&#39;X789&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">data_products</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;product_id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;X789&#39;</span><span class="p">,</span> <span class="s1">&#39;X999&#39;</span><span class="p">,</span> <span class="s1">&#39;X990&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;product_desc&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Apple&#39;</span><span class="p">,</span> <span class="s1">&#39;Banana&#39;</span><span class="p">,</span> <span class="s1">&#39;Orange&#39;</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">data_people</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;id&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+    <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="s1">&#39;Paul&#39;</span><span class="p">,</span><span class="s1">&#39;Perrine&#39;</span><span class="p">,</span><span class="s1">&#39;Moussa&#39;</span><span class="p">,</span><span class="s1">&#39;Michel&#39;</span><span class="p">,</span> <span class="s1">&#39;Anne&#39;</span><span class="p">],</span>
+    <span class="s1">&#39;age&#39;</span> <span class="p">:</span> <span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="mi">67</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">76</span><span class="p">,</span> <span class="mi">47</span><span class="p">]</span>
+<span class="p">}</span>
+
+<span class="n">df_sales1</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_sales1</span><span class="p">)</span>
+<span class="n">df_sales2</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_sales2</span><span class="p">)</span>
+<span class="n">df_products</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_products</span><span class="p">)</span>
+<span class="n">df_people</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data_people</span><span class="p">)</span>
+
+<span class="n">display</span><span class="p">(</span><span class="n">df_sales1</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_sales2</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_products</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_people</span><span class="p">)</span>
+<br/></pre></div>
+</div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales_id</th>
+      <th>people_id</th>
+      <th>product_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001</td>
+      <td>1</td>
+      <td>X789</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>002</td>
+      <td>4</td>
+      <td>X999</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>003</td>
+      <td>2</td>
+      <td>X789</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>004</td>
+      <td>1</td>
+      <td>X990</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales_id</th>
+      <th>people_id</th>
+      <th>product_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>005</td>
+      <td>0</td>
+      <td>X789</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>006</td>
+      <td>3</td>
+      <td>X999</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>007</td>
+      <td>2</td>
+      <td>X789</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>product_id</th>
+      <th>product_desc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>X789</td>
+      <td>Apple</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>X999</td>
+      <td>Banana</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>X990</td>
+      <td>Orange</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>name</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>Paul</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1</td>
+      <td>Perrine</td>
+      <td>67.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2</td>
+      <td>Moussa</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3</td>
+      <td>Michel</td>
+      <td>76.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>Anne</td>
+      <td>47.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<section id="Concaténer-des-lignes">
+<h4>Concaténer des lignes<a class="headerlink" href="#Concaténer-des-lignes" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[45]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Concaténer les lignes de df_sales2 à la suite de df_sales1 :</span>
+<span class="n">df_sales</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_sales1</span><span class="p">,</span> <span class="n">df_sales2</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_sales</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales_id</th>
+      <th>people_id</th>
+      <th>product_id</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001</td>
+      <td>1</td>
+      <td>X789</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>002</td>
+      <td>4</td>
+      <td>X999</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>003</td>
+      <td>2</td>
+      <td>X789</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>004</td>
+      <td>1</td>
+      <td>X990</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>005</td>
+      <td>0</td>
+      <td>X789</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>006</td>
+      <td>3</td>
+      <td>X999</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>007</td>
+      <td>2</td>
+      <td>X789</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[46]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span>pd.concat<span class="o">?</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Faire-des-jointures">
+<h4>Faire des jointures<a class="headerlink" href="#Faire-des-jointures" title="Permalink to this heading"></a></h4>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[47]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Jointure table sales et product</span>
+<span class="c1"># Cas simple : Tous les product_id dans df_sales sont présents dans df_product et inversement</span>
+
+<span class="n">df_sales_product</span> <span class="o">=</span> <span class="n">df_sales</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_products</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="s1">&#39;product_id&#39;</span><span class="p">)</span>
+<span class="n">display</span><span class="p">(</span><span class="n">df_sales_product</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales_id</th>
+      <th>people_id</th>
+      <th>product_id</th>
+      <th>product_desc</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001</td>
+      <td>1</td>
+      <td>X789</td>
+      <td>Apple</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>003</td>
+      <td>2</td>
+      <td>X789</td>
+      <td>Apple</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005</td>
+      <td>0</td>
+      <td>X789</td>
+      <td>Apple</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>007</td>
+      <td>2</td>
+      <td>X789</td>
+      <td>Apple</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>002</td>
+      <td>4</td>
+      <td>X999</td>
+      <td>Banana</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>006</td>
+      <td>3</td>
+      <td>X999</td>
+      <td>Banana</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>004</td>
+      <td>1</td>
+      <td>X990</td>
+      <td>Orange</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[48]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Jointure avec la table people</span>
+<span class="c1"># Warning 1 : les colonnes contenant l&#39;id pour la jointure n&#39;ont pas le même nom</span>
+<span class="c1"># Warning 2 : le people_id 4 présent dans df_sales_product n&#39;existe pas dans df_people !</span>
+<span class="c1"># Le people_id 5 est dans df_people mais pas dans df_sales_product</span>
+<span class="c1"># Il faut faire un choix : que faire des ids manquants ?</span>
+
+<span class="c1"># Inner join : on ne garde que les id présents dans les deux tables</span>
+<span class="n">df_final1</span> <span class="o">=</span> <span class="n">df_sales_product</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_people</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;people_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span>
+
+<span class="c1"># Outer join : on garde tous les ids qu&#39;on trouve dans les deux tables et on complète par des NaN</span>
+<span class="n">df_final2</span> <span class="o">=</span> <span class="n">df_sales_product</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_people</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;people_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+
+<span class="c1"># Left join : on garde tous les ids de la table de gauche et on complète par des NaN</span>
+<span class="n">df_final3</span> <span class="o">=</span> <span class="n">df_sales_product</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">df_people</span><span class="p">,</span> <span class="n">left_on</span><span class="o">=</span><span class="s1">&#39;people_id&#39;</span><span class="p">,</span> <span class="n">right_on</span><span class="o">=</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[49]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">df_final1</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales_id</th>
+      <th>people_id</th>
+      <th>product_id</th>
+      <th>product_desc</th>
+      <th>id</th>
+      <th>name</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001</td>
+      <td>1</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>1</td>
+      <td>Perrine</td>
+      <td>67.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>004</td>
+      <td>1</td>
+      <td>X990</td>
+      <td>Orange</td>
+      <td>1</td>
+      <td>Perrine</td>
+      <td>67.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>003</td>
+      <td>2</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>2</td>
+      <td>Moussa</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>007</td>
+      <td>2</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>2</td>
+      <td>Moussa</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>005</td>
+      <td>0</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>0</td>
+      <td>Paul</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>006</td>
+      <td>3</td>
+      <td>X999</td>
+      <td>Banana</td>
+      <td>3</td>
+      <td>Michel</td>
+      <td>76.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[50]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">df_final2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales_id</th>
+      <th>people_id</th>
+      <th>product_id</th>
+      <th>product_desc</th>
+      <th>id</th>
+      <th>name</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001</td>
+      <td>1.0</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>1.0</td>
+      <td>Perrine</td>
+      <td>67.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>004</td>
+      <td>1.0</td>
+      <td>X990</td>
+      <td>Orange</td>
+      <td>1.0</td>
+      <td>Perrine</td>
+      <td>67.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>003</td>
+      <td>2.0</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>2.0</td>
+      <td>Moussa</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>007</td>
+      <td>2.0</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>2.0</td>
+      <td>Moussa</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>005</td>
+      <td>0.0</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>0.0</td>
+      <td>Paul</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>002</td>
+      <td>4.0</td>
+      <td>X999</td>
+      <td>Banana</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>006</td>
+      <td>3.0</td>
+      <td>X999</td>
+      <td>Banana</td>
+      <td>3.0</td>
+      <td>Michel</td>
+      <td>76.0</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>5.0</td>
+      <td>Anne</td>
+      <td>47.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[51]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">display</span><span class="p">(</span><span class="n">df_final3</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area rendered_html docutils container">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>sales_id</th>
+      <th>people_id</th>
+      <th>product_id</th>
+      <th>product_desc</th>
+      <th>id</th>
+      <th>name</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>001</td>
+      <td>1</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>1.0</td>
+      <td>Perrine</td>
+      <td>67.0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>003</td>
+      <td>2</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>2.0</td>
+      <td>Moussa</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>005</td>
+      <td>0</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>0.0</td>
+      <td>Paul</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>007</td>
+      <td>2</td>
+      <td>X789</td>
+      <td>Apple</td>
+      <td>2.0</td>
+      <td>Moussa</td>
+      <td>24.0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>002</td>
+      <td>4</td>
+      <td>X999</td>
+      <td>Banana</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>006</td>
+      <td>3</td>
+      <td>X999</td>
+      <td>Banana</td>
+      <td>3.0</td>
+      <td>Michel</td>
+      <td>76.0</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>004</td>
+      <td>1</td>
+      <td>X990</td>
+      <td>Orange</td>
+      <td>1.0</td>
+      <td>Perrine</td>
+      <td>67.0</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</section>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

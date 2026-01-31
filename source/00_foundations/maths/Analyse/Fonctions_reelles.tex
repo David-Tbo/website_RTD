@@ -1,0 +1,1689 @@
+\documentclass{report} % ou book
+\usepackage[T1]{fontenc}      
+\usepackage[utf8]{inputenc}    
+\usepackage{lmodern}           
+\usepackage{amsmath, amssymb}  
+\usepackage{mathtools}         
+\usepackage{enumitem}          
+\usepackage{geometry}
+\usepackage{amsthm}  % Pour définir theorems, definitions, etc.
+
+% Définition des environnements
+\theoremstyle{definition}  % style romain, pas en italique
+\newtheorem{definition}{Définition}[chapter] % numérotation par chapitre
+\newtheorem{example}{Exemple}[chapter]
+\newtheorem{corollary}{Corollaire}[chapter] % <- pour les corollaires
+\theoremstyle{plain} % pour propositions et théorèmes
+\newtheorem{theorem}{Théorème}[chapter]
+\newtheorem{proposition}{Proposition}[chapter]
+\newtheorem{axiom}{Axiome}
+\theoremstyle{remark} % pour les remarques
+\newtheorem*{remark}{Remarque} % pas numérotée
+
+\geometry{margin=2.5cm}
+
+\title{Analyse : Fonctions réelles}
+\author{David Thébault}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\chapter{Généralité sur les fonctions}
+
+\medskip
+
+
+Dans ce document, nous ne reviendrons pas sur certaines fonctions particulières telles que :
+\begin{itemize}
+    \item Fonctions paires et impaires (théorème de décomposition),
+    \item Fonctions majorées, minorées ou bornées,
+    \item Fonctions périodiques.
+\end{itemize}
+Ces notions sont considérées comme connues ou seront utilisées sans démonstration détaillée.
+
+\bigskip
+
+\section{Représentation graphique et transformations}
+
+\subsection{Définitions}
+
+Une fonction \(f : \mathbb{R} \to \mathbb{R}\) est une application qui, à chaque réel \(x\), associe un unique réel \(f(x)\), appelé l'image de \(x\) par \(f\).  
+
+La \emph{représentation graphique} d'une fonction \(f\) est l'ensemble des points \((x, f(x))\) dans le plan cartésien, appelé aussi \emph{courbe représentative} de \(f\) :
+
+\[
+C_f = \{(x, f(x)) \mid x \in \mathbb{R}\}.
+\]
+
+Pour tout point \((x,y)\) du plan :
+
+\[
+(x,y) \in C_f \quad \Leftrightarrow \quad y = f(x).
+\]
+
+Exemple : pour \(f(x) = x^2\), la courbe représentative est la parabole \((x,x^2)\).  
+
+
+\subsection{Transformations}
+
+Soit \(f : D \to \mathbb{R}\) une fonction définie sur \(D\subset \mathbb{R}\), de courbe représentative \(C_f\), et soit \(a \in \mathbb{R}\).
+
+\begin{itemize}
+    \item \(x \mapsto f(x) + a\) : le domaine reste \(D\) et la courbe \(C_f\) est translatée verticalement de \(a\) unités.
+    
+    \item \(x \mapsto f(x + a)\) : le domaine devient \(D - a = \{x \in \mathbb{R} \mid x + a \in D\}\) et la courbe \(C_f\) est translatée horizontalement de \(-a\) unités.
+    
+    \item \(x \mapsto a f(x)\) : le domaine reste \(D\) et la courbe \(C_f\) est étirée verticalement par un facteur \(|a|\) (et inversée si \(a < 0\)).
+    
+    \item \(x \mapsto f(ax)\) : le domaine devient \(\{x \in \mathbb{R} \mid ax \in D\}\) et la courbe \(C_f\) est étirée horizontalement par un facteur \(1/|a|\) (et inversée si \(a < 0\)).
+\end{itemize}
+
+
+\section{\textbf{Injectivité, surjectivité et bijectivité}}
+
+Soit \(f : I \to J\) une fonction, où \(I\) est l’ensemble de départ et \(J\) l’ensemble d’arrivée.
+
+\begin{definition}[Injective]
+La fonction \(f\) est dite \emph{injective} si deux éléments distincts de \(I\) ont des images distinctes dans \(J\) :
+\[
+\forall x_1, x_2 \in I, \quad f(x_1) = f(x_2) \implies x_1 = x_2.
+\]
+Autrement dit, chaque élément de \(J\) a au plus un antécédent.
+\end{definition}
+
+\begin{definition}[Surjective]
+La fonction \(f\) est dite \emph{surjective} si tout élément de \(J\) est l’image d’au moins un élément de \(I\) :
+\[
+\forall y \in J, \quad \exists x \in I \text{ tel que } f(x) = y.
+\]
+Autrement dit, l’image de \(f\) est égale à l’ensemble d’arrivée \(J\).
+\end{definition}
+
+\begin{definition}[Bijective]
+La fonction \(f\) est dite \emph{bijective} si elle est à la fois injective et surjective.  
+Dans ce cas, chaque élément de \(J\) a exactement un antécédent dans \(I\), et \(f\) admet une fonction inverse \(f^{-1} : J \to I\) telle que :
+\[
+f^{-1}(f(x)) = x \quad \text{et} \quad f(f^{-1}(y)) = y.
+\]
+Autrement dit, quelque soit \(y \in J\), l'équation \(f(x) = y\) admet une unique solution \(x \in I\) :
+\[\forall y \in J,  \quad \exists !  x \in I \text{ tel que } y = f(x)\]
+\end{definition}
+
+\begin{theorem}[\textbf{Théorème de la bijection}]
+Soit \(f : I \to \mathbb{R}\) une fonction continue et strictement monotone sur un intervalle \(I \subset \mathbb{R}\).  
+Alors :
+\begin{enumerate}
+    \item L'image \(J = f(I)\) est un intervalle de \(\mathbb{R}\).
+    \item La fonction \(f\) réalise une bijection de \(I\) sur \(J\) :
+    \[
+    f : I \longrightarrow J, \quad f \text{ est injective et surjective.}
+    \]
+\end{enumerate}
+\end{theorem}
+
+
+\section{\textbf{Limites de fonctions}}
+
+\subsection{Définition de la limite finie en un point}
+
+Soit \(f : D \subset \mathbb{R} \to \mathbb{R}\) et \(a \in \mathbb{R}\) un point adhérent à \(D\).  
+On dit que \(f\) admet pour limite \(L \in \mathbb{R}\) en \(a\) si :
+\[
+\lim_{x \to a} f(x) = L
+\]
+c'est-à-dire que pour tout \(\varepsilon > 0\), il existe \(\delta > 0\) tel que :
+\[
+0 < |x-a| < \delta, \quad x \in D \implies |f(x)-L| < \varepsilon.
+\]
+
+\begin{remark}
+La notion de limite permet de formaliser le comportement de \(f(x)\) lorsque \(x\) s'approche de \(a\), même si \(f\) n'est pas définie en \(a\).
+\end{remark}
+
+\medskip
+
+\subsection{Théorème sur les limites}
+
+\begin{theorem}[Propriétés des limites]
+Soient \(f, g : D \subset \mathbb{R} \to \mathbb{R}\) et \(a \in \mathbb{R}\) un point adhérent à \(D\).  
+Supposons que \(f\) et \(g\) admettent des limites finies en \(a\) :
+\[
+\lim_{x \to a} f(x) = L \in \mathbb{R}, \quad \lim_{x \to a} g(x) = M \in \mathbb{R}.
+\]
+
+Alors :
+\begin{enumerate}
+    \item \(\displaystyle \lim_{x \to a} (f(x) + g(x)) = L + M\),
+    \item \(\displaystyle \lim_{x \to a} (f(x)\, g(x)) = L\, M\),
+    \item si \(M \neq 0\), \(\displaystyle \lim_{x \to a} \frac{f(x)}{g(x)} = \frac{L}{M}\).
+\end{enumerate}
+\end{theorem}
+
+\medskip
+
+\noindent
+Ces propriétés sont fondamentales pour le calcul de limites et pour la continuité des fonctions.
+
+\medskip
+
+\begin{proof}[Preuve]
+On part de l'expression :
+\[
+|f(x)g(x) - LM| = |f(x)g(x) - f(x)M + f(x)M - LM| \le |f(x)|\,|g(x)-M| + |M|\,|f(x)-L|.
+\]
+
+Comme \(\lim_{x \to a} f(x) = L\), la fonction \(f\) est bornée près de \(a\).  
+Il existe donc \(K > 0\) tel que \(|f(x)| \le K\) pour \(x\) proche de \(a\).
+
+Ainsi :
+\[
+|f(x)g(x) - LM| \le K\,|g(x)-M| + |M|\,|f(x)-L|.
+\]
+
+Soit \(\varepsilon > 0\).  
+Choisissons \(\delta_1 > 0\) tel que \(0 < |x-a| < \delta_1 \implies |f(x)-L| < \frac{\varepsilon}{2(|M|+1)}\), et \(\delta_2 > 0\) tel que \(0 < |x-a| < \delta_2 \implies |g(x)-M| < \frac{\varepsilon}{2(K+1)}\).  
+
+En posant \(\delta = \min(\delta_1, \delta_2)\), pour tout \(x \in D\) avec \(0 < |x-a| < \delta\) on obtient :
+\[
+|f(x)g(x) - LM| < K\,\frac{\varepsilon}{2(K+1)} + |M|\,\frac{\varepsilon}{2(|M|+1)} < \varepsilon.
+\]
+
+Ainsi, d'après la définition de la limite :
+\[
+\lim_{x \to a} f(x)g(x) = LM.
+\]
+\end{proof}
+
+\medskip
+
+\begin{remark}
+Considérons les fonctions \(f(x) = x\) et \(g(x) = \frac{1}{x}\) définies sur \(\mathbb{R}^* = \mathbb{R} \setminus \{0\}\) :
+\[
+\lim_{x \to 0} f(x) = 0,
+\quad
+\lim_{x \to 0} g(x) \text{ n'existe pas (tend vers } +\infty \text{ pour } x \to 0^+, \text{ et } -\infty \text{ pour } x \to 0^-).
+\]
+
+En revanche, on a :
+\[
+\lim_{x \to 0} \bigl(f(x) \cdot g(x)\bigr) = \lim_{x \to 0} \left(x \cdot \frac{1}{x}\right) = 1.
+\]
+
+\medskip
+\noindent
+Cet exemple illustre que si l'une des limites est infinie ou n'existe pas, la propriété du théorème du produit ne s'applique pas directement. Il faut vérifier que les limites individuelles sont finies pour pouvoir l'utiliser.
+\end{remark}
+
+\medskip
+\section{\textbf{Continuité des fonctions}}
+
+\subsection{Définition}
+
+Soit \(f : I \subset \mathbb{R} \to \mathbb{R}\) et \(a \in I\).  
+La fonction \(f\) est dite \emph{continue en \(a\)} si :
+
+\[
+\lim_{x \to a} f(x) = f(a),
+\]
+
+\noindent
+c'est-à-dire que la limite de \(f\) en \(a\), en considérant uniquement
+les points de \(I\), existe et coïncide avec la valeur de \(f\) en ce point.  
+
+\noindent
+On dit que \(f\) est \emph{continue sur \(I\)} si elle est continue en tout point \(a \in I\).
+
+
+\subsection{Exemples de fonctions continues et non continues}
+
+\begin{itemize}
+    \item \textbf{Fonctions continues classiques :}  
+    \[
+    f : \mathbb{R} \to \mathbb{R}, \quad f(x) = x^2, \quad f(x) = \sin x, \quad f(x) = e^x.
+    \]  
+    \emph{Pourquoi :} ces fonctions sont définies sur tout \(\mathbb{R}\) et, pour tout
+    \(a \in \mathbb{R}\), \(\lim_{x \to a} f(x) = f(a)\).
+
+    \item \textbf{Fonction continue sur un intervalle partiel :}  
+    \[
+    f : (0,1] \to \mathbb{R}, \quad f(x) = \frac{1}{x}.
+    \]  
+    \emph{Pourquoi :} pour tout \(a \in (0,1]\), \(\lim_{x \to a} f(x) = f(a)\).  
+
+    \medskip
+    \noindent
+    \textbf{Important :} il ne faut pas essayer de vérifier la continuité en \(0^+\),
+    car 0 n’appartient pas à l’intervalle \((0,1]\). La limite en 0+ n’a
+    aucun rôle ici pour la continuité sur \((0,1]\).  
+
+    \medskip
+    \noindent
+    Remarque supplémentaire : \(f\) atteint son minimum \(f(1) = 1\) mais
+    n’a pas de maximum, car la fonction tend vers \(+\infty\) lorsque \(x \to 0^+\). 
+    Ainsi, le théorème de Weierstrass ne s’applique pas sur \((0,1]\).
+
+    \item \textbf{Fonctions non continues :}
+    \begin{itemize}
+        \item \textbf{Fonction \(f(x) = 1/x\) sur \(\mathbb{R} \setminus \{0\}\)}  
+        \[
+        f : \mathbb{R} \setminus \{0\} \to \mathbb{R}, \quad f(x) = \frac{1}{x}
+        \]  
+        \emph{Discontinuité :} en \(x=0\)  
+        \[
+        \lim_{x \to 0^-} f(x) = -\infty, \quad \lim_{x \to 0^+} f(x) = +\infty
+        \]  
+        \emph{Remarque :} même si 0 n’appartient pas à l’ensemble, ces limites à gauche et à droite mettent en évidence la discontinuité (saut infini).
+
+        \item \textbf{Fonction à saut :}  
+        \[
+        f : \mathbb{R} \to \mathbb{R}, \quad f(x) = 
+        \begin{cases} 
+            0 & x \le 0 \\ 
+            1 & x > 0 
+        \end{cases}
+        \]  
+        \emph{Discontinuité :} en \(x=0\)  
+        \[
+        \lim_{x \to 0^-} f(x) = 0, \quad \lim_{x \to 0^+} f(x) = 1
+        \]  
+        \emph{Remarque :} il y a un saut de 0 à 1.
+
+        \item \textbf{Fonction avec valeur modifiée en un point :}  
+        \[
+        f : \mathbb{R} \to \mathbb{R}, \quad f(x) = 
+        \begin{cases} 
+            x+1 & x \neq 2 \\ 
+            4 & x = 2 
+        \end{cases}
+        \]  
+        \emph{Discontinuité :} en \(x=2\)  
+        \[
+        \lim_{x \to 2} f(x) = 3 \neq f(2) = 4
+        \]  
+        \emph{Remarque :} saut ponctuel.
+    \end{itemize} % ferme le sous-itemize
+\end{itemize} % ferme le itemize principal
+
+
+
+
+\subsection{Approximation affine d'une fonction dérivable}
+
+\begin{theorem}[Approximation affine]
+Soit \(f : I \subset \mathbb{R} \to \mathbb{R}\) et \(a \in I\).  
+
+\begin{enumerate}
+    \item Si \(f\) est dérivable en \(a\), alors pour tout \(x \in I\) :
+    \[
+    f(x) = f(a) + f'(a)(x-a) + (x-a)\,\epsilon(x),
+    \]
+    avec \(\lim_{x \to a} \epsilon(x) = 0\).
+
+    \item Réciproquement, si
+    \[
+    f(x) = f(a) + l(x-a) + (x-a)\epsilon(x), \quad \lim_{x \to a} \epsilon(x) = 0,
+    \]
+    alors \(f\) est dérivable en \(a\) et \(f'(a) = l\).
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Preuve de 1.]
+Posons \(\epsilon(x) = \frac{f(x)-f(a)}{x-a} - f'(a)\), \(x \neq a\).  
+Alors \(\lim_{x \to a} \epsilon(x) = 0\) par définition de la dérivée, et on a :
+\[
+f(x)-f(a) = (x-a)f'(a) + (x-a)\epsilon(x) \implies f(x) = f(a) + f'(a)(x-a) + (x-a)\epsilon(x).
+\]
+\end{proof}
+
+\begin{proof}[Preuve de 2.]
+Formons le taux d'accroissement :
+\[
+\frac{f(x)-f(a)}{x-a} = \frac{l(x-a) + (x-a)\epsilon(x)}{x-a} = l + \epsilon(x), \quad x \neq a.
+\]
+En passant à la limite \(x \to a\), on obtient \(f'(a) = l\). Donc \(f\) est dérivable en \(a\) et \(f'(a)=l\).
+\end{proof}
+
+\medskip
+
+\begin{corollary}
+Soit \(f : I \subset \mathbb{R} \to \mathbb{R}\) et \(a \in I\).  
+Si \(f\) est dérivable en \(a\), alors \(f\) est continue en \(a\), c'est-à-dire :
+\[
+\lim_{x \to a} f(x) = f(a).
+\]
+\end{corollary}
+
+\begin{proof}[Preuve]
+Si \(f\) est dérivable en \(a\), on peut écrire, d'après le théorème d'approximation affine :
+\[
+f(x) = f(a) + f'(a)(x-a) + (x-a)\,\epsilon(x), \quad \text{avec } \lim_{x \to a} \epsilon(x) = 0.
+\]
+
+En passant à la limite lorsque \(x \to a\) :
+\[
+\lim_{x \to a} f(x) = f(a) + f'(a)\underbrace{\lim_{x \to a} (x-a)}_{=0} + \underbrace{\lim_{x \to a} (x-a)\epsilon(x)}_{=0} = f(a),
+\]
+ce qui montre que \(f\) est continue en \(a\).
+\end{proof}
+
+\begin{remark}
+La réciproque est fausse : une fonction peut être continue en un point sans être dérivable en ce point.  
+
+\medskip
+\noindent
+Exemples :
+\begin{itemize}
+    \item \(f(x) = |x|\) en \(x=0\) : continue car \(\lim_{x \to 0^-} |x| = 0 = \lim_{x \to 0^+} |x|\), mais non dérivable car le taux d'accroissement
+    \(\frac{|x|-|0|}{x-0} = \frac{|x|}{x}\) tend vers \(-1\) à gauche et \(1\) à droite, la limite n'existe donc pas.
+    
+    \item \(f(x) = \sqrt{x}\) en \(x=0\) : continue car \(\lim_{x \to 0^+} \sqrt{x} = 0 = f(0)\), mais non dérivable en 0 car
+    \(\frac{\sqrt{x}-\sqrt{0}}{x-0} = \frac{\sqrt{x}}{x} = \frac{1}{\sqrt{x}} \to +\infty\) quand \(x \to 0^+\), la dérivée n'existe donc pas.
+\end{itemize}
+\end{remark}
+
+\medskip
+
+\subsection{Dérivabilité: applications physiques}
+
+\begin{itemize}
+    \item Cinématique : si \(f(t)\) représente la distance parcourue par un véhicule à l'instant \(t\), alors
+    \[
+    \frac{f(t)-f(t_0)}{t-t_0}
+    \]
+    est la \emph{vitesse moyenne} entre \(t\) et \(t_0\). La limite quand \(t \to t_0\) est la \emph{vitesse instantanée} en \(t_0\).
+
+    \item Électrique : si \(q(t)\) est la charge électrique (en coulombs) d'un condensateur à l'instant \(t\), alors
+    \[
+    q'(t_0) = \lim_{t \to t_0} \frac{q(t)-q(t_0)}{t-t_0}
+    \]
+    représente l'\emph{intensité électrique} (en ampères) à l'instant \(t_0\).  
+    L'intensité n'est autre que la vitesse ou le débit de charge électrique.
+\end{itemize}
+
+\medskip
+
+\subsection{Dérivabilité de la fonction réciproque}
+
+\begin{theorem}[Dérivabilité de la fonction réciproque]
+Soit \(f : I \to J\) une fonction bijective, dérivable sur un intervalle \(I \subset \mathbb{R}\).
+Soit \(y \in J\).  
+
+Alors la fonction réciproque \(f^{-1}\) est dérivable en \(y\) si et seulement si
+\[
+f'\big(f^{-1}(y)\big) \neq 0.
+\]
+Dans ce cas,
+\[
+(f^{-1})'(y) = \frac{1}{f'\big(f^{-1}(y)\big)}.
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+Posons \(x_0 = f^{-1}(y)\), de sorte que \(f(x_0) = y\).
+
+\medskip
+\emph{Sens direct.}  
+Supposons que \(f^{-1}\) soit dérivable en \(y\).  
+Alors la limite
+\[
+\lim_{h \to 0} \frac{f^{-1}(y+h) - f^{-1}(y)}{h}
+\]
+existe et est finie.
+
+Posons \(x = f^{-1}(y+h)\). Alors \(h = f(x) - f(x_0)\), et on peut écrire :
+\[
+\frac{f^{-1}(y+h) - f^{-1}(y)}{h}
+=
+\frac{x - x_0}{f(x) - f(x_0)}.
+\]
+Lorsque \( h \to 0 \), on a \( f(x) \to f(x_0) \).
+Comme \( f \) est bijective sur un intervalle, elle est strictement monotone
+et continue ; on a donc
+\[
+f(x) \to f(x_0) \quad \Longleftrightarrow \quad x \to x_0.
+\]
+Ainsi, en passant à la limite lorsque \(x \to x_0\), cette expression admet une limite finie, ce qui implique :
+\[
+\lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0} \neq 0.
+\]
+Donc \(f'(x_0) \neq 0\).
+
+\medskip
+\emph{Réciproquement.}  
+Supposons \(f'(x_0) \neq 0\).  
+Alors
+\[
+\lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0} = f'(x_0),
+\]
+et par inversion des quotients :
+\[
+\lim_{h \to 0} \frac{f^{-1}(y+h) - f^{-1}(y)}{h}
+=
+\frac{1}{f'(x_0)}.
+\]
+Ainsi \(f^{-1}\) est dérivable en \(y\) et
+\[
+(f^{-1})'(y) = \frac{1}{f'\big(f^{-1}(y)\big)}.
+\]
+\end{proof}
+
+\medskip
+\subsection{Dérivabilité de la fonction réciproque}
+
+\begin{theorem}[Dérivabilité de la fonction réciproque]
+Soit \( f : I \to J \) une fonction bijective, dérivable sur un intervalle
+\( I \subset \mathbb{R} \), et soit \( J = f(I) \).
+Soit \( y \in J \).
+
+Alors la fonction réciproque \( f^{-1} \) est dérivable en \( y \) si et seulement si
+\[
+f'\bigl(f^{-1}(y)\bigr) \neq 0.
+\]
+Dans ce cas,
+\[
+(f^{-1})'(y) = \frac{1}{f'\bigl(f^{-1}(y)\bigr)}.
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+\textbf{Préliminaires.}
+Comme \( f \) est dérivable sur un intervalle, elle est continue.
+De plus, comme \( f \) est bijective sur un intervalle, elle est strictement monotone.
+Par conséquent, pour tout \( a \in I \),
+\[
+f(x) \to f(a) \quad \Longleftrightarrow \quad x \to a.
+\]
+
+\medskip
+\textbf{Sens direct.}
+Supposons que \( f^{-1} \) soit dérivable en \( y \).
+La limite
+\[
+\lim_{h \to 0} \frac{f^{-1}(y+h) - f^{-1}(y)}{h}
+\]
+existe et est finie.
+
+Posons \( x_0 = f^{-1}(y) \) et, pour \( h \) proche de \(0\),
+\[
+x = f^{-1}(y+h).
+\]
+Alors \( h = f(x) - f(x_0) \).
+Lorsque \( h \to 0 \), on a \( f(x) \to f(x_0) \), et donc \( x \to x_0 \).
+
+On peut alors écrire
+\[
+\frac{f^{-1}(y+h) - f^{-1}(y)}{h}
+=
+\frac{x - x_0}{f(x) - f(x_0)}.
+\]
+Lorsque \( h \to 0 \), on a \( f(x) \to f(x_0) \), et donc \( x \to x_0 \).
+En passant ainsi à la limite lorsque \( x \to x_0 \), ce quotient admet une limite finie.
+
+
+Si l’on avait
+\[
+f'(x_0) = \lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0} = 0,
+\]
+alors le quotient inverse divergerait, ce qui est impossible.
+Ainsi,
+\[
+f'(x_0) \neq 0,
+\]
+c’est-à-dire
+\[
+f'\bigl(f^{-1}(y)\bigr) \neq 0.
+\]
+
+\medskip
+\textbf{Sens réciproque.}
+Supposons maintenant
+\[
+f'\bigl(f^{-1}(y)\bigr) \neq 0,
+\]
+et posons \( x_0 = f^{-1}(y) \).
+Alors
+\[
+\lim_{x \to x_0} \frac{x - x_0}{f(x) - f(x_0)} = \frac{1}{f'(x_0)}.
+\]
+
+Pour \( h \to 0 \), posons \( x = f^{-1}(y+h) \).
+On a \( f(x) = y+h \), donc \( f(x) \to f(x_0) \), et ainsi \( x \to x_0 \).
+On en déduit
+\[
+\lim_{h \to 0} \frac{f^{-1}(y+h) - f^{-1}(y)}{h}
+=
+\frac{1}{f'(x_0)}.
+\]
+
+La fonction \( f^{-1} \) est donc dérivable en \( y \) et
+\[
+(f^{-1})'(y) = \frac{1}{f'\bigl(f^{-1}(y)\bigr)}.
+\]
+\end{proof}
+
+
+\medskip
+
+\subsection{Dérivabilité de la fonction réciproque}
+
+\begin{theorem}[Dérivabilité de la fonction réciproque]
+Soit \( f : I \to J \) une fonction bijective, dérivable sur un intervalle \( I \subset \mathbb{R} \), et soit \( J = f(I) \).
+Soit \( y \in J \).
+
+Alors la fonction réciproque \( f^{-1} \) est dérivable en \( y \) si et seulement si
+\[
+f'\bigl(f^{-1}(y)\bigr) \neq 0.
+\]
+Dans ce cas,
+\[
+(f^{-1})'(y) = \frac{1}{f'\bigl(f^{-1}(y)\bigr)}.
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}
+\textbf{Hypothèses :}  
+Supposons que \( f \) est continue et dérivable sur l’intervalle \( I \), et que \( f \) est bijective. Par conséquent, \( f^{-1} \) est bien définie et continue sur \( J = f(I) \).
+
+\medskip
+\textbf{Démonstration (sens direct) :}
+Soit \( y \in J \) et posons \( x_0 = f^{-1}(y) \). On souhaite montrer que \( (f^{-1})'(y) \) existe.
+
+Par définition, on considère la limite :
+\[
+\lim_{h \to 0} \frac{f^{-1}(y+h) - f^{-1}(y)}{h}.
+\]
+
+Posons \( x = f^{-1}(y+h) \). Alors, par définition, \( f(x) = y + h \), donc \( f(x) - f(x_0) = h \).
+
+En appliquant le théorème des accroissements finis à la fonction \( f \) sur l’intervalle entre \( x_0 \) et \( x \), il existe un point \( c \) entre \( x_0 \) et \( x \) tel que :
+\[
+f(x) - f(x_0) = f'(c)(x - x_0).
+\]
+
+Comme \( f(x) - f(x_0) = h \), on a donc :
+\[
+h = f'(c)(x - x_0).
+\]
+
+En réarrangeant, on obtient :
+\[
+x - x_0 = \frac{h}{f'(c)}.
+\]
+
+Ainsi, le quotient devient :
+\[
+\frac{x - x_0}{h} = \frac{1}{f'(c)}.
+\]
+
+Lorsque \( h \to 0 \), on a \( x \to x_0 \) et donc \( c \to x_0 \). Par continuité de \( f' \), on a :
+\[
+\lim_{h \to 0} \frac{x - x_0}{h} = \frac{1}{f'(x_0)}.
+\]
+
+Cela prouve que la dérivée de \( f^{-1} \) en \( y \) est l’inverse de la dérivée de \( f \) en \( x_0 \).
+
+\medskip
+\textbf{Sens réciproque :}  
+Si \( f'(x_0) \neq 0 \), alors la dérivée de \( f^{-1} \) en \( y \) est bien définie et égale à \( \frac{1}{f'(x_0)} \).
+
+Ainsi, la dérivabilité de \( f^{-1} \) en \( y \) est équivalente à la non-nullité de \( f'(x_0) \).
+
+\end{proof}
+
+
+\medskip
+
+\subsection{Fonctions de dérivée nulle}
+
+\begin{theorem}
+Soit \(f : I \to \mathbb{R}\) une fonction dérivable sur un intervalle \(I\).  
+
+Alors \(f\) est constante sur \(I\) si et seulement si
+\[
+f'(x) = 0 \quad \text{pour tout } x \in I.
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+\emph{Sens direct.}  
+Si \(f\) est constante sur \(I\), il existe un réel \(c\) tel que \(f(x) = c\) pour tout \(x \in I\).  
+Alors, pour tout \(a \in I\),
+\[
+f'(a) = \lim_{x \to a} \frac{f(x)-f(a)}{x-a} = \lim_{x \to a} \frac{0}{x-a} = 0.
+\]
+
+\medskip
+\emph{Réciproquement.}  
+Supposons que \(f'(x) = 0\) pour tout \(x \in I\).  
+Soient \(a,b \in I\) avec \(a<b\).  
+Par le théorème des accroissements finis, il existe \(c \in (a,b)\) tel que :
+\[
+f(b) - f(a) = f'(c)(b-a).
+\]
+Comme \(f'(c) = 0\), on obtient \(f(b) = f(a)\).
+
+Ainsi \(f\) est constante sur \(I\).
+\end{proof}
+\medskip
+\begin{remark}[Importance de l'hypothèse ``\(I\) intervalle'']
+L'hypothèse selon laquelle \(I\) est un intervalle est indispensable.
+
+Considérons la fonction \(f : \mathbb{R}^* \to \mathbb{R}\) définie par
+\[
+f(x)=
+\begin{cases}
+-1 & \text{si } x<0,\\
+\phantom{-}1 & \text{si } x>0.
+\end{cases}
+\]
+
+La fonction \(f\) est constante sur chacun des intervalles
+\(\mathbb{R}^*_-\) et \(\mathbb{R}^*_+\), donc dérivable sur \(\mathbb{R}^*\) et
+\[
+f'(x)=0 \quad \text{pour tout } x\in\mathbb{R}^*.
+\]
+
+Cependant, \(f\) n'est pas constante sur \(\mathbb{R}^*\).
+Cela ne contredit pas le théorème précédent puisque
+\(\mathbb{R}^*=\mathbb{R}^*_-\cup\mathbb{R}^*_+\) n'est pas un intervalle.
+\end{remark}
+
+\medskip
+\subsection{Fonctions de classe \(\mathcal{C}^n\)}
+
+\begin{definition}[Fonction de classe \(\mathcal{C}^1\)]
+Soit \(I\) un intervalle de \(\mathbb{R}\).
+On dit qu'une fonction \(f : I \to \mathbb{R}\) est de classe \(\mathcal{C}^1\) sur \(I\) si :
+\begin{itemize}
+    \item \(f\) est dérivable en tout point de \(I\),
+    \item sa dérivée \(f'\) est continue sur \(I\).
+\end{itemize}
+\end{definition}
+
+\begin{definition}[Fonction de classe \(\mathcal{C}^\infty\)]
+Soit \(I\) un intervalle de \(\mathbb{R}\).
+On dit qu'une fonction \(f : I \to \mathbb{R}\) est de classe \(\mathcal{C}^\infty\) sur \(I\) si, pour tout entier \(n \in \mathbb{N}^*\), la fonction \(f\) est de classe \(\mathcal{C}^n\) sur \(I\).
+\end{definition}
+
+\begin{remark}
+Une fonction de classe \(\mathcal{C}^\infty\) est dite \emph{indéfiniment dérivable}.
+\end{remark}
+
+
+\section{Dérivation et variations d'une fonction}
+
+\subsection{Définitions}
+
+Soit \(f : D \subset \mathbb{R} \to \mathbb{R}\).
+
+\begin{definition}[Fonction croissante]
+\(f\) est dite \emph{croissante} sur \(D\) si :
+\[
+\forall x_1, x_2 \in D, \quad x_1 \le x_2 \implies f(x_1) \le f(x_2).
+\]
+\end{definition}
+
+\begin{definition}[Fonction strictement croissante]
+\(f\) est dite \emph{strictement croissante} sur \(D\) si :
+\[
+\forall x_1, x_2 \in D, \quad x_1 < x_2 \implies f(x_1) < f(x_2).
+\]
+\end{definition}
+
+\begin{remark}
+Une fonction \(f\) est décroissante sur \(D\) si et seulement si \(-f\) est croissante sur \(D\).
+\end{remark}
+
+\begin{remark}[Exemple piège]
+Considérons \(f\) définie par :
+\[
+f(x) = 
+\begin{cases}
+- x & x \in D_1 = [-2,0] \\
+- 2x & x \in D_2 = [0,1]
+\end{cases}
+\]
+
+Remarquer le point de jonction \(x=0\) :
+\[
+f(0) = -0 = 0, \quad f(0^+) = -2\cdot 0 = 0.
+\]
+
+Alors \(f\) est décroissante sur \(D_1\) et sur \(D_2\) séparément, mais \emph{pas} sur \(D_1 \cup D_2\) car la pente change et la décroissance globale n’est pas respectée.
+\end{remark}
+
+\medskip
+
+\medskip
+\noindent
+\textbf{Préambule.}  
+Avant d’aborder certaines propriétés des fonctions continues, nous aurons besoin
+d’une série de résultats fondamentaux de l’analyse réelle : la complétude de \(\mathbb{R}\),
+le théorème des intervalles emboîtés, le théorème de Bolzano--Weierstrass et
+le théorème de Weierstrass.
+Ces théorèmes ne font pas directement appel à la dérivabilité,
+mais constituent des outils essentiels pour garantir l’existence de limites,
+d’extrema et de points de convergence.
+
+\medskip
+
+\subsection{\textbf{Complétude de \(\mathbb{R}\)}}
+
+\medskip
+\noindent
+Les deux axiomes suivants sont équivalents et caractérisent 
+la complétude de l’ensemble des nombres réels \(\mathbb{R}\).
+
+\medskip
+
+\begin{axiom}[Axiome de la borne supérieure]
+{\sloppy Tout ensemble non vide et majoré de nombres réels admet une borne \\
+supérieure dans \(\mathbb{R}\).}
+
+\medskip
+\noindent
+Autrement dit, si \( A \subset \mathbb{R} \) est un ensemble non vide et s'il existe \( M \in \mathbb{R} \) tel que \( \forall a \in A, \, a \leq M \), alors il existe \( s \in \mathbb{R} \) tel que :
+\begin{itemize}
+    \item \( s \) est un majorant de \( A \) : \( \forall a \in A, \, a \leq s \) ;
+    \item \( s \) est le plus petit des majorants : si \( s' \) est un majorant de \( A \), alors \( s \leq s' \).
+\end{itemize}
+On note \( s = \sup A \).
+\end{axiom}
+
+\medskip
+
+\begin{proof}[Preuve]
+Axiome fondamental de l'analyse réelle, accepté sans preuve.
+\end{proof}
+
+\medskip
+\noindent
+Cela signifie que tout ensemble de nombres réels qui ne dépasse pas une certaine valeur (majoré), 
+a un plus petit nombre réel qui est plus grand que tous les éléments de cet ensemble (un plus
+petit majorant dans \(\mathbb{R}\)).
+\medskip
+
+\noindent
+Intuitivement, dans \(\mathbb{R}\), il n'y a pas de "trous": si une suite de nombre réels semble se rapprocher d'une valeur, 
+cette valeur existe et est aussi un nombre réel.
+
+\medskip
+\begin{remark}
+\(\mathbb{R}\) est dit "complet" car il contient les limites de toutes ses suites de Cauchy, 
+pas seulemnet convergentes, 
+contrairement à \(\mathbb{Q}\) (les rationnels) où certaines suites de Cauchy 
+(comme celle convergeant vers \(sqrt{2}\) ne convergent pas dans \(\mathbb{Q}\) 
+vers des nombres irrationnels (des trous).
+\end{remark}
+
+\medskip
+
+
+\noindent
+\textbf{Définition (Suite de Cauchy)} :
+Une suite \((x_n)\) est dite \textbf{de Cauchy} si pour tout \(\varepsilon > 0\), il existe un entier \(N\) tel que pour tous \(m, n \geq N\), on a \(|x_m - x_n| < \varepsilon\).
+Autrement dit, les termes de la suite deviennent arbitrairement proches les uns des autres,
+sans qu'il soit nécessaire de connaître vers quelle limite éventuelle la suite converge.
+\medskip
+
+\begin{axiom}[Axiome de la complétude séquentielle]
+Dans \(\mathbb{R}\), toute suite de Cauchy converge vers un nombre réel.
+\medskip
+
+
+\begin{proof}[Preuve]
+Axiome fondamental de l'analyse réelle, accepté sans preuve.
+\end{proof}
+
+\medskip
+
+\end{axiom}
+
+\medskip
+
+\begin{proof}[Preuve de l'équivalence avec l'axiome de la borne supérieure]
+\leavevmode
+\begin{enumerate}
+    \item De l’axiome de la borne supérieure à la convergence des suites de Cauchy :
+    Soit \((x_n)\) une suite de Cauchy dans \(\mathbb{R}\).
+    \begin{itemize}
+        \item Étape 1 : La suite est bornée.
+        Il existe \(N\) tel que pour tout \(n \geq N\), \(|x_n - x_N| \leq 1\).
+        Ainsi, \(|x_n| \leq |x_N| + 1\) pour tout \(n \geq N\).
+        La suite \((x_n)\) est donc bornée par \(\max\{|x_1|, |x_2|, \dots, |x_{N-1}|, |x_N| + 1\}\).
+
+        \item Étape 2 : Construction de la limite.
+        On définit \(L = \sup\{x_n \mid n \in \mathbb{N}\}\).
+        Par l’axiome de la borne supérieure, \(L\) existe dans \(\mathbb{R}\).
+        On montre ensuite que \(x_n \to L\).
+    \end{itemize}
+
+    \item De la convergence des suites de Cauchy à l’axiome de la borne supérieure :
+    Soit \(A \subset \mathbb{R}\) un ensemble non vide et majoré.
+    \begin{itemize}
+        \item Étape 1 : Construction d’une suite de Cauchy.
+        Pour chaque \(n \in \mathbb{N}\), choisissons \(x_n \in A\) tel que \(x_n \geq \sup A - \frac{1}{n}\) (possible par définition du supremum).
+        La suite \((x_n)\) est de Cauchy car \(|x_m - x_n| \leq \frac{1}{\min(m,n)}\) pour \(m, n \geq 1\).
+
+        \item Étape 2 : La limite est le supremum.
+        Par hypothèse, \((x_n)\) converge vers une limite \(L \in \mathbb{R}\).
+        On montre que \(L = \sup A\).
+    \end{itemize}
+\end{enumerate}
+\end{proof}
+
+\medskip
+
+\begin{remark}[Illustration]
+La suite \((x_n)\) définie par \(x_n = \frac{n+1}{n}\) est une suite de Cauchy dans \(\mathbb{R}\) (et aussi dans \(\mathbb{Q}\)), et elle converge vers \(1\).
+\medskip
+
+\noindent
+Cependant, des suites de Cauchy dans \(\mathbb{Q}\) peuvent ne pas converger dans \(\mathbb{Q}\).
+Par exemple, une suite \((y_n)\) de rationnels convergeant vers \(\sqrt{2}\) (comme \(y_n = \frac{\lfloor 10^n \sqrt{2} \rfloor}{10^n}\)) est de Cauchy dans \(\mathbb{Q}\), mais sa limite \(\sqrt{2}\) n’est pas rationnelle.
+\medskip
+
+\noindent
+Dans \(\mathbb{R}\), toutes les suites de Cauchy convergent, ce qui comble ces "trous".
+\end{remark}
+
+
+
+
+
+
+\medskip
+
+
+\begin{theorem}[\textbf{Convergence monotone (conséquence de la complétude de \(\mathbb{R}\))}]
+Toute suite croissante et majorée (resp. décroissante et minorée) de nombres réels 
+converge vers une un nombre (une limite) réel.
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+Soit \((x_n)\) une suite croissante et majorée.
+L’ensemble
+\[
+A = \{x_n \mid n \in \mathbb{N}\}
+\]
+est non vide et majoré, donc admet une borne supérieure \(s = \sup A\).
+
+Montrons que \(x_n \to s\).
+Soit \(\varepsilon > 0\).
+Par définition du supremum, il existe \(n_0\) tel que
+\[
+s - \varepsilon < x_{n_0} \le s.
+\]
+Comme la suite est croissante, pour tout \(n \ge n_0\),
+\[
+s - \varepsilon < x_n \le s,
+\]
+ce qui montre que \(x_n \to s\).
+\end{proof}
+
+\medskip
+\noindent
+
+\medskip
+Si une suite augmente (ou diminue) sans dépasser une certaine valeur, 
+elle finit par se stabiliser vers une limite dans \(\mathbb{R}\).
+
+\bigskip
+
+\subsection{\textbf{Intervalles emboîtés}}
+
+\begin{theorem}[Intervalles emboîtés]
+Soit \((I_n)_{n \ge 1}\) une suite d’intervalles fermés non vides de \(\mathbb{R}\),
+\[
+I_n = [a_n,b_n],
+\]
+telle que :
+\begin{itemize}
+\item \(I_{n+1} \subset I_n\) pour tout \(n \ge 1\),
+\item \(b_n - a_n \xrightarrow[n\to\infty]{} 0\).
+\end{itemize}
+Alors l’intersection
+\[
+\bigcap_{n=1}^{\infty} I_n
+\]
+se réduit à un unique point.
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+La suite \((a_n)\) est croissante et majorée, et la suite \((b_n)\) est
+décroissante et minorée.
+Par le théorème de la convergence monotone (qui découle de la complétude de \(\mathbb{R}\)), 
+les suites \((a_n)\) et \((b_n)\) convergent vers des limites \(a\) et \(b\) respectivement :
+\[
+a = \lim_{n\to\infty} a_n
+\quad \text{et} \quad
+b = \lim_{n\to\infty} b_n
+\]
+existent et vérifient \(a \le b\).
+
+De plus,
+\[
+b - a = \lim_{n\to\infty} (b_n - a_n) = 0,
+\]
+donc \(a = b\).
+
+Ainsi,
+\[
+\bigcap_{n=1}^{\infty} I_n = \{a\}.
+\]
+\end{proof}
+
+\medskip
+Toute suite décroissante de segments fermés emboîtés dans \(\mathbb{R}\), 
+dont la longueur tend vers 0, a une intersection non vide (un point commun). -
+Pour une série d’intervalles fermés (ex. \([a_1, b_1], [a_2, b_2], ...)\) chacun contenu dans le précédent, et dont la taille rétrécit. 
+La complétude assure qu’il existe un point réel commun à tous ces intervalles.
+\medskip
+
+\noindent
+Exemple : La suite d'intervalles \(I_n = [0, \frac{1}{n}]\) 
+vérifie \(I_{n+1} \subset I_n\) et \(|I_n| = \frac{1}{n} \to 0\). Leur intersection est \(\{0\}\).
+
+\medskip
+
+\noindent
+Le théorème des intervalles emboîtés est une conséquence directe de la
+complétude de \(\mathbb{R}\).
+Il constitue le principe fondamental permettant de démontrer le théorème
+de Bolzano--Weierstrass.
+
+
+\bigskip
+
+\subsection{\textbf{Théorème de Bolzano--Weierstrass}}
+
+\begin{theorem}[Bolzano--Weierstrass]
+Toute suite bornée de \(\mathbb{R}\) admet une sous-suite convergente.
+\end{theorem}
+
+\begin{proof}[Preuve]
+Soit \((x_n)\) une suite bornée de \(\mathbb{R}\).
+Il existe donc \(a,b \in \mathbb{R}\) tels que \(x_n \in [a,b]\) pour tout \(n\).
+
+On construit une suite de sous-intervalles fermés emboîtés de \([a,b]\),
+de longueur tendant vers \(0\), contenant chacun une infinité de termes
+de la suite \((x_n)\).
+Par le théorème des intervalles emboîtés, l’intersection de ces intervalles
+se réduit à un point \(c \in [a,b]\).
+
+On peut alors extraire une sous-suite \((x_{n_k})\) qui converge vers \(c\).
+\end{proof}
+
+\medskip
+
+Dans un espace métrique général (comme une droite vectorielle normée),
+si vous avez une infinité de points dans un ensemble compact,
+alors il existe au moins un point autour duquel
+une infinité de ces points se regroupent.
+
+Ce théorème est fondamental en analyse réelle
+car il garantit que dans un espace compact,
+on ne peut avoir une infinité de points « éparpillés » sans qu’ils
+convergent vers au moins un point.
+
+\medskip
+
+\subsection{\textbf{Théorème de Weierstrass}}
+
+\begin{theorem}[Weierstrass]
+Soit \(f : [a,b] \to \mathbb{R}\) une fonction continue sur un intervalle fermé et borné \([a,b]\).  
+Alors \(f\) atteint à la fois un maximum et un minimum sur \([a,b]\) :
+\[
+\exists x_{\min}, x_{\max} \in [a,b], \quad f(x_{\min}) \le f(x) \le f(x_{\max}) \quad \forall x \in [a,b].
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+Soit \(f : [a,b] \to \mathbb{R}\) une fonction continue.
+
+\medskip
+\noindent
+\textbf{1. \(f\) est bornée sur \([a,b]\).}  
+Comme \(f\) est continue sur un intervalle fermé et borné,
+son image \(f([a,b]) \subset \mathbb{R}\) est également bornée
+(c’est un résultat de la continuité et de la compacité de \([a,b]\)).
+En effet, supposons par l'absurde que \(f([a,b])\) ne soit pas bornée, alors il existerait une suite
+\((x_n)\) dans \([a,b]\) telle que \(|f(x_n)| \to +\infty\).
+Comme l'intervalle \([a,b]\) est fermé et borné, d’après le théorème de Bolzano--Weierstrass, 
+on peut extraire une sous-suite
+\((x_{n_k})\) convergeant vers un point \(c \in [a,b]\).
+Par continuité de \(f\), la suite \(f(x_{n_k})\) devrait converger vers
+\(f(c)\), ce qui est impossible.
+Ainsi, \(f([a,b])\) est bornée i.e. il existe une constante \(M > 0\) telle que
+\[
+|f(x)| \le M \quad \forall x \in [a,b],
+\]
+
+\medskip
+\noindent
+\textbf{2. Existence des bornes.}  
+Soit \(M = \sup\{f(x) \mid x \in [a,b]\}\) (maximum) et \(m = \inf\{f(x) \mid x \in [a,b]\}\) (minimum).  
+   Comme \(f([a,b])\) est bornée, \(M\) et \(m\) existent et sont finis.
+
+\medskip
+\noindent
+\textbf{3. \(f\) atteint ses bornes.}  
+Pour montrer que \(M\) est atteint, considérons une suite \((x_n)\) dans \([a,b]\) telle que \(f(x_n) \to M\).  
+   Comme \([a,b]\) est compact, il existe une sous-suite \((x_{n_k})\) convergeant vers un point \(x_{\max} \in [a,b]\).
+   La continuité de \(f\), implique alors :
+\[
+f(x_{\max}) = \lim_{k \to \infty} f(x_{n_k}) = M.
+\]
+\noindent
+De façon analogue pour \(m\), il existe \(x_{\min} \in [a,b]\) tel que \(f(x_{\min}) = m\).
+\noindent
+Ainsi, \(f\) atteint son maximum et son minimum sur \([a,b]\).
+
+\medskip
+\end{proof}
+
+\begin{proof}[Preuve (argument intuitif)]
+La continuité empêche les sauts de valeurs, et le caractère fermé de
+l’intervalle garantit que les valeurs aux extrémités sont prises en compte.
+Ainsi, les valeurs extrêmes de \(f\) sur \([a,b]\) existent et sont atteintes
+en des points de l’intervalle. Autrement dit, l’intervalle \([a,b]\) est fermé et borné, et la fonction \(f\) est continue.
+Cela signifie que le graphe de \(f\) est sans rupture et ne peut pas
+« s’échapper » vers l’infini.
+\end{proof}
+
+
+\medskip
+
+
+\noindent
+Exemple 1 : \(f(x) = x^2\) sur \([0,1]\).
+La fonction \(f(x) = x^2\) est continue sur l’intervalle fermé et borné \([0,1]\).  
+D’après le théorème de Weierstrass, elle est bornée et atteint ses bornes :
+\[
+\min_{[0,1]} f = f(0) = 0, 
+\qquad
+\max_{[0,1]} f = f(1) = 1.
+\]
+Le théorème s’applique pleinement.
+\medskip
+
+\noindent
+Exemple 2 : \(f(x) = \frac{1}{x}\) sur \(]0,1]\).
+La fonction \(f(x) = \frac{1}{x}\) est continue sur \(]0,1]\), mais l’intervalle n’est pas fermé.  
+On a
+\[
+\lim_{x \to 0^+} f(x) = +\infty,
+\]
+donc \(f\) n’est pas bornée sur \(]0,1]\).  
+Le théorème de Weierstrass ne s’applique pas.
+\medskip
+
+\noindent
+Exemple 3 :
+Soit
+\[
+f(x) =
+\begin{cases}
+x & \text{si } x \in [0,1[, \\
+0 & \text{si } x = 1.
+\end{cases}
+\]
+La fonction est définie sur l’intervalle fermé et borné \([0,1]\), mais elle n’est pas continue en \(x=1\).  
+On a
+\[
+\sup_{[0,1]} f = 1,
+\]
+mais cette borne supérieure n’est pas atteinte.  
+Ainsi, la continuité est une hypothèse essentielle du théorème.
+
+\medskip
+\noindent
+Ces exemples montrent que les trois hypothèses du théorème de Weierstrass sont essentielles :
+\begin{itemize}
+\item continuité de la fonction,
+\item intervalle fermé,
+\item intervalle borné.
+\end{itemize}
+La suppression de l’une d’elles peut entraîner la perte de la bornitude ou de l’atteinte des extrema.
+
+\medskip
+
+
+
+\begin{theorem}[\textbf{Théorème des valeurs intermédiaires}]
+Soit \( f : [a, b] \to \mathbb{R} \) une fonction \textbf{continue} sur l'intervalle fermé \([a, b]\). Pour tout réel \( y \) compris entre \( f(a) \) et \( f(b) \), il existe \( c \in [a, b] \) tel que \( f(c) = y \).
+\end{theorem}
+
+\medskip
+
+\noindent
+\textbf{Interprétation :}
+Ce théorème affirme qu'une fonction continue sur un intervalle fermé prend toutes les valeurs intermédiaires entre ses valeurs aux extrémités de l'intervalle. Autrement dit, si \( f \) est continue sur \([a, b]\) et si \( y \) est un réel tel que \( f(a) \leq y \leq f(b) \) ou \( f(b) \leq y \leq f(a) \), alors il existe un point \( c \) dans \([a, b]\) tel que \( f(c) = y \).
+
+\medskip
+
+\begin{proof}[Preuve]
+Nous allons démontrer le théorème dans le cas où \( f(a) \leq y \leq f(b) \). Le cas \( f(b) \leq y \leq f(a) \) se traite de manière analogue en considérant la fonction \(-f\).
+
+\medskip
+
+\noindent
+\textbf{Étape 1 : Définition de l'ensemble \( S \)}
+Considérons l'ensemble \( S = \{ x \in [a, b] \mid f(x) \leq y \} \). Cet ensemble est non vide car \( a \in S \) (puisque \( f(a) \leq y \)) et il est majoré par \( b \).
+
+\medskip
+
+\noindent
+\textbf{Étape 2 : Utilisation de la propriété de la borne supérieure}
+Par la propriété de la borne supérieure, \( S \) admet une borne supérieure \( c = \sup S \). Nous allons montrer que \( f(c) = y \).
+
+\medskip
+
+\noindent
+\textbf{Étape 3 : Preuve par l'absurde}
+Supposons par l'absurde que \( f(c) \neq y \). Deux cas sont possibles :
+
+\begin{itemize}
+    \item \textbf{Cas 1 :} \( f(c) < y \). Puisque \( f \) est continue en \( c \), il existe \( \eta > 0 \) tel que pour tout \( x \) vérifiant \( |x - c| < \eta \), on a \( f(x) < y \). On peut alors trouver \( x \in (c, c + \eta) \cap [a, b] \) tel que \( f(x) < y \), ce qui contredit le fait que \( c \) est la borne supérieure de \( S \) (car \( x > c \) et \( x \in S \)).
+
+    \item \textbf{Cas 2 :} \( f(c) > y \). Puisque \( f \) est continue en \( c \), il existe \( \eta > 0 \) tel que pour tout \( x \) vérifiant \( |x - c| < \eta \), on a \( f(x) > y \). On peut alors trouver \( x \in (c - \eta, c) \cap [a, b] \) tel que \( f(x) > y \). Puisque \( c = \sup S \), il existe \( x' \in S \) tel que \( x' > x \). Par définition de \( S \), \( f(x') \leq y \). En utilisant la continuité de \( f \) sur \([x, x']\), le théorème des valeurs intermédiaires sur \([x, x']\) (qui est un intervalle plus petit) implique qu'il existe un point entre \( x \) et \( x' \) où \( f \) prend la valeur \( y \), ce qui contredit notre hypothèse que \( f(x) > y \) pour tout \( x \) proche de \( c \).
+\end{itemize}
+
+\medskip
+
+\noindent
+\textbf{Conclusion :}
+Dans les deux cas, nous arrivons à une contradiction. Donc, \( f(c) = y \).
+\end{proof}
+
+\medskip
+
+\textbf{Remarques :}
+\begin{itemize}
+    \item Le théorème des valeurs intermédiaires (TVI) est une propriété fondamentale des fonctions continues sur un intervalle.
+    \item Il est souvent utilisé pour montrer l'existence de solutions à des équations de la forme \( f(x) = 0 \).
+    \item Ce théorème est valable pour les fonctions continues sur un intervalle fermé, mais pas nécessairement pour les fonctions discontinues.
+\end{itemize}
+
+
+\medskip
+
+\medskip
+\noindent
+\textbf{Exemple :} Montrons que l'équation \( x^3 + x - 1 = 0 \) admet une solution dans \([0, 1]\).
+
+\medskip
+\noindent
+Considérons la fonction \( f(x) = x^3 + x - 1 \). Cette fonction est continue sur \([0, 1]\). On a \( f(0) = -1 \) et \( f(1) = 1 \). Puisque \( 0 \) est compris entre \( f(0) \) et \( f(1) \), 
+par le théorème des valeurs intermédiaires, il existe \( c \in [0, 1] \) tel que \( f(c) = 0 \).
+
+\medskip
+
+\subsection{Théorème de Rolle}
+
+\begin{theorem}[Théorème de Rolle]
+Soit \(f : [a,b] \to \mathbb{R}\) continue sur \([a,b]\) et dérivable sur \((a,b)\).  
+Si \(f(a) = f(b)\), alors il existe au moins un point \(c \in (a,b)\) tel que :
+\[
+f'(c) = 0.
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+La fonction \(f\) est continue sur un intervalle fermé \([a,b]\), donc par le \emph{théorème de Weierstrass}, elle atteint son maximum et son minimum sur \([a,b]\).
+
+- Si le maximum ou le minimum est atteint à un point \(c \in (a,b)\), alors \(f\) admet un extremum local en \(c\).  
+  Comme \(f\) est dérivable en \(c\), la dérivée s'annule : \(f'(c) = 0\).
+
+- Si le maximum et le minimum sont atteints aux extrémités \(a\) et \(b\), alors \(f(a) = f(b)\) implique que \(f\) est constante.  
+  Dans ce cas, \(f'(x) = 0\) pour tout \(x \in (a,b)\).
+
+Dans les deux cas, il existe donc au moins un point \(c \in (a,b)\) tel que \(f'(c) = 0\).
+\end{proof}
+
+\medskip
+
+Ce théorème nous dit que si \(f\) est continue sur \([a,b]\), dérivable sur \((a,b)\), et \(f(a) = f(b)\), 
+alors il existe un point \(c \in (a,b)\) où la pente de la tangente est nulle (\(f'(c) = 0\)).  
+Ce point peut être un extremum local ou un point d'inflexion.
+\begin{remark}
+Sans la condition \(f(a) = f(b)\), la fonction pourrait simplement augmenter ou diminuer sur \([a,b]\) sans jamais avoir une pente nulle à l'intérieur de l'intervalle.
+\end{remark}
+
+\medskip
+
+\noindent
+\textbf{Synthèse :}
+Le théorème de Weierstrass montre qu'une fonction continue sur un intervalle fermé \([a,b]\) atteint ses bornes (minimum et maximum).
+Le théorème des valeurs intermédiaires (TVI) montre qu'une fonction continue sur \([a,b]\) 
+prend toutes les valeurs intermédiaires entre ses valeurs aux extrémités. Il utilise implicitement 
+la compacité de \([a,b]\) (garantie par le théorème de Weierstrass pour les bornes).
+
+\noindent
+Le théorème de Rolle utilise à la fois le théorème de Weierstrass (pour garantir l'existence d'un maximum ou minimum) 
+et le TVI (pour garantir l'existence d'un point où la dérivée s'annule).
+
+\medskip
+
+\noindent
+Le théorème de Rolle est un cas particulier du théorème des accroissements finis.
+
+\medskip
+
+\subsection{Théorème des accroissements finis}
+
+\begin{theorem}[Théorème des accroissements finis]
+Soit \(f : [a,b] \to \mathbb{R}\) continue sur \([a,b]\) et dérivable sur \((a,b)\).  
+Alors il existe \(c \in (a,b)\) tel que
+\[
+f(b)-f(a) = f'(c)(b-a).
+\]
+\end{theorem}
+
+\begin{proof}[Preuve]
+Considérons la fonction auxiliaire
+\[
+\phi(x) = f(x) - \frac{f(b)-f(a)}{b-a}(x-a), \quad x \in [a,b].
+\]
+
+- $\phi$ est continue sur $[a,b]$ et dérivable sur $(a,b)$ (combinaison de fonctions continues/dérivables).
+- On a
+\[
+\phi(a) = f(a) - \frac{f(b)-f(a)}{b-a} \cdot 0 = f(a), \quad
+\phi(b) = f(b) - \frac{f(b)-f(a)}{b-a}(b-a) = f(a).
+\]
+
+Ainsi, $\phi(a) = \phi(b)$. Par le théorème de Rolle, il existe $c \in (a,b)$ tel que
+\[
+\phi'(c) = 0.
+\]
+
+Or
+\[
+\phi'(x) = f'(x) - \frac{f(b)-f(a)}{b-a}.
+\]
+
+Donc $\phi'(c) = 0$ implique
+\[
+f'(c) = \frac{f(b)-f(a)}{b-a}.
+\]
+
+Ceci conclut la preuve.
+\end{proof}
+
+\medskip
+
+Le théorème des accroissements finis nous dit que sur une courbe lisse reliant deux points
+(a,f(a)) et (b,f(b)), il existe au moins un point où la pente de la tangente 
+est parallèle à la droite reliant ces deux points.
+
+\medskip
+
+\subsection{Théorème de stricte monotonie}
+
+\begin{theorem}[Monotonie d'une fonction dérivable]
+Soit \(f : I \to \mathbb{R}\) dérivable sur un intervalle \(I \subset \mathbb{R}\).  
+Alors \(f\) est strictement croissante sur \(I\) si et seulement si \(f'(x) > 0\) pour tout \(x \in I\), sauf éventuellement en un nombre fini ou dénombrable de points isolés où \(f'\) peut s'annuler.
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+Supposons \(f\) dérivable sur \(I\) et \(f'(x) > 0\) pour tout \(x \in I\), sauf éventuellement en quelques points isolés.  
+
+Pour \(x_1, x_2 \in I\) avec \(x_1 < x_2\), le théorème des accroissements finis assure l'existence de \(c \in (x_1, x_2)\) tel que :
+\[
+f(x_2) - f(x_1) = f'(c)(x_2 - x_1).
+\]
+Comme \(x_2 - x_1 > 0\) et \(f'(c) \ge 0\), on obtient \(f(x_2) - f(x_1) \ge 0\).  
+Si \(f'(c) > 0\), on a \(f(x_2) - f(x_1) > 0\).  
+Ainsi, \(f\) est strictement croissante, sauf éventuellement aux points isolés où \(f' = 0\).
+\end{proof}
+
+\medskip
+
+\subsection{Théorème de la dérivée nulle}
+
+\begin{theorem}[Dérivée nulle]
+Soit \(f : I \to \mathbb{R}\) dérivable sur un intervalle \(I \subset \mathbb{R}\).  
+Alors \(f\) est constante sur \(I\) si et seulement si \(f'(x) = 0\) pour tout \(x \in I\).
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+(\(\Rightarrow\)) Si \(f\) est constante, alors \(f(x) = k\) pour tout \(x \in I\).  
+Ainsi, \(f'(x) = 0\) pour tout \(x\).
+
+(\(\Leftarrow\)) Supposons \(f'(x) = 0\) pour tout \(x \in I\).  
+Pour \(x_1, x_2 \in I\) avec \(x_1 < x_2\), le théorème des accroissements finis fournit \(c \in (x_1, x_2)\) tel que :
+\[
+f(x_2) - f(x_1) = f'(c)(x_2 - x_1) = 0.
+\]
+Donc \(f(x_2) = f(x_1)\) et \(f\) est constante sur \(I\).
+\end{proof}
+
+\begin{remark}[Importance de l'intervalle]
+Si \(I\) n'est pas un intervalle, la conclusion peut échouer.  
+Exemple : \(f(x) = -1\) sur \(\mathbb{R}_-^*\) et \(f(x) = 1\) sur \(\mathbb{R}_+^*\).  
+Alors \(f' = 0\) partout sur chaque morceau, mais \(f\) n'est pas constante sur \(\mathbb{R}^* = \mathbb{R}_-^* \cup \mathbb{R}_+^*\).  
+Ainsi, l'hypothèse d'intervalle est cruciale.
+\end{remark}
+
+
+
+
+
+\chapter{\textbf{Opérations sur les fonctions}}
+
+
+\section{\textbf{Fonctions inverses et opérations élémentaires}}
+
+
+\subsection{Ensemble des fonctions et opérations usuelles}
+
+Soit \(D\) un ensemble non vide de \(\mathbb{R}\).
+On note
+\[
+\mathcal{F}(D,\mathbb{R})
+\]
+l’ensemble des fonctions définies sur \(D\) et à valeurs dans \(\mathbb{R}\), c’est-à-dire l’ensemble des applications
+\[
+f : D \to \mathbb{R}.
+\]
+
+\subsubsection{Opérations sur les fonctions}
+
+Soient \(f,g \in \mathcal{F}(D,\mathbb{R})\) et \(\lambda \in \mathbb{R}\).
+
+\begin{definition}[Somme de deux fonctions]
+La \emph{somme} des fonctions \(f\) et \(g\) est la fonction \(f+g \in \mathcal{F}(D,\mathbb{R})\) définie par
+\[
+\forall x \in D, \quad (f+g)(x) = f(x) + g(x).
+\]
+\end{definition}
+
+\begin{definition}[Produit de deux fonctions]
+Le \emph{produit} des fonctions \(f\) et \(g\) est la fonction \(fg \in \mathcal{F}(D,\mathbb{R})\) définie par
+\[
+\forall x \in D, \quad (fg)(x) = f(x)\,g(x).
+\]
+\end{definition}
+
+\begin{definition}[Multiplication par un scalaire]
+Soit \(f \in \mathcal{F}(D,\mathbb{R})\) et \(\lambda \in \mathbb{R}\).
+Le \emph{multiple scalaire} de \(f\) par \(\lambda\) est la fonction \(\lambda f \in \mathcal{F}(D,\mathbb{R})\) définie par
+\[
+\forall x \in D, \quad (\lambda f)(x) = \lambda\,f(x).
+\]
+\end{definition}
+
+\begin{definition}[Inversion d’une fonction]
+Soit \(f \in \mathcal{F}(D,\mathbb{R})\) une fonction telle que
+\[
+\forall x \in D, \quad f(x) \neq 0.
+\]
+On définit alors la fonction \emph{inverse} de \(f\), notée \(\dfrac{1}{f}\), par :
+\[
+\forall x \in D, \quad \left(\frac{1}{f}\right)(x) = \frac{1}{f(x)}.
+\]
+\end{definition}
+
+
+
+\subsubsection{Composition de fonctions}
+
+Soient \(D,E \subset \mathbb{R}\), \(f \in \mathcal{F}(D,E)\) et \(g \in \mathcal{F}(E,\mathbb{R})\).
+
+\begin{definition}[Composition de fonctions]
+La \emph{composée} de \(g\) par \(f\), notée \(g \circ f\), est la fonction définie sur \(D\) par
+\[
+\forall x \in D, \quad (g \circ f)(x) = g(f(x)).
+\]
+\end{definition}
+
+\subsection{Règles de dérivation}
+
+\begin{theorem}[Dérivée d’un produit]
+Soient \(u\) et \(v\) deux fonctions dérivables sur un ensemble \(D \subset \mathbb{R}\).
+Alors le produit \(uv\) est dérivable sur \(D\) et, pour tout \(x \in D\),
+\[
+(uv)'(x) = u'(x)v(x) + u(x)v'(x).
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+Soit \(x \in D\).  
+Par définition de la dérivée, on considère le taux d'accroissement du produit \(uv\) :
+
+\[
+\frac{(uv)(x+h) - (uv)(x)}{h}
+= \frac{u(x+h)v(x+h) - u(x)v(x)}{h}.
+\]
+
+On ajoute et on retranche le terme \(u(x+h)v(x)\) afin de séparer les variations :
+\[
+= \frac{u(x+h)v(x+h) - u(x+h)v(x)}{h}
++ \frac{u(x+h)v(x) - u(x)v(x)}{h}.
+\]
+
+On factorise :
+\[
+= u(x+h)\frac{v(x+h) - v(x)}{h}
++ v(x)\frac{u(x+h) - u(x)}{h}.
+\]
+
+En faisant tendre \(h\) vers \(0\), on utilise la continuité de \(u\) et \(v\), conséquence de leur dérivabilité :
+\[
+\lim_{h \to 0} u(x+h) = u(x), \quad
+\lim_{h \to 0} \frac{v(x+h) - v(x)}{h} = v'(x),
+\]
+\[
+\lim_{h \to 0} \frac{u(x+h) - u(x)}{h} = u'(x).
+\]
+
+On obtient donc :
+\[
+(uv)'(x) = u'(x)v(x) + u(x)v'(x).
+\]
+\end{proof}
+
+\bigskip
+
+\begin{theorem}[Dérivée d’une fonction composée]
+Soient \(g : D \to \mathbb{R}\) et \(f : J \to \mathbb{R}\) deux fonctions telles que
+\(g(D) \subset J\).  
+Si \(g\) est dérivable en \(x \in D\) et \(f\) est dérivable en \(g(x)\), alors la fonction
+composée \(f \circ g\) est dérivable en \(x\) et :
+\[
+(f \circ g)'(x) = f'(g(x))\,g'(x).
+\]
+\end{theorem}
+
+\medskip
+
+\begin{proof}[Preuve]
+Par définition de la dérivée, on écrit :
+\[
+(f \circ g)'(x)
+= \lim_{h \to 0} \frac{f(g(x+h)) - f(g(x))}{h}.
+\]
+
+On multiplie et divise par \(g(x+h) - g(x)\), qui tend vers \(0\) lorsque \(h \to 0\) :
+\[
+= \lim_{h \to 0}
+\left(
+\frac{f(g(x+h)) - f(g(x))}{g(x+h) - g(x)}
+\cdot
+\frac{g(x+h) - g(x)}{h}
+\right).
+\]
+
+Lorsque \(h \to 0\), on a :
+\[
+g(x+h) \to g(x),
+\quad
+\frac{g(x+h) - g(x)}{h} \to g'(x).
+\]
+
+Par définition de la dérivée de \(f\),
+\[
+\frac{f(g(x+h)) - f(g(x))}{g(x+h) - g(x)} \to f'(g(x)).
+\]
+
+Par passage à la limite, il vient :
+\[
+(f \circ g)'(x) = f'(g(x))\,g'(x).
+\]
+
+\end{proof}
+
+
+\begin{proof}[Preuve alternative par notation différentielle et changement de variable]
+Soit \(X = g(x)\). Alors \(f \circ g(x) = f(X)\).  
+
+On utilise la notation différentielle :
+\[
+(f \circ g)'(x) = \frac{df(g(x))}{dx} = \frac{df(X)}{dX} \cdot \frac{dX}{dx}.
+\]
+
+Or, \(\frac{df(X)}{dX} = f'(X)\) et \(\frac{dX}{dx} = g'(x)\), donc
+\[
+(f \circ g)'(x) = f'(X) \, g'(x) = f'(g(x))\,g'(x).
+\]
+
+Cette preuve met en évidence le changement de variable \(X = g(x)\) et l’usage de la notation différentielle pour simplifier le calcul.
+\end{proof}
+\bigskip
+
+
+\chapter{\textbf{Méthodologie pour l'étude d'une fonction réelle}}
+
+Pour étudier une fonction \(f : D_f \subset \mathbb{R} \to \mathbb{R}\), on suit généralement les étapes suivantes :
+
+\begin{enumerate}
+    \item \textbf{Détermination de l'ensemble de définition} \(D_f\).  
+          Identifier les points où \(f\) n'est pas définie (division par zéro, racine carrée d'un nombre négatif, logarithme d'un nombre non positif, etc.).
+    
+    \item \textbf{Réduction éventuelle de l'intervalle d'étude}.  
+          Si \(f\) possède des symétries (paire, impaire, périodique), on peut limiter l'étude à un sous-intervalle et étendre le résultat ensuite.
+    
+    \item \textbf{Étude des limites aux bornes de l'ensemble de définition}.  
+          Examiner le comportement de \(f(x)\) lorsque \(x\) tend vers les bornes de \(D_f\) (limites finies ou infinies).
+    
+    \item \textbf{Étude des variations}.  
+          Calculer \(f'(x)\) sur \(D_f\) et déterminer les intervalles de croissance et de décroissance. Identifier les points stationnaires et les extrema locaux.
+    
+    \item \textbf{Étude des branches infinies et des asymptotes}.  
+          Déterminer les asymptotes verticales (lorsque \(x \to a\) et \(f(x) \to \pm\infty\)), horizontales (lorsque \(x \to \pm\infty\)), ou obliques si nécessaires.
+    
+    \item \textbf{Tracé de la courbe} \(y=f(x)\) dans un repère du plan.  
+          Utiliser toutes les informations précédentes pour représenter qualitativement la fonction : croissance, décroissance, extrema, asymptotes, points d'inflexion, etc.
+\end{enumerate}
+
+
+\section{\textbf{Extension aux fonctions complexes}}
+
+Si \(f : I \to \mathbb{C}\) est une fonction complexe définie sur un intervalle \(I \subset \mathbb{R}\), on peut écrire :
+\[
+f(x) = u(x) + i\, v(x),
+\]
+où \(u,v : I \to \mathbb{R}\) sont les parties réelle et imaginaire de \(f\).  
+Alors les résultats sur les intégrales de fonctions réelles s'étendent naturellement aux fonctions complexes, car :
+\[
+\int_a^b f(x)\, dx = \int_a^b u(x)\, dx + i \int_a^b v(x)\, dx,
+\]
+et toutes les propriétés précédentes (linéarité, intégration par parties, changement de variable) s'appliquent séparément aux parties réelle et imaginaire.
+
+\chapter{\textbf{Exercices}}
+
+\textbf{Exercice 1} 
+Montrer que \(f:x \to \frac{x}{e^x - 1} - 1 + \frac{x}{2} \) est une fonction paire.
+\medskip
+
+\noindent
+\textbf{Exercice 2}
+\begin{enumerate}
+\item Montrer que \(f: x \to cos(2x) + sin(3x)\) est périodique et déterminer sa plus petite période.
+\item Montrer que \(1_\mathbb{Q}\) qui vaut \(1\) sur \(\mathbb{Q}\) et \(0\) sur \(\mathbb{R} \setminus \mathbb{Q}\) est périodique mais ne possède pas de plus petite période.
+\item Si \(x \in \mathbb{R}\), on note [x] l'unique entier \(n\) à vériifer \(n \leq x < n+1\). Montrer que la fonction \(d:x \to x - [x]\) est périodique et déterminer sa plus petite période.
+\end{enumerate}
+\medskip
+
+\noindent
+\textbf{Exercice 3} 
+Soit \(f: \mathbb{R} \to \mathbb{R}\) définie par \(f(x) = x^2 + 2x + 3\).
+\begin{enumerate}
+\item La fonction est-elle paire ? impaire ? Quelle est sa partie paire \(f_p\) ?
+\item Quels sont les antécédents de \(3\) ? de \(2\) ? de \(0\) ?
+\item Donner le plus grand intervalle \(I\) contenant \(0\) sur lequel \(f\) réalise une bijection de \(I\) sur \(f(I)\) (que l'on déterminera).
+\item Donner l'expression de la fonction réciproque \(f^{-1}: f(I) \to I\).
+\item Calculer la dérivée de \(f\) et de \(f^{-1}\).
+\item Donner le développement limité de \(f\) en \(0\) à l'ordre \(2\) et celui de \(f^{-1}\) en \(3\) à l'ordre \(2\).
+\end{enumerate}
+\medskip
+
+\noindent
+\textbf{Exercice 4} 
+(la fonction Arc-tangente).
+\begin{enumerate}
+\item Montrer que la fonction \(tan\) réalise une bijection de \(-\frac{\pi}{2}, \frac{\pi}{2}\) sur \(\mathbb{R}\). La réciproque correspondante se note \(arctan\).
+\item Démonter que \(Arctan\) est dérivable sur \(\mathbb{R}\) et que pour tout \(x \in \mathbb{R}\), \(arctan'(x) = \frac{1}{1+x^2}\).
+\item Que dire de \(tan(Arctan(x))\) et \(Arctan(tan(x))\) ?
+\end{enumerate}
+\medskip
+
+\noindent
+\textbf{Exercice 5}
+Faire l'étude complète de \(f: x \to (x^2 + 1)\exp(-x)\)
+\medskip
+
+\subsection{\textbf{Solutions}}
+\noindent
+\textbf{Exercice 1}
+\begin{proof}[Solution]
+Pour montrer que \(f\) est une fonction paire,
+il suffit de vérifier que \(f(-x) = f(x)\) pour tout \(x \in \mathbb{R}\).
+Calculons \(f(-x)\):
+\[
+f(-x) = \frac{-x}{e^{-x} - 1} - 1 + \frac{-x}{2} = \frac{-x}{e^{-x} - 1} - 1 - \frac{x}{2}
+\]
+On peut réécrire cette expression en utilisant la propriété \(e^{-x} = \frac{1}{e^x}\):
+\[
+f(-x) = \frac{-x}{\frac{1}{e^x} - 1} - 1 - \frac{x}{2}
+= \frac{-x e^x}{1 - e^x} - 1 - \frac{x}{2}
+= \frac{x e^x}{e^x - 1} - 1 - \frac{x}{2}
+= \left(\frac{x e^x}{e^x - 1} + \frac{x}{2}\right) - 1
+= f(x)
+\]
+Donc \(f\) est bien une fonction paire.
+\end{proof}
+\medskip
+\noindent
+\textbf{Exercice 2}
+\begin{proof}[Solution]
+\begin{enumerate}
+\item La fonction \(f(x) = \cos(2x) + \sin(3x)\) est périodique car les fonctions \(\cos(2x)\) et
+\end{enumerate}
+\end{proof}
+\end{document}
