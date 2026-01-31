@@ -5,4 +5,4 @@ Unsupervised learning
    :maxdepth: 2
    :caption: Notebooks:
 
-   ML_labDauphine_unsupervised_1_CAH
+   CAH_HAC

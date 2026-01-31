@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Supervised learning &mdash; website Machine Learning 0.1 documentation</title>
+  <title>Unsupervised learning &mdash; website Machine Learning 0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
 
@@ -20,8 +20,8 @@
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Logistic Regression: Theory, Implementation, and Application." href="LogisticRegression.html" />
-    <link rel="prev" title="Classification Hiérarchique Ascendante (CAH)" href="../unsupervised_learning/ML_labDauphine_unsupervised_1_CAH.html" /> 
+    <link rel="next" title="Classification Hiérarchique Ascendante (CAH)" href="CAH_HAC.html" />
+    <link rel="prev" title="Machine Leanring" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,11 +47,12 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../probabilities/index.html">Probabilities</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Machine Leanring</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="../unsupervised_learning/index.html">Unsupervised learning</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Supervised learning</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="LogisticRegression.html"><strong>Logistic Regression: Theory, Implementation, and Application</strong>.</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Unsupervised learning</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CAH_HAC.html">Classification Hiérarchique Ascendante (CAH)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="CAH_HAC.html#Hierarchical-Agglomerative-Clustering-(HAC)">Hierarchical Agglomerative Clustering (HAC)</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../supervised/index.html">Supervised learning</a></li>
 </ul>
 </li>
 </ul>
@@ -71,9 +72,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Machine Leanring</a></li>
-      <li class="breadcrumb-item active">Supervised learning</li>
+      <li class="breadcrumb-item active">Unsupervised learning</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../../_sources/machine_learning/supervised_learning/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/machine_learning/unsupervised/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -81,21 +82,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="supervised-learning">
-<h1>Supervised learning<a class="headerlink" href="#supervised-learning" title="Permalink to this heading"></a></h1>
+  <section id="unsupervised-learning">
+<h1>Unsupervised learning<a class="headerlink" href="#unsupervised-learning" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Notebooks:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="LogisticRegression.html"><strong>Logistic Regression: Theory, Implementation, and Application</strong>.</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Table-of-Contents"><strong>Table of Contents</strong></a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Introduction-to-Logistic-Regression">Introduction to Logistic Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Theory-and-Fundamentals">Theory and Fundamentals</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Practical-Implementation-of-Logistic-Regression">Practical Implementation of Logistic Regression</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Modification-of-the-initial-dataset">Modification of the initial dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Coefficients-interpretation">Coefficients interpretation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#APPENDIX">APPENDIX</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Coefficients-significativity">Coefficients significativity</a></li>
-<li class="toctree-l2"><a class="reference internal" href="LogisticRegression.html#Model-quality-mesure-(Deviance)">Model quality mesure (Deviance)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CAH_HAC.html">Classification Hiérarchique Ascendante (CAH)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CAH_HAC.html#Hierarchical-Agglomerative-Clustering-(HAC)">Hierarchical Agglomerative Clustering (HAC)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#The-Euclidean-distance">The Euclidean distance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#Single-linkage-clustering---Step-by-step-Explanation">Single linkage clustering - Step-by-step Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#The-complexity">The complexity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#⚠️-Limitations-in-High-Dimensional-Spaces">⚠️ Limitations in High-Dimensional Spaces</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#Ward-Linkage-clustering---Step-by-Step-Explanation">Ward Linkage clustering - Step-by-Step Explanation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#HAC-from-scratch">HAC from scratch</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#HAC-with-Python-packages">HAC with Python packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#HAC-using-Single-linkage-method">HAC using Single linkage method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#HAC-using-Ward's-Method">HAC using Ward’s Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CAH_HAC.html#HAC-on-iris-data">HAC on iris data</a></li>
 </ul>
 </li>
 </ul>
@@ -106,8 +109,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../unsupervised_learning/ML_labDauphine_unsupervised_1_CAH.html" class="btn btn-neutral float-left" title="Classification Hiérarchique Ascendante (CAH)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="LogisticRegression.html" class="btn btn-neutral float-right" title="Logistic Regression: Theory, Implementation, and Application." accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Machine Leanring" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="CAH_HAC.html" class="btn btn-neutral float-right" title="Classification Hiérarchique Ascendante (CAH)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
