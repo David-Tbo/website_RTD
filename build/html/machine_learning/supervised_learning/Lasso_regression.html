@@ -1,0 +1,258 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lasso example &mdash; website Machine Learning 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/nbsphinx-code-cells.css?v=2aa19091" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=e031e9a9"></script>
+      <script src="../../_static/doctools.js?v=888ff710"></script>
+      <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
+      <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+      <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+      <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            website Machine Learning
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../probabilities/index.html">Probabilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Machine Leanring</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">website Machine Learning</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Lasso example</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/machine_learning/supervised_learning/Lasso_regression.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="Lasso-example">
+<h1>Lasso example<a class="headerlink" href="#Lasso-example" title="Permalink to this heading"></a></h1>
+<p>Illustration of how the Lasso (Least Absolute Shrinkage and Selection Operator) selects variables depending on their correlation with the residual and the parameter <span class="math notranslate nohighlight">\(\lambda\)</span>.</p>
+<section id="Generate-the-data">
+<h2>Generate the data<a class="headerlink" href="#Generate-the-data" title="Permalink to this heading"></a></h2>
+<ul class="simple">
+<li><p>15 observations</p></li>
+<li><p>3 features (X1, X2, X3)</p></li>
+<li><p>1 target variable y</p></li>
+<li><p>X1 and X2 are correlated and X3 is less correlated with y</p></li>
+</ul>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># Fixons une graine pour la reproductibilité</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Générons les données</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">15</span>
+<span class="n">X1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">X2</span> <span class="o">=</span> <span class="n">X1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># X2 corrélé avec X1</span>
+<span class="n">X3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>  <span class="c1"># X3 non corrélé avec X1/X2</span>
+
+<span class="c1"># Variable cible : y = 2*X1 + 0.5*X2 + 0.1*X3 + bruit</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">X1</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">X2</span> <span class="o">+</span> <span class="mf">0.1</span> <span class="o">*</span> <span class="n">X3</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+<span class="c1"># Matrice X (avec une colonne de 1 pour l&#39;intercept si nécessaire)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">X1</span><span class="p">,</span> <span class="n">X2</span><span class="p">,</span> <span class="n">X3</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Standardize-the-data">
+<h2>Standardize the data<a class="headerlink" href="#Standardize-the-data" title="Permalink to this heading"></a></h2>
+<p>Lasso is sensitive to the scale of the variables.</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_mean</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_std</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">X_std</span>
+
+<span class="n">y_mean</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">y_std</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y_mean</span><span class="p">)</span> <span class="o">/</span> <span class="n">y_std</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="3.-Implement-a-simplifed-version-of-Lasso-regression">
+<h2>3. Implement a simplifed version of Lasso regression<a class="headerlink" href="#3.-Implement-a-simplifed-version-of-Lasso-regression" title="Permalink to this heading"></a></h2>
+<p>Iterative approach based on the KKT conditions to estimate the <span class="math notranslate nohighlight">\(\beta\)</span>.</p>
+<p><strong>Function to update the coefficients</strong></p>
+<p>For each <span class="math notranslate nohighlight">\(\beta_j\)</span>, we update the value using the soft-thresholding rule (derived from KKT conditions)</p>
+<div class="math notranslate nohighlight">
+\[\beta_j \leftarrow \dfrac{S(\sum_{i=1}^{n}x_{ij}(y_i - \tilde{y}_i^{(j)}), \lambda)}{||x_j||_2^2}\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(S(z, \lambda) = \text{sgn}(z)(|z|-\lambda)_{+}\)</span> is the operator of soft-thresholding,</p></li>
+<li><p><span class="math notranslate nohighlight">\(\tilde{y}_i^{(j)} = \sum_{k \neq j}x_{ij}\beta_k\)</span> is the prediction without the variable <span class="math notranslate nohighlight">\(j\)</span>.</p></li>
+</ul>
+<p><strong>Algorithm</strong></p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">soft_threshold</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">z</span> <span class="o">&gt;</span> <span class="n">lambda_</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z</span> <span class="o">-</span> <span class="n">lambda_</span>
+    <span class="k">elif</span> <span class="n">z</span> <span class="o">&lt;</span> <span class="o">-</span><span class="n">lambda_</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">z</span> <span class="o">+</span> <span class="n">lambda_</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mf">0.0</span>
+
+<span class="k">def</span> <span class="nf">lasso_coordinate_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="mf">1e-4</span><span class="p">):</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_iter</span><span class="p">):</span>
+        <span class="n">beta_old</span> <span class="o">=</span> <span class="n">beta</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+            <span class="c1"># Compute the partial residu without the variable j</span>
+            <span class="n">residual</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">X</span> <span class="o">@</span> <span class="n">beta</span> <span class="o">+</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">beta</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="c1"># Update the beta_j</span>
+            <span class="n">z_j</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">residual</span>
+            <span class="n">beta</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">soft_threshold</span><span class="p">(</span><span class="n">z_j</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">X</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">j</span><span class="p">])</span>
+
+        <span class="c1"># Verification of the convergence</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">beta</span> <span class="o">-</span> <span class="n">beta_old</span><span class="p">,</span> <span class="nb">ord</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="k">break</span>
+
+    <span class="k">return</span> <span class="n">beta</span>
+</pre></div>
+</div>
+</div>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[6]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">lambda_</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">beta_hat</span> <span class="o">=</span> <span class="n">lasso_coordinate_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lambda_</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Coefficients estimated :&quot;</span><span class="p">,</span> <span class="n">beta_hat</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Coefficients estimated : [0.62455072 0.34389539 0.        ]
+</pre></div></div>
+</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\beta_1\)</span> is correlated with <span class="math notranslate nohighlight">\(y\)</span> and remain in the model.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_2\)</span> is less correlated with <span class="math notranslate nohighlight">\(y\)</span> but remain in the model.</p></li>
+<li><p><span class="math notranslate nohighlight">\(\beta_3\)</span> has a weak correlation with <span class="math notranslate nohighlight">\(y\)</span> and is eliminated.</p></li>
+</ul>
+</section>
+<section id="Check-the-KKT-conditions">
+<h2>Check the KKT conditions<a class="headerlink" href="#Check-the-KKT-conditions" title="Permalink to this heading"></a></h2>
+<p>For every <span class="math notranslate nohighlight">\(\beta_j\)</span>, check if the KKT conditions are satisfied:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[7]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">residual</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">X</span> <span class="o">@</span> <span class="n">beta_hat</span>
+    <span class="n">correlation</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">residual</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Variable </span><span class="si">{</span><span class="n">j</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">: |x_j^T(y - Xβ)| = </span><span class="si">{</span><span class="nb">abs</span><span class="p">(</span><span class="n">correlation</span><span class="p">)</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, λ/2 = </span><span class="si">{</span><span class="n">lambda_</span><span class="o">/</span><span class="mi">2</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+Variable 1: |x_j^T(y - Xβ)| = 0.499, λ/2 = 0.250
+Variable 2: |x_j^T(y - Xβ)| = 0.500, λ/2 = 0.250
+Variable 3: |x_j^T(y - Xβ)| = 0.204, λ/2 = 0.250
+</pre></div></div>
+</div>
+<ul class="simple">
+<li><p>If <span class="math notranslate nohighlight">\(\beta_j = 0\)</span>, then <span class="math notranslate nohighlight">\(|x_j^T(y−X\beta)|\)</span> must be <span class="math notranslate nohighlight">\(\leq \lambda / 2\)</span>.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright .</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
