@@ -2,10 +2,10 @@
 
 # 0. Répertoire en cours de construction
 
-00_foundations/
-01_data_and_tools/
-03_deep_learning/
-04_modern_ai/
+source/00_foundations/
+source/01_data_and_tools/
+source/03_deep_learning/
+source/04_modern_ai/
 
 
 # 1. Fichiers et répertoires générés par Sphinx
