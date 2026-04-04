@@ -46,3 +46,17 @@ _readthedocs/
 # 5. Fichers de présentation non nécessaires
 
 Read_The_Docs.pptx
+
+# 6. Fichiers LaTex
+
+*.tex
+
+
+# 7. Fichiers vidéos
+
+*.mp4
+
+
+# 8. Fichiers .sh
+
+*.sh
