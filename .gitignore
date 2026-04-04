@@ -1,2 +1,48 @@
+# FICHIERS INGORES POUR UN PROJET SPHINX + READ THE DOCS:
+
+# 1. Fichiers et répertoires générés par Sphinx
+
+# Répertoire de build (généré par Sphinx) 
+build/
+_dist/
+
+
+# 2. Fichiers générés par Python (environnements virtuels, cache, etc.)
+
+# Environnements virtuels Python 
+venv/
+.env/
+.venv/
+env/
+
+# Cache Python
+__pycache__/
+*.py[cod]
+*.$py.class
+
+# Fichiers de configuration IDE/éditeur
+.idea/
+.vscode/
+*.swp
+
+
+# 3. Fichiers spécifiques à Read the Docs
+
+# Fichiers générés par Read the Docs
+_readthedocs/
+
+
+# 4. Fichiers temporaires et systèmes
+
+# Fichiers temporaires
+*.tmp
+*.bak
+*.log
 .DS_Store
-.DS_Store
+
+# Fichiers de configuration locaux
+.local/
+
+# 5. Fichers de présentation non nécessaires
+
+Read_The_Docs.pptx

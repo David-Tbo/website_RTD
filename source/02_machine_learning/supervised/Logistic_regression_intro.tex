@@ -1,0 +1,1099 @@
+\documentclass{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb}
+\usepackage{hyperref}
+\usepackage{bookmark}
+\usepackage{xurl}
+\usepackage{longtable}
+\usepackage{siunitx} % For better handling of numbers and units
+\usepackage{calc}
+\usepackage{array}
+\usepackage{booktabs} % For better table formatting
+\usepackage{parskip} % For better handling of paragraph spacing
+\usepackage[a4paper, margin=2.5cm]{geometry} % Adjust margins
+% Définition de \tightlist
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+% Assouplit la justification
+\sloppy 
+\setlength{\parindent}{0pt} % Pas d'indentation
+
+\title{Logistic Regression: Introduction and Interpretation}
+
+\author{David Thébault}
+\date{October 18, 2025}
+
+
+\begin{document}
+
+\maketitle % Generate the title
+
+\section{\texorpdfstring{\textbf{Logistic
+Regression}}{Logistic Regression}}\label{logistic-regression}
+
+\textbf{Objective}: Understand, implement, and apply logistic regression
+for diabetes prediction.
+
+
+\subsection{Introduction to Logistic Regression}
+
+Logistic regression applies when the dependent variable is binary.
+Formally, let \(Y\) be a random variable taking values in \(\{0,1\}\),
+where \(Y=1\) indicates that the event occurs and \(Y=0\) otherwise.
+Let \(X_1,\ldots,X_k\) denote a set of \(k\) explanatory variables,
+which may be either qualitative or quantitative.
+
+We consider the joint population vector \((Y, X_1,\ldots,X_k)\).
+A random sample of size \(n\) is drawn from this population,
+yielding observations \((Y_i, X_{i1},\ldots,X_{ik})\) for
+\(i = 1,\ldots,n\).
+
+Unlike simple linear regression, logistic regression 
+\textbf{estimates the probability} of an event occurring, rather than predicting a
+specific numerical value.
+
+\subsection{Theory and Fundamentals}
+
+\subsubsection{Probabilistic Model}
+
+This section describes the underlying probabilistic framework of the
+model, focusing on the random variable and its distribution.
+
+The variable \(Y_i\) follows a \textbf{Bernoulli distribution} with
+parameter \(p_i\) representing the probability that \(Y_i=1\).
+
+\[Y_i \sim B(p_i)\]
+
+The probabilities are defined as:
+
+\[P(Y_i=1) = p_i \quad, \quad P(Y_i = 0) = 1 - p_i\]
+
+This can also be written as::
+
+\[P(Y_i = k) = {p_i}^k(1 - p_i)^{1-k} \quad \text{for k} \in \{0, 1\}\]
+
+\subsubsection{LOGIT Model}\label{logit-model}
+
+This section focuses on the specific form of the logistic regression
+model, which is a type of probabilistic model.
+
+\medskip
+
+To ensure that the expected value of \(Y, E(Y)\), only takes values
+between 0 and 1, we use the \textbf{logistic function}:
+
+\[f(x) = \dfrac{\text{exp(x)}}{1 + \text{exp(x)}} = p\]
+
+or equivalently:
+
+\[f(x) = \dfrac{1}{1 + \text{exp(-x)}} = p\]
+
+\medskip
+
+This guarantees that \(0 < f(x) < 1\), so \(E[Y]\) can represent a valid
+probability.
+
+The \textbf{logit function} transforms a probability \(p\) into an
+\textbf{unrestricted real value}:
+
+\textbf{Notations}:
+
+\begin{itemize}
+\tightlist
+\item
+  \(X = (1,X_1, \ldots, X_k)\) vector of predictors, including the
+  intercept term.
+\item
+  \(\beta = (\beta_0,\beta_1, \ldots, \beta_k)\) vector of coefficients.
+\end{itemize}
+
+\medskip
+
+\textbf{Logit Transformation}
+
+The logit of a probability \(p\) is defined as:
+
+\[\text{logit}(p) = \text{log}(\dfrac{p}{1 - p})\]
+
+In the context of logistic regression, the logit of the probability is
+modeled as a linear combination of the predictors:
+
+\[\text{logit}(p) = \beta .X\]
+
+Explicitly, this can be written as:
+
+\[\text{logit}(p) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_k X_k\]
+
+Or equivalently:
+
+\[\text{log}\left( \dfrac{p}{1-p} \right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \ldots + \beta_k X_k\]
+
+\medskip
+
+\textbf{Logistic Function}(inverse of logit).
+
+To convert the linear predictor back into a probability, we use
+the logistic function which is the inverse of the logit function:
+
+\[p = \frac{1}{1 + \exp(-\beta .X)}\]
+
+Demonstration:
+
+\[p(x) = \dfrac{1}{1 + \exp(-\beta x)}\]
+
+\[\underset{inverse}   \iff \dfrac{1}{p} = 1 + \exp(-\beta x)\]
+
+\[\iff \dfrac{1}{p} - 1 = \exp(-\beta x)\]
+
+\[\iff \dfrac{1}{p} - \dfrac{p}{p} = \exp(-\beta x)\]
+
+\[\iff \dfrac{1-p}{p} = \exp(-\beta x)\]
+
+\[\iff \log(\dfrac{1-p}{p}) = -\beta x\]
+
+\[\iff \log(\dfrac{p}{1-p}) = \beta x\]
+
+For simplicity, we often write \(p\) instead of \(p(x)\) when the
+context is clear.
+
+\subsubsection{Model Assumptions}
+
+For the logistic regression model to be valid and
+generalizable, the following key assumptions must be satisfied.
+Violations of these assumptions can lead to biased or inefficient
+estimates, and may compromise the interpretability of the model.
+
+\medskip
+
+\textbf{I. Linearity of Log-Odds}
+
+\textbf{The relationship between each continuous predictor (\(X_j\)) 
+and the log-odds of the outcome (\(Y=1\))
+must be linear}. 
+
+Mathematically, this means:
+\[\log\left(\frac{P(Y=1|X)}{1 - P(Y=1|X)}\right) = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_k X_k\]
+
+Implications:
+
+\begin{itemize}
+\tightlist
+\item
+  If the true relationship is non-linear (e.g., quadratic or U-shaped),
+  the linear assumption will not hold.
+\item
+  How to check: Plot the log-odds against each continuous
+  predictor. If the relationship appears curved, consider adding
+  polynomial terms or splines.
+\end{itemize}
+
+Example: If \texttt{age} is a predictor, the log-odds of
+diabetes should increase or decrease linearly with \texttt{age}. If the
+relationship is non-linear, you might need to add a quadratic term
+(e.g., \texttt{age²}).
+
+\medskip
+
+\textbf{II. No Multicollinearity}
+
+\textbf{Predictor variables should not be highly correlated with each other}. 
+
+High multicollinearity can inflate the variance of coefficient estimates, 
+making them unstable and difficult to interpret.
+
+Implications:
+
+\begin{itemize}
+\tightlist
+\item
+  Multicollinearity does not bias the model, but it reduces the
+  precision of the estimated coefficients.
+\item
+  How to check: For numeric variables, use Variance Inflation Factor (VIF) 
+  (see multicolinearity assessment). A   VIF \textgreater{} 5 or 10 
+  indicates problematic multicollinearity.
+\end{itemize}
+
+Example: If your model includes both \texttt{blood pressure}
+and \texttt{blood pressure squared}, these variables are likely to be
+highly correlated. Consider removing one or using regularization (e.g.,
+Lasso or Ridge).
+
+\medskip
+
+\textbf{III. Additivity}
+
+\textbf{The effect of each predictor on the log-odds of the
+outcome is additive}. 
+
+This means the contribution of each predictor to the log-odds 
+is independent of the values of the other predictors.
+
+Implications:
+
+\begin{itemize}
+\tightlist
+\item
+  If there are interaction effects (e.g., the effect of
+  \texttt{age} on diabetes depends on \texttt{BMI}), they must be
+  explicitly modeled.
+\item
+  How to check: Test for interactions by adding product terms
+  (e.g., \texttt{age x BMI}) to the model and evaluating their
+  significance.
+\end{itemize}
+
+Example: If the effect of \texttt{glucose} on diabetes risk
+depends on \texttt{age}, you should include an interaction term like
+\texttt{glucose age} in your model.
+
+\medskip
+
+\textbf{IV. Independence of Observations}
+
+\textbf{The model assumes that observations are independent of each other}.
+
+This is critical for the validity of standard errors and hypothesis tests.
+
+Implications:
+
+\begin{itemize}
+\tightlist
+\item
+  If observations are correlated (e.g., repeated measurements from the
+  same individual or clustered data), standard errors will be
+  underestimated, leading to inflated Type I error rates.
+\item
+  How to check: Look for patterns in residuals or use tests for
+  autocorrelation (e.g., Durbin-Watson test for time-series data).
+\end{itemize}
+
+Example: If your dataset includes multiple measurements from
+the same patient over time, you should use a mixed-effects
+logistic regression or GEE (Generalized Estimating Equations)
+to account for within-patient correlation.
+
+\subsection{Practical Implementation of Logistic}
+
+\paragraph{Recommendations}
+
+\begin{enumerate}
+\tightlist
+\item
+  \textbf{Always check assumptions} before interpreting your model.
+\item
+  \textbf{Use diagnostic plots} (e.g., residual plots, VIF) to identify
+  violations.
+\item
+  \textbf{Consider regularization} (Lasso/Ridge) if multicollinearity is
+  an issue.
+\item
+  \textbf{Model interactions} if additivity is violated.
+\item
+  \textbf{Use robust standard errors} or mixed-effects models if
+  observations are not independent.
+\end{enumerate}
+
+
+\paragraph{\texorpdfstring{\textbf{Fit the logistic regression
+model}}{Fit the logistic regression model}}\label{fit-the-logistic-regression-model}
+
+\subparagraph{Logistic Regression with
+scipy}\label{logistic-regression-with-scipy}
+
+\paragraph{\texorpdfstring{\textbf{Linearity of
+Log-Odds}}{Linearity of Log-Odds}}\label{linearity-of-log-odds}
+
+Predicted Probabilities and Log-Odds:
+
+\begin{itemize}
+\tightlist
+\item
+  The linearity of log-odds assumption in logistic regression refers to
+  the relationship between continuous predictors and the log-odds of the
+  outcome.
+\item
+  To assess this, you need the predicted probabilities from a fitted
+  logistic regression model. These probabilities are then transformed
+  into log-odds.
+\end{itemize}
+
+Visual Inspection:
+
+\begin{itemize}
+\tightlist
+\item
+  You plot the continuous predictors against the predicted log-odds to
+  visually inspect if the relationship is linear.
+\item
+  If the relationship is not linear, you may need to transform the
+  predictor (e.g., using polynomials, splines, or categorization).
+\end{itemize}
+
+\subparagraph{Calculate Predicted Probabilities and
+Log-Odds}\label{calculate-predicted-probabilities-and-log-odds}
+
+\subparagraph{Plot Log-Odds vs. Continuous
+Predictors}\label{plot-log-odds-vs-continuous-predictors}
+
+\subsection{Coefficients
+interpretation}\label{coefficients-interpretation}
+
+\textbf{The Odds}
+
+The odds are defined by:
+
+\[\text{Odds} = \dfrac{p}{1-p}\]
+
+\(\text{Where} \quad p = P(target=1|X)\)
+
+\begin{quote}
+\emph{If a student has a 3 in 4 chance of passing and a 1 in 4 chance of
+failing, their odds are \textquotesingle3 to 1\textquotesingle:}
+\(\text{Odds} = \dfrac{3/4}{1/4}=3\)
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Notation:}
+  \[\text{Odds}(Y=1|X=0)=\dfrac{P(Y=1|X=0)}{1-P(Y=1|X=0)}\]
+\end{itemize}
+
+\subsubsection{\texorpdfstring{\textbf{The Odds
+Ratio}}{The Odds Ratio}}\label{the-odds-ratio}
+
+The odds ratio comparing the \textbf{probability of \(target=1\)}
+between individuals with value \(X\) and those without it.
+
+\[\text{Odds Ratio} = \dfrac{\text{Odds}(Y=1|X=1)}{\text{Odds}(Y=1|X=0)}\]
+
+\[\text{Odds Ratio} = \dfrac{P(Y_i=1 | X=1)}{1 - P(Y_i=1 | X=1)} / \dfrac{P(Y_i=1 | X=0)}{1 - P(Y_i=1 | X=0)}\]
+
+We know that logit is given by:
+
+\[\text{logit}(p) = \text{log}(\dfrac{p}{1-p}) = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + \ldots + \beta_k x_{ik}\]
+
+\subsubsection{\texorpdfstring{\textbf{Interpreting the
+Intercept}}{Interpreting the Intercept}}\label{interpreting-the-intercept}
+
+The intercept \(\beta_0\)\hspace{0pt} represents the \textbf{log-odds of
+the outcome \(Y=1\) when all predictors are equal to zero}.\\
+\(\beta_0\)\hspace{0pt} defines the \textbf{baseline probability} of the
+outcome when all predictors are zero.
+
+\textbf{Caveat}:\\
+This interpretation of \(\beta_0\) is often not meaningful if some
+predictors cannot logically be zero (e.g., age=0, blood pressure). In
+such cases, \(\beta_0\)\hspace{0pt} is primarily a mathematical
+component of the model and is rarely interpreted in isolation.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Odds for the baseline group:}
+\end{itemize}
+
+\[\text{Odds}(Y=1 | X_1=0) = \exp(\beta_0)\]
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Probability for the baseline group:}
+  \[P(Y=1 | X_1=0)=\dfrac{\exp(\beta_0)}{1 + \exp(\beta_0)}\]
+\end{itemize}
+
+\begin{quote}
+If \(X_1\)\hspace{0pt} is "smoking status" (\(0\) = non-smoker, \(1\) =
+smoker), then
+
+\begin{itemize}
+\tightlist
+\item
+  \(\beta_0\)\hspace{0pt} gives the \textbf{log-odds} of the outcome for
+  non-smokers\\
+\item
+  \(\exp(\beta_0)\) gives the \textbf{odds} of the outcome for
+  non-smokers.
+\end{itemize}
+
+If \(\beta_0 = -1\), then: \[\exp(\beta_0) = \exp(-1) \approx 0.37\]
+
+\[P(Y=1 | X_1=0)= \dfrac{0.37}{1 + 0.37} \approx 0.27\]
+
+27% of non-smokers are predicted to have the outcome (e.g., lung
+cancer), assuming no other predictors.\\
+It is the observed proportion of lung cancer for non-smokers.
+\end{quote}
+
+\subsubsection{\texorpdfstring{\textbf{Interpreting the
+Slope}}{Interpreting the Slope}}\label{interpreting-the-slope}
+
+In a model with multiple predictors, each \(\beta_i\)\hspace{0pt} (and
+its corresponding odds ratio \(\exp(\beta_i)\) represents the effect of
+that predictor on the log-odds of \(Y=1\), holding all other predictors
+constant.\\
+This is the key assumption of multivariable regression: ceteris paribus
+(all else being equal).
+
+The coefficient \(\beta_1\)\hspace{0pt} represents the \textbf{change in
+the log-odds of} \(Y=1\) for a \textbf{one-unit change} in
+\(X_1\)\hspace{0pt}. The odds ratio \(\exp(\beta_1)\)\hspace{0pt}
+quantifies how the odds of \(Y=1\) change with \(X_1\)\hspace{0pt}.
+
+\textbf{General Formula for Odds Ratio}
+
+For any type of predictor \(X_1\), the odds ratio for a one-unit
+increase is:\\
+\[\text{Odds Ratio} = \frac{\text{Odds}(Y=1 | X_1 = x+1)}{\text{Odds}(Y=1 | X_1 = x)} = \exp(\beta_1)\]
+
+\textbf{Note:}\\
+\(\exp(\beta_1)\) compares the odds of \(Y=1\) between \(X_1=1\) and
+\(X_1=0\), controlling for all other variables in the model (all others
+features constant).
+
+\begin{itemize}
+\tightlist
+\item
+  Case: \(X_1\) is Binary
+\end{itemize}
+
+For a binary predictor \(X_1\)\hspace{0pt} (e.g., \(0\) = non-smoker,
+\(1\) = smoker), the odds ratio \(\exp(\beta_1)\)\hspace{0pt} compares
+the odds of \(Y=1\) between the two groups.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Logistic regression equation:}
+\end{itemize}
+
+\[\log\left(\dfrac{P(Y=1 | X_1)}{1 - P(Y=1 | X_1)}\right) = \beta_0 + \beta_1 1_{\{X_1 = 1\}}\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Odds ratio:}
+  \[\text{Odds Ratio} = \dfrac{P(Y=1 | X_1=1)}{1 - P(Y=1 | X_1=1)} / \dfrac{P(Y=1 | X_1=0)}{1 - P(Y=1 | X_1=0)} = \exp(\beta_1)\]
+\end{itemize}
+
+\textbf{Interpretation:}
+
+\begin{itemize}
+\tightlist
+\item
+  If \(\exp(\beta_1) = 1\): No effect of the feature \(X_1\)\hspace{0pt}
+  on the odds of \(Y=1\).
+\item
+  If \(\exp(\beta_1)>1\): The odds of \(Y=1\) are higher when \(X_1=1\).
+  The feature \(X_1\)\hspace{0pt} is \textbf{positively associated} with
+  the outcome.
+\item
+  If \(\exp(\beta_1) < 1\): The odds of \(Y=1\) are lower when
+  \(X_1=1\). The feature \(X_1\)\hspace{0pt} is \textbf{negatively associated} with the outcome.
+\end{itemize}
+
+\begin{quote}
+\textbf{Example:}\\
+If \(\beta_1 = 0.7 \rightarrow \exp(\beta_1) \approx 2.01\). The odds of
+lung cancer for smokers \((X_1=1)\) are twice as high as for non-smokers
+\((X_1=0)\).
+\end{quote}
+
+\begin{itemize}
+\tightlist
+\item
+  Case: \(X_1\) is Categorical
+\end{itemize}
+
+For a categorical predictor \(X_1\) with more than two levels (e.g.,
+color = red, green, blue), you use \textbf{dummy variables}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{The logistic regression model becomes:}
+\end{itemize}
+
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0 + \beta_{green}1_{\{X_1 = \text{green}\}} + \beta_{blue}1_{\{X_1 = \text{blue}\}}\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Reference Category ("red"):} When
+  \(1_{\{X_1 = \text{green}\}}=0\) and \(1_{\{X_1 = \text{blue}\}}=0\),
+  the log-odds are:
+\end{itemize}
+
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0\]
+
+\textbf{Interpretation:} This means \(\beta_0\)\hspace{0pt} represents
+the log-odds of \(Y=1\) for the reference category ("red").
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Category ("green"):} When \(1_{\{X_1 = \text{green}\}}=1\) and
+  \(1_{\{X_1 = \text{blue}\}}=0\), the log-odds are:
+\end{itemize}
+
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0 + \beta_{green}\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Category ("blue"):} When \(1_{\{X_1 = \text{green}\}}=0\) and
+  \(1_{\{X_1 = \text{blue}\}}=1\), the log-odds are:
+\end{itemize}
+
+\[\text{log}\left( \dfrac{P(Y=1)}{1 - P(Y=1)} \right) = \beta_0 + \beta_{blue}\]
+
+The \textbf{odds ratio for "blue" relative to the reference "red"} is:
+\[\exp(\beta_{blue}) = \dfrac{\text{Odds}(Y=1 | \text{blue})}{\text{Odds}(Y=1 | \text{red})}\]
+
+The same way, \(\exp(\beta_{\text{green}})\)\hspace{0pt} compares the
+odds for "green" vs. the "red" reference.
+
+\begin{quote}
+\textbf{Interpretation:}
+
+If \(\exp(\beta_{\text{green}}) = 1.5\), the odds of \(Y=1\) are \(1.5\)
+times higher for "green" compared to "red".
+\end{quote}
+
+\begin{itemize}
+\item ~
+  \subparagraph{\texorpdfstring{Case: \(X_1\) is
+  Quantitative}{Case: X_1 is Quantitative}}\label{case-x_1-is-quantitative}
+\end{itemize}
+
+For a continuous predictor \(X_1\) (e.g., age, blood pressure), the odds
+ratio \(\exp(\beta_1)\)\hspace{0pt} represents the multiplicative change
+in the odds of \(Y=1\) for a one-unit increase in \(X_1\)\hspace{0pt}.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Logistic regression equation:}
+\end{itemize}
+
+\[\log\left(\dfrac{P(Y=1 | X_1)}{1 - P(Y=1 | X_1)}\right) = \beta_0 + \beta_1 X_1\]
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Odds ratio for a one-unit increase:}
+\end{itemize}
+
+\[\text{Odds Ratio} = \frac{\text{Odds}(Y=1 | X_1 = x+1)}{\text{Odds}(Y=1 | X_1 = x)} = \exp(\beta_1)\]
+
+\textbf{In short}: \(\beta_1\)\hspace{0pt} captures the \textbf{constant
+log-odds} change per unit increase in \(X_1\), so
+\(\exp(\beta_1)\)\hspace{0pt} is the \textbf{odds ratio} for that
+one-unit change.
+
+This holds regardless of the starting value of \(X_1\)\hspace{0pt}
+because the model assumes a constant multiplicative effect on the odds
+(a key assumption of logistic regression).
+
+\begin{quote}
+\textbf{Interpretation:}
+
+\begin{itemize}
+\tightlist
+\item
+  If \(\beta_1=0.095 \rightarrow \exp(\beta_1)=1.1\), the odds of
+  \(Y=1\) increase by 10% for each one-unit increase in
+  \(X_1\)\hspace{0pt}.
+\item
+  If \(X_1\)\hspace{0pt} is "years of smoking" and
+  \(\beta_1 = 0.7 \rightarrow  \exp(\beta_1) \approx 2.01\). For each
+  additional year of smoking, the odds of lung cancer double. .
+\end{itemize}
+\end{quote}
+
+\textbf{Summary}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.2396}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 2\tabcolsep) * \real{0.7604}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Type of \(X_1\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interpretation of \(\exp(\beta_1)\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Binary & Compares odds of \(Y=1\) between \(X_1=1\) and \(X_1=0\) \\
+Categorical & Compares odds of \(Y=1\) for a given category relative to
+the reference. \\
+Quantitative & Multiplicative change in odds of \(Y=1\) for a one-unit
+increase in \(X_1\) \\
+\end{longtable}
+
+\begin{enumerate}
+\tightlist
+\item
+  Interpretation of the Plots
+\end{enumerate}
+
+\begin{itemize}
+\item
+  Consistency of Log-Odds: The boxplot will show the distribution of
+  predicted log-odds for each category. If the medians of the log-odds
+  for each category are distinct, it suggests that the categorical
+  predictor is having an effect on the log-odds of the outcome.
+\item
+  Effect of Categories: The difference in log-odds between categories
+  should reflect the coefficients in the logistic regression output.
+\end{itemize}
+
+\textbf{Interpreting the coefficients:}
+
+For each feature, the exponentiated coefficient (exp(coef)) represents
+the change in odds for a one-unit increase in that feature, holding all
+other features constant.
+
+For example, has the coefficient for
+\textquotesingle pregnancies\textquotesingle{} is 0.1604, the odds ratio
+is exp(0.1604) = 1.174037.\\
+This means that for each one-unit increase in pregnancies, the odds of
+the outcome occurring (e.g., having diabetes) increase by approximately
+17.4%, assuming all other features remain constant.
+
+\textbf{Diabetes Prediction: data preparation and model inference}
+
+\begin{itemize}
+\tightlist
+\item
+  Preparing new input data for prediction
+\end{itemize}
+
+\begin{itemize}
+\tightlist
+\item
+  Using the model to make a prediction
+\end{itemize}
+
+\begin{itemize}
+\tightlist
+\item
+  Transform continuous to categorical
+\end{itemize}
+
+\subsection{APPENDIX}\label{appendix}
+
+\subsubsection{Interpreting the
+coefficients}\label{interpreting-the-coefficients}
+
+\textbf{Demonstration:} The coefficient \(\beta_1\)\hspace{0pt}
+represents the \textbf{change in the log-odds of} \(Y=1\) for a
+\textbf{one-unit change} in \(X_1\)\hspace{0pt} quantitative feature.
+
+Notations:\\
+\[\text{Odds}(Y=1|X=x+1)=P(Y=1|X=x+1) / (1-P(Y=1|X=x+1))\]
+
+\[\text{Odds}(Y=1|X=x)=P(Y=1|X=x) / (1-P(Y=1|X=x))\]
+
+We know that:
+
+\[\text{log(Odds)}(Y=1|X=x+1)=\beta_0 + \beta_1 \times (x+1)\]
+
+\[\text{log(Odds)}(Y=1|X=x)=\beta_0 + \beta_1 \times x\]
+
+By difference:
+
+\[\text{log(Odds)}(Y=1|X=x+1) - \text{log(Odds)}(Y=1|X=x) =\beta_0 + \beta_1 \times (x+1) - (\beta_0 + \beta_1 \times x) = \beta_1\]
+
+\[\text{log}\left(\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)}\right) =\beta_1\]
+
+\textbf{CQFD}
+
+Note:
+
+\[\dfrac{\text{Odds}(Y=1|X=x+1)}{\text{Odds}(Y=1|X=x)} = \exp(\beta_1)\]
+
+\subsubsection{Model formulation}\label{model-formulation}
+
+The prediction \(y_i=1\) of the logistic regression is defined:
+
+\[\hat{y_i} = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)} = h_{\theta}(x_i)\]
+
+\begin{itemize}
+\tightlist
+\item
+  If \(y_i=1\), then \(P(y_i|x_i; \theta)=P(y_i=1|x_i; \theta)\)
+\item
+  If \(y_i=0\), then
+  \(P(y_i|x_i; \theta)=P(y_i=0|x_i; \theta) = 1 - P(y_i=1|x_i; \theta)\)
+\end{itemize}
+
+We can write these two equations into a single one:
+
+\[P(y_i|x_i; \theta)=P(y_i=1|x_i; \theta)^{y_i}\times (1 - P(y_i=1|x_i; \theta))^{1-y_i}\]
+
+With the notations:
+
+\[P(y_i|x_i; \theta)=h_{\theta}(x_i)^{y_i}\times (1 - h_{\theta}(x_i))^{1-y_i}\]
+
+\subsubsection{Likelihood function}\label{likelihood-function}
+
+The \textbf{likelihood} of the observations \(y_i\) given the inputs
+\(x_i\) and parameters \(\theta\) is defined as:
+
+\[L(\theta) = \prod_{i=1}^n P(y_i|x_i;\theta) = \prod_{i=1}^n (h_{\theta}(x_i))^{y_i} (1 -h_{\theta}(x_i))^{1-y_i}\]
+
+where the prediction of the logistic regression is defined:
+
+\[h_{\theta}(x_i) = P(y_i=1 | x_i; \theta) = \frac{1}{1 + \exp(-\theta^Tx_i)}\]
+
+The \textbf{log-likelihood} is defined as:
+
+\[l(\theta) = \log(L(\theta))=\sum_{i=1}^n[y_i \log (h_{\theta}(x_i)) + (1 - y_i) \log(1 - h_{\theta}(x_i))]\]
+
+\subsubsection{Objective of Logistic
+Regession}\label{objective-of-logistic-regession}
+
+The goal of learning a \textbf{logistic regression model} is to
+\textbf{minimize the cost function} by adjusting the parameters
+\(\theta\).The cost function measures the average prediction error
+across all \(n\) training samples.
+
+\subsubsection{Cost function (general
+definition)}\label{cost-function-general-definition}
+
+The cost function \(J(\theta)\) is defined as the average penalty for
+prediction errors across the training set. Mathematically, it is
+expressed as:
+
+\[J(\theta) = -\frac{1}{n} \sum cost(h_\theta(x_i), y_i)\]
+
+where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(h_\theta(x_i)\) the model\textquotesingle s prediction for sample
+  \(x_i\)
+\item
+  \(y_i\) the observed (true) value.
+\end{itemize}
+
+Alternatively, it can be written as:
+
+\[J(\theta) = \frac{1}{n} \sum cost(\hat{y_i}, y_i)\]
+
+Where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\hat{y_i} = h_{\theta}(x_i)\)
+\end{itemize}
+
+\subsubsection{\texorpdfstring{Cost function \textbf{log
+loss}}{Cost function log loss}}\label{cost-function-log-loss}
+
+For logistic regression, the cost function is called \textbf{log loss}
+(or logistic loss).\\
+\textbf{Log loss} is derived from the log-likelihood \(l(\theta)\) and
+is defined as:
+
+\[J(\theta) = -\dfrac{1}{n}l(\theta) = -\frac{1}{n} \sum(y_i \log(h_\theta(x_i)) + (1 - y_i) \log(1 - h_\theta(x_i)))\]
+
+\paragraph{How Log-Loss penalizes prediction
+errors}\label{how-log-loss-penalizes-prediction-errors}
+
+The log-loss function penalizes prediction errors based on the estimated
+probability from the model. It assigns higher penalties when predictions
+are far from the true labels---specifically:
+
+\begin{itemize}
+\item
+  If the label \(y_i = 1\) (positive class), the penalty is
+  \(-log(h_{\theta}(x_i))\). The closer \(h_{\theta}(x_i)\) is to 0 (far
+  from the true label), the higher the penalty
+  (\(-\log(0^+) \approx + \infty\)).
+\item
+  If the label \(y_i = 0\) (negative class), the penalty is
+  \(-log(1-h_{\theta}(x_i))\), the closer \(h_{\theta}(x_i)\) is to 1
+  (far from the true label), the higher the penalty
+  (\(-\log(1 -1^+) \approx + \infty\)).
+\end{itemize}
+
+The two cases are combined into a single formula for observation \(i\):
+\[y_i log(h_\theta(x_i)) + (1 - y_i) log(1 - h_\theta(x_i))\]
+
+\textbf{Key insights:}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Log loss} evaluates how well the model fits the training data.
+\item
+  The log loss is the negative average the log likelihood.
+\item
+  \textbf{Higher likelihood} leads to \textbf{lower log loss} (since
+  \(J(\theta) = -\frac{1}{n}l(\theta)\)).
+\item
+  The log-loss function heavily penalizes confident wrong predictions.
+\end{itemize}
+
+\subsubsection{Optimizing the
+parameters}\label{optimizing-the-parameters}
+
+By minimizing the cost function \(J(\theta)\), we aim to find the
+parameters \(\theta\) that maximize the likelihood of observing the
+training data given the model parameters.
+
+To achieve this, we use an iterative optimization method,
+\textbf{gradient descent}, to find the values of \(\theta\) that
+minimize the cost function over the training set:
+
+\[\underset{\theta}{minimize}(J(\theta))\]
+
+\subsubsection{Parameter estimation
+methods}\label{parameter-estimation-methods}
+
+\paragraph{Gradient Descent}\label{gradient-descent}
+
+The gradient descent only uses the \textbf{gradient} (first derivative)
+of the cost function to update the parameters \(\theta\) in the opposite
+direction of the gradient, scaled by a learning rate \(\alpha\).
+
+To compute the gradient \(\nabla J(\theta)\) we start by transforming
+the expression of:
+
+\[\log(h_\theta(x_i)) = \log\left(\frac{1}{1 + \exp(-\theta^Tx_i)}\right) = -\log(1 + \exp(-\theta^Tx_i))\]
+
+And:
+
+\[\log(1 - h_\theta(x_i)) = \log\left(1 - \frac{1}{1 + \exp(-\theta^Tx_i)}\right)\]
+
+\[\log(1 - h_\theta(x_i)) = \log\left(\frac{1 + \exp(-\theta^Tx_i) - 1}{1 + \exp(-\theta^Tx_i)}\right)\]
+
+\[\log(1 - h_\theta(x_i)) = \log\left(\frac{\exp(-\theta^Tx_i)}{1 + \exp(-\theta^Tx_i)}\right)\]
+
+\[\log(1 - h_\theta(x_i)) = \log(\exp(-\theta^Tx_i)) - \log({1 + \exp(-\theta^Tx_i)})\]
+
+\[\log(1 - h_\theta(x_i)) = -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)})\]
+
+We integrate these modifications:
+
+\[J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}))]\]
+
+\[J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) + (1 - y_i) (-\theta^Tx_i - \log(1 + exp(-\theta^Tx_i)))]\]
+
+\[J(\theta) = -\frac{1}{n} \sum[y_i (-\log(1 + \exp(-\theta^Tx_i))) -\theta^Tx_i - \log(1 + \exp(-\theta^Tx_i)) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\]
+
+\[J(\theta) = -\frac{1}{n} \sum[- y_i \log(1 + \exp(-\theta^Tx_i)) -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\]
+
+\[J(\theta) = -\frac{1}{n} \sum[{- y_i \log(1 + \exp(-\theta^Tx_i))} -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  + y_i \log(1 + \exp(-\theta^Tx_i))]\]
+
+\[J(\theta) = -\frac{1}{n} \sum[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) + y_i \theta^Tx_i  ]\]
+
+\[J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) ]\]
+
+with:
+
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = - \log(\exp(\theta^T x_i)) - \log(1 + \exp(-\theta^Tx_i))\]
+
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = -(\log(\exp(\theta^T x_i)) + \log(1 + \exp(-\theta^Tx_i)))\]
+
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = -\log[\exp(\theta^T x_i)(1 + \exp(-\theta^Tx_i))]\]
+
+\[-\theta^Tx_i - \log({1 + \exp(-\theta^Tx_i)}) = -\log(\exp(\theta^T x_i) + 1)\]
+
+\[J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(\exp(\theta^T x_i + 1)) ]\]
+
+\[J(\theta) = -\frac{1}{n} \sum[y_i \theta^Tx_i  -\log(1 + \exp(\theta^T x_i)) ]\]
+
+\[\frac{\partial}{\partial \theta_j}J(\theta) = -\frac{1}{n} \sum[y_i \frac{\partial}{\partial \theta_j} (\theta^Tx_i)  - \frac{\partial}{\partial \theta_j}\log(1 + \exp(\theta^T x_i)) ]\]
+
+Knowing that:
+
+\[\theta^Tx_i = \theta_1 {x_i}^{(1)} + \theta_2 {x_i}^{(2)} + \ldots + \theta_k {x_i}^{(k)}\]
+
+\[\frac{\partial}{\partial \theta_j} (\theta^Tx_i) = x_i^{(j)}\]
+\[\dfrac{\partial}{\partial \theta_j}\left(\log(1 + \exp(\theta^T x_i))\right) \underset{\log(u)^{'} = \dfrac{u^{'}}{u}} = \dfrac{\dfrac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]
+
+And:
+
+\[\dfrac{\partial}{\partial \theta_j}\left(\log(1 + \exp(\theta^T x_i))\right) \underset{\log(u)^{'} = \dfrac{u^{'}}{u}} = \dfrac{\dfrac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]
+\[\dfrac{\dfrac{\partial}{\partial \theta_j}(1 + \exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = \dfrac{\dfrac{\partial}{\partial \theta_j}(\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]
+\[\dfrac{\dfrac{\partial}{\partial \theta_j}(\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} \underset{\exp(u)^{'} = u^{'}\exp(u)} =  \dfrac{\dfrac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]
+\[\dfrac{\dfrac{\partial}{\partial \theta_j}(\theta^T x_i) * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = \frac{x_i^{(j)} * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)}\]
+\[\dfrac{x_i^{(j)} * (\exp(\theta^T x_i))} {1 + \exp(\theta x_i)} = x_i^{(j)} * h_\theta(x_i)\]
+\[\dfrac{\partial}{\partial \theta_j}J(\theta) = -\dfrac{1}{n} \sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i)]\]
+
+\[-\dfrac{1}{n} \sum[y_i x_i^{(j)}  - x_i^{(j)} h_\theta(x_i)] = -\dfrac{1}{n} \sum[y_i - h_\theta(x_i) ] x_i^{(j)}\]
+
+\[\frac{\partial}{\partial \theta_j}J(\theta) = \frac{1}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\]
+
+We know that the expression of the Gradient descent to update the
+weights is for the weight \(\theta_j\) :
+
+\[\theta_j = \theta_j - \alpha \frac{\partial}{\partial \theta_j}J(\theta)\]
+
+\[\theta_j = \theta_j - \frac{\alpha}{n} \sum[h_\theta(x_i) - y_i ] x_i^{(j)}\]
+
+\paragraph{The Newton-Raphson algorithm}
+
+Others algorithms can be used to find the coefficients of the logistic
+regression. The Newton-Raphson algorithm is an alternative to the
+gradient descent.
+
+The Newton-Raphson method uses both the first derivative (gradient) and
+the second derivative (Hessian) of the cost function. It approximates
+the cost function as a quadratic form and finds the minimum of this
+approximation.
+
+\textbf{Update rule}
+
+\[\theta = \theta - H^{-1} \nabla J(\theta)\]
+
+Logistic regression is a regression model used to predict the
+probability of a binary event based on one or more predictive variables.
+In logistic regression, the likelihood function is convex and can be
+maximized using the Newton-Raphson algorithm.
+
+The Newton-Raphson algorithm is an iterative method for finding the
+maximum of a function using its first and second derivatives. For
+logistic regression, the likelihood function is given by:
+
+\(L(\theta | X, y) = \prod(P(yi | x_i, \theta)^{yi} (1 - P(y_i | x_i, \theta))^{(1 - y_i)})\)
+
+where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\theta\) is the vector of logistic regression coefficients,
+\item
+  \(X\) is the matrix of predictive variables,
+\item
+  \(y\) is the vector of binary response variables, and
+\item
+  \(P(y_i | x_i, \theta)\) is the predicted probability of the binary
+  event for observation \(i\).
+\end{itemize}
+
+To maximize the likelihood function, the Newton-Raphson algorithm
+updates the coefficient vector \(\theta\) at each iteration using the
+following formula:
+
+\(\theta_{i+1} = \theta_i - H^{-1} . g\)
+
+where
+
+\begin{itemize}
+\item
+  \(H = \dfrac{\partial^2L}{\partial \theta \partial\theta'}\) is the
+  Hessian matrix of the likelihood function.
+\item
+  \(g = \dfrac{\partial L}{\partial \theta }\) is the gradient vector of
+  the likelihood function, and,
+\item
+  \(\theta_i\) is the coefficient vector at iteration \(i\).
+\end{itemize}
+
+The Hessian matrix and gradient vector of the likelihood function are
+computed using the partial derivatives of the likelihood with respect to
+the coefficients \(\theta\).
+
+Thus, in logistic regression, the Newton-Raphson algorithm is used to
+estimate the coefficients by maximizing the likelihood function. This
+allows the prediction of binary event probabilities based on the
+predictive variables.
+
+\textbf{Note}: The iterations stop when the difference between two
+successive solution vectors becomes negligible.
+
+\subsubsection{Convexity}\label{convexity}
+
+Convexity is a crucial property in optimization, as it ensures that any
+local minimum is also a global minimum. This makes it easier to find the
+optimal solution using methods like gradient descent.
+
+The Log Loss function is convex due to its logarithmic form, which is
+always convex for positive values. While convexity guarantees that a
+stationary point (where the derivative is zero) is a global minimum, it
+does not guarantee the existence of such a point.
+
+To prove the existence of a minimum, the function must also be bounded
+below and attain this lower bound. For Log Loss, the function is bounded
+below by zero (since the logarithm of a positive number is always
+defined) and reaches this bound when predictions are perfectly accurate
+(i.e., the predicted probability for the correct class is 1).
+
+Combining convexity with the fact that Log Loss is bounded below and
+attains its lower bound, we conclude that the function reaches a global
+minimum when predictions are perfectly correct.
+
+\subsection{Coefficients
+significativity}\label{coefficients-significativity}
+
+The Wald statistic allows to test the coefficients significativity
+\(\hat{w_j}\). Wald statistic is given by::
+
+\((\frac{\hat{w_j}}{\sigma(\hat{w_j})})^2\)
+
+The added-value of the variable \(X_j\) is only real if the Wald
+statistic \textgreater{} 4 \((3.84 = 1.96^2)\)
+
+\(Wald > 4\)
+
+\(\iff (\frac{\hat{w_j}}{\sigma(\hat{w_j})})^2 > 4\)
+
+\(\iff \frac{\hat{w_j}}{\sigma(\hat{w_j})} > 2\)
+
+
+
+\(\iff \hat{w_j} - 2\sigma(\hat{w_j}) > 0\)
+
+\(\iff \hat{w_j}\) se trouve à plus de 2 écarts-type de 0
+
+
+\(\iff \hat{w_j}\) se trouve à plus de 2 écarts-type de 0
+
+\textbackslash iff  l\textquotesingle intervalle de confiance de
+\(\hat{w_j}\) ne contient pas 0 à 95%
+
+CQFD
+
+\subsection{Model quality mesure
+(Deviance)}\label{model-quality-mesure-deviance}
+
+Cf. S.Tufféry p.315
+
+\(n:\) number of observations\\
+\(k:\) number of features
+
+\(L(\omega_k)\) Likelihood of the "modèle ajusté"
+
+\(L(\omega_0)\) Likelihood of the "modèle réduit à la constante"
+
+\(L(\omega_{max})\) Likelihood of the "modèle saturé". The one the model
+will compare.
+
+The Deviance formula:
+
+\(D(\omega_k) = -2[log(L(\omega_k)) - log(L(\omega_{max}))]\) \(^{(*)}\)
+
+As the target is 0 or 1
+\(\Longrightarrow L(\omega_{max})=1 \Longrightarrow log(L(\omega_{max}))=0\)
+
+\(\Longrightarrow D(\omega_k) = -2[log(L(\omega_k))]\)
+
+(*) \(D(\omega_k) = (\frac{log(L(\omega_k))}{log(L(\omega_{max}))}^2)\)
+
+The goal of the logistic regression is to maximise the Likelihood which
+is equivalent to minimize the Deviance.
+
+The Deviance is equivalent to the SCE for the linear regression.
+
+\end{document}
