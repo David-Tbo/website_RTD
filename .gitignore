@@ -2,6 +2,7 @@
 
 # 0. Répertoire en cours de construction
 
+source/
 source/00_foundations/
 source/01_data_and_tools/
 source/03_deep_learning/
