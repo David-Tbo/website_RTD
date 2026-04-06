@@ -8,14 +8,7 @@ Welcome to this Data Science documentation!
    :maxdepth: 2
    :caption: Contents:
 
-<<<<<<< HEAD
    00_maths/index
-=======
-   probabilities/index
-   statistics/index
-   python/index
-   machine_learning/index
->>>>>>> 8d84f59 (empty repos)
 
 Indices and tables
 ==================
